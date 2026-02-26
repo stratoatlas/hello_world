@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Foundations &mdash; StratoAtlas</title><meta name="description" content="What is a system. What is a contradiction. The conceptual base behind the StratoAtlas map."><meta property="og:type" content="website"><meta property="og:title" content="Foundations &mdash; StratoAtlas"><meta property="og:description" content="What is a system. What is a contradiction. The conceptual base behind the StratoAtlas map."><meta property="og:url" content="https://stratoatlas.com/en/foundations.html"><meta property="og:locale" content="en_US"><link rel="alternate" hreflang="en" href="https://stratoatlas.com/en/foundations.html"><link rel="alternate" hreflang="uk" href="https://stratoatlas.com/uk/foundations.html"><link rel="alternate" hreflang="x-default" href="https://stratoatlas.com/en/foundations.html"><link rel="icon" href="../assets/logo.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/style.css">
+<style>
+.fhero { padding: 80px 0 64px; border-bottom: 1px solid var(--line); }
+.fhero h1 { max-width: 640px; margin-bottom: 24px; }
+.fhero h1 em { font-style: normal; color: var(--accent-l); }
+.flead { font-size: 15px; color: var(--text2); line-height: 1.75; max-width: 540px; }
+
+.fdefs { padding: 64px 0; border-bottom: 1px solid var(--line); }
+.fdef { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; margin-bottom: 64px; }
+.fdef:last-child { margin-bottom: 0; }
+.fdef-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: #fff; letter-spacing: -.02em; }
+.fdef-body { font-size: 14px; color: var(--text2); line-height: 1.8; }
+.fdef-body strong { color: var(--text); font-weight: 500; }
+.fdef-body em { font-style: italic; color: var(--text3); }
+.fdef-aside-lbl { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text3); margin-bottom: 14px; display: block; }
+.fdef-aside-body { font-size: 13px; color: var(--text2); line-height: 1.75; }
+.fdef-aside-body strong { color: var(--text); font-weight: 500; }
+.fdef-aside-body em { font-style: italic; color: var(--text3); }
+
+.prop-list { margin: 16px 0 20px; display: flex; flex-direction: column; gap: 9px; }
+.prop-item { display: grid; grid-template-columns: 16px 1fr; gap: 0 10px; align-items: baseline; }
+.prop-dash { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3); }
+.prop-text { font-size: 14px; color: var(--text2); line-height: 1.6; }
+.prop-text strong { color: var(--text); font-weight: 500; }
+
+.contra-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+.contra-card { padding: 18px 20px; border: 1px solid var(--line); border-radius: 3px; background: var(--bg2); border-top: 2px solid rgba(255,255,255,.15); }
+.contra-card.dissipative { border-top-color: rgba(255,255,255,.06); }
+.contra-type { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text3); display: block; margin-bottom: 10px; }
+.contra-def { font-size: 13px; color: var(--text2); line-height: 1.6; }
+.contra-def strong { color: var(--text); font-weight: 500; }
+
+.fthesis { padding: 64px 0; border-bottom: 1px solid var(--line); background: var(--bg2); }
+.fthesis-inner { display: grid; grid-template-columns: 220px 1fr; gap: 64px; align-items: start; max-width: var(--max-w); margin: 0 auto; padding: 0 40px; }
+.fthesis-lbl { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text3); padding-top: 6px; line-height: 1.6; }
+.fthesis-content h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; color: #fff; }
+.fthesis-content p { font-size: 14px; color: var(--text2); line-height: 1.8; margin-bottom: 14px; }
+.fthesis-content p:last-child { margin-bottom: 0; }
+.fthesis-content strong { color: var(--text); font-weight: 500; }
+.fthesis-content em { font-style: italic; color: var(--text3); }
+
+.fmodes { padding: 64px 0; border-bottom: 1px solid var(--line); }
+.modes-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 2px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-top: 32px; }
+.mode-card { background: var(--bg2); padding: 28px; border-right: 1px solid var(--line); }
+.mode-card:last-child { border-right: none; }
+.mode-type { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text3); display: block; margin-bottom: 12px; }
+.mode-bar { width: 20px; height: 2px; background: var(--accent); margin-bottom: 16px; border-radius: 1px; }
+.mode-bar.light { background: rgba(255,255,255,.2); }
+.mode-title { font-family: 'Geologica', system-ui, sans-serif; font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+.mode-desc { font-size: 12px; color: var(--text2); line-height: 1.65; }
+.mode-desc strong { color: var(--text); font-weight: 500; }
+
+.fcta { padding: 64px 0; }
+.fcta-inner { display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+.fcta-text { font-size: 14px; color: var(--text3); line-height: 1.6; max-width: 480px; }
+.fcta-btns { display: flex; gap: 12px; flex-shrink: 0; }
+
+@media (max-width: 768px) {
+  .fdef, .fthesis-inner { grid-template-columns: 1fr; gap: 32px; }
+  .contra-grid, .modes-grid { grid-template-columns: 1fr; }
+  .fcta-inner { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body class="page">
+
+<header class="site-header" role="banner">
+<nav class="nav-inner">
+<a class="nav-logo" href="index.html"><span class="nav-mark" aria-hidden="true"><svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M228.776 268.165C219.557 266.143 209.889 265.173 200.001 265.173C190.113 265.173 180.445 266.143 171.226 268.165L200.001 209.738L228.776 268.165Z" stroke="currentColor" stroke-width="10.4869"/><path d="M368.54 368.535L208.335 333.934C206.378 333.511 203.627 333.16 200.003 333.16C196.377 333.16 193.627 333.512 191.672 333.934L31.4609 368.539L200.007 31.4607L368.54 368.535Z" stroke="currentColor" stroke-width="10.4869"/><path d="M297.835 316.104L218.111 298.964C212.663 297.793 206.602 297.158 200.001 297.158C193.399 297.158 187.339 297.794 181.893 298.964L102.165 316.105L200.003 121.348L297.835 316.104Z" stroke="currentColor" stroke-width="10.4869"/></svg></span><span class="nav-wordmark">StratoAtlas</span></a>
+<div class="nav-right">
+<ul class="nav-links">
+<li><a href="map.html">Map</a></li>
+<li><a href="foundations.html" class="active">Foundations</a></li>
+<li><a href="manifesto.html">Manifesto</a></li>
+<li><a href="about.html">About</a></li>
+</ul>
+<div class="lang-switch"><a href="../en/foundations.html" class="current">EN</a><a href="../uk/foundations.html">UK</a></div>
+</div>
+</nav>
+</header>
+
+<main id="main-content">
+
+<section class="fhero">
+<div class="content-narrow">
+<span class="hero-eyebrow">Foundations</span>
+<h1>What is a <em>system</em>.<br>What is a <em>contradiction</em>.</h1>
+<p class="flead">The map is built on two concepts. Before navigating methodologies, it helps to agree on what each term means &mdash; precisely enough to use.</p>
+</div>
+</section>
+
+<section class="fdefs">
+<div class="content-narrow">
+
+<div class="fdef">
+<div>
+<div class="fdef-title">A good system</div>
+<div class="fdef-body">
+A system with a <strong>clear function</strong> and a <strong>defined boundary</strong> that reliably performs this function &mdash; in equilibrium or in development &mdash; maintaining:
+<div class="prop-list">
+<div class="prop-item"><span class="prop-dash">&mdash;</span><span class="prop-text">structural coherence</span></div>
+<div class="prop-item"><span class="prop-dash">&mdash;</span><span class="prop-text">minimal sufficiency</span></div>
+<div class="prop-item"><span class="prop-dash">&mdash;</span><span class="prop-text">observability</span></div>
+<div class="prop-item"><span class="prop-dash">&mdash;</span><span class="prop-text">the ability to <strong>distinguish types of contradictions</strong> and work with each accordingly: resolving or dissolving dissipative ones without suppressing productive ones</span></div>
+</div>
+</div>
+</div>
+<div>
+<span class="fdef-aside-lbl">On management</span>
+<div class="fdef-aside-body">Governance operates through <strong>internal observation and correction mechanisms</strong> (observability&nbsp;+ reflection) and/or an external actor. The system is not tied to a single management subject.<br><br>
+<em>The ideal end state: function is performed with minimal presence of the carrier. The system&rsquo;s ultimate task is to become unnecessary &mdash; not to die, but to transfer the function.</em></div>
+</div>
+</div>
+
+<hr class="mhr">
+
+<div class="fdef">
+<div>
+<div class="fdef-title">Contradiction</div>
+<div class="fdef-body">
+Tension between two <strong>active requirements</strong> (or parameters) in a system that demands a resource for resolution/transformation and manifests as a constraint on its functioning or development.<br><br>
+Contradictions come in two types:
+<div class="contra-grid">
+<div class="contra-card">
+<span class="contra-type">Productive</span>
+<div class="contra-def">Tension energy is <strong>converted</strong> into progress toward function / ideal. The engine of the system. Remove it &mdash; you kill the movement.</div>
+</div>
+<div class="contra-card dissipative">
+<span class="contra-type">Dissipative</span>
+<div class="contra-def">Energy <strong>dissipates</strong> without progress toward function &mdash; or works against it. Friction in the wrong place.</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<span class="fdef-aside-lbl">The key question</span>
+<div class="fdef-aside-body"><strong>Identify the type before choosing how to work with it.</strong> Misclassification guarantees a wrong outcome.<br><br>
+A productive contradiction suppressed becomes dissipative &mdash; it accumulates energy instead of converting it. Each suppression increases the amplitude of the next manifestation.<br><br>
+<em>The goal is not zero contradictions. The goal is a system where all active contradictions are productive.</em></div>
+</div>
+</div>
+
+</div>
+</section>
+
+<section class="fthesis">
+<div class="fthesis-inner">
+<span class="fthesis-lbl">Foundational thesis</span>
+<div class="fthesis-content">
+<h2>The goal is not the absence of contradictions &mdash; but the presence of only productive ones</h2>
+<p>This changes the standard management logic. A contradiction is not a signal for elimination &mdash; it is a signal for <strong>distinction</strong>.</p>
+<p>Distinction requires different modes of work: <strong>resolution&nbsp;/ dissolution</strong> for dissipative contradictions; <strong>preservation&nbsp;/ stimulation</strong> for productive ones. A system without productive contradictions is static. A system with only dissipative ones degrades.</p>
+<p><em>Productive contradictions can and should be created deliberately. This is the conceptual territory that existing methodologies have not covered &mdash; and the core of what StratoAtlas maps.</em></p>
+</div>
+</div>
+</section>
+
+<section class="fmodes">
+<div class="container">
+<span class="section-label">Four modes of working with contradictions</span>
+<h2>Each mode requires a different tool</h2>
+<div class="modes-grid">
+<div class="mode-card">
+<span class="mode-type">Dissipative &rarr;</span>
+<div class="mode-bar"></div>
+<div class="mode-title">Resolution</div>
+<p class="mode-desc">Contradiction removed within the system. <strong>Both requirements met fully.</strong> Inventive principle found &mdash; no sacrifice on either side. TRIZ territory.</p>
+</div>
+<div class="mode-card">
+<span class="mode-type">Dissipative &rarr;</span>
+<div class="mode-bar"></div>
+<div class="mode-title">Dissolution</div>
+<p class="mode-desc">The context of the contradiction disappears. <strong>System or supersystem restructured</strong> &mdash; the contradiction becomes irrelevant, not solved but outgrown. Systems Thinking, Wardley territory.</p>
+</div>
+<div class="mode-card">
+<span class="mode-type">Productive &rarr;</span>
+<div class="mode-bar light"></div>
+<div class="mode-title">Preservation</div>
+<p class="mode-desc">The productive contradiction already exists and works as an engine. <strong>Task: don&rsquo;t suppress it.</strong> Compromise here is the error &mdash; it kills the engine.</p>
+</div>
+<div class="mode-card">
+<span class="mode-type">Productive &rarr;</span>
+<div class="mode-bar light"></div>
+<div class="mode-title">Stimulation</div>
+<p class="mode-desc">A productive contradiction is <strong>created deliberately</strong> &mdash; it doesn&rsquo;t exist yet but is needed to move the system toward function. <strong>The uncovered zone in the map.</strong></p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="fcta">
+<div class="container">
+<div class="fcta-inner">
+<p class="fcta-text">Now that the concepts are fixed &mdash; see how methodologies are distributed across system levels and contradiction types on the map.</p>
+<div class="fcta-btns">
+<a href="map.html" class="btn btn-primary">Open the map &rarr;</a>
+<a href="manifesto.html" class="btn btn-ghost">Read manifesto</a>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span class="footer-mark" aria-hidden="true"><svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M228.776 268.165C219.557 266.143 209.889 265.173 200.001 265.173C190.113 265.173 180.445 266.143 171.226 268.165L200.001 209.738L228.776 268.165Z" stroke="currentColor" stroke-width="10.4869"/><path d="M368.54 368.535L208.335 333.934C206.378 333.511 203.627 333.16 200.003 333.16C196.377 333.16 193.627 333.512 191.672 333.934L31.4609 368.539L200.007 31.4607L368.54 368.535Z" stroke="currentColor" stroke-width="10.4869"/><path d="M297.835 316.104L218.111 298.964C212.663 297.793 206.602 297.158 200.001 297.158C193.399 297.158 187.339 297.794 181.893 298.964L102.165 316.105L200.003 121.348L297.835 316.104Z" stroke="currentColor" stroke-width="10.4869"/></svg></span><span class="footer-name">StratoAtlas</span></div><div class="footer-right"><div>v1.0 &middot; Design Methodology Research</div><div><a href="https://stratoatlas.com">stratoatlas.com</a></div></div></div></footer>
+
+</body></html>
