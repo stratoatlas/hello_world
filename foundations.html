@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundations — StratoAtlas</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#080b10;
+  --bg2:#0d1117;
+  --bg3:#131820;
+  --text:#e2e6ef;
+  --text2:#7a8699;
+  --text3:#8090a0;
+  --accent:#c0392b;
+  --accent-l:#e07060;
+  --line:rgba(255,255,255,.07);
+  --line2:rgba(255,255,255,.04);
+  --container:1200px;
+  --gap:24px;
+}
+
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Geologica',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:linear-gradient(to bottom,rgba(8,11,16,.97) 60%,transparent);
+}
+.nav-inner{
+  max-width:var(--container);margin:0 auto;
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
+  letter-spacing:.5px;color:#fff;text-decoration:none;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.current{color:var(--text);}
+.nav-lang{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;
+  border:1px solid var(--line);padding:4px 10px;border-radius:2px;transition:all .2s;
+}
+.nav-lang:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
+
+/* ── LAYOUT ── */
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 48px;}
+.section{padding:96px 0;}
+.section.full-bleed{background:var(--bg2);}
+.section.full-bleed-3{background:var(--bg3);}
+
+/* ── PAGE HEADER ── */
+#pageheader{
+  padding-top:160px;padding-bottom:80px;
+  border-bottom:1px solid var(--line);
+}
+.page-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:32px;
+}
+.page-title{
+  font-size:clamp(42px,6vw,72px);font-weight:800;
+  letter-spacing:-2px;color:#fff;line-height:1;
+  margin-bottom:32px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.page-intro{
+  font-size:18px;font-weight:300;line-height:1.85;
+  color:var(--text2);max-width:640px;
+}
+.page-intro strong{color:var(--text);font-weight:400;}
+
+/* ── SECTION HEADERS ── */
+.sec-num{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:16px;
+}
+.sec-title{
+  font-size:clamp(28px,3.5vw,42px);font-weight:700;
+  letter-spacing:-1px;color:#fff;
+  margin-bottom:24px;line-height:1.15;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.sec-intro{
+  font-size:17px;font-weight:300;line-height:1.85;
+  color:var(--text2);max-width:600px;margin-bottom:56px;
+}
+.sec-intro strong{color:var(--text);font-weight:400;}
+.sec-key{
+  margin-top:48px;
+  font-size:18px;font-weight:500;
+  color:var(--text);
+  border-left:2px solid var(--accent);
+  padding-left:24px;
+  max-width:560px;
+}
+
+/* ── WHY A MAP ── */
+.why-text{
+  font-size:17px;font-weight:300;line-height:1.9;
+  color:var(--text2);max-width:620px;
+}
+.why-text strong{color:var(--text);font-weight:400;}
+
+/* ── SYSTEM LEVELS ── */
+.levels-grid{
+  display:flex;flex-direction:column;gap:2px;
+  margin-bottom:48px;
+}
+.level-row{
+  display:grid;
+  grid-template-columns:200px 1fr;
+  gap:0;
+  background:var(--bg3);
+  transition:background .2s;
+}
+.level-row:hover{background:rgba(255,255,255,.03);}
+.level-row.arch{background:rgba(192,57,43,.06);}
+.level-row.arch:hover{background:rgba(192,57,43,.09);}
+.level-num-name{
+  padding:20px 24px;
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;gap:6px;
+}
+.level-num{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;color:var(--text3);
+}
+.level-row.arch .level-num{color:var(--accent-l);}
+.level-name{
+  font-size:14px;font-weight:600;color:var(--text);
+  letter-spacing:-.2px;
+}
+.level-row.arch .level-name{color:var(--accent-l);}
+.level-desc{
+  padding:20px 32px;
+  font-size:14px;font-weight:300;
+  line-height:1.7;color:var(--text2);
+  display:flex;align-items:center;
+}
+.level-row.arch .level-desc{color:var(--text);}
+
+/* ── ACTION TYPES ── */
+.actions-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:2px;
+  margin-bottom:48px;
+}
+.action-card{
+  background:var(--bg3);
+  padding:28px 24px 32px;
+  position:relative;
+}
+.action-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--line);
+}
+.action-idx{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;color:var(--text3);
+  margin-bottom:16px;
+}
+.action-name{
+  font-size:16px;font-weight:700;color:#fff;
+  margin-bottom:10px;letter-spacing:-.2px;
+}
+.action-sub{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--text3);letter-spacing:.5px;
+  margin-bottom:16px;text-transform:uppercase;
+}
+.action-desc{
+  font-size:13px;font-weight:300;
+  line-height:1.65;color:var(--text2);
+  margin-bottom:14px;
+}
+.action-examples{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);line-height:1.6;
+}
+
+/* ── PERSPECTIVES ── */
+.perspectives-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:2px;
+  margin-bottom:48px;
+}
+.persp-card{
+  padding:36px 32px 40px;
+  background:var(--bg3);
+  position:relative;overflow:hidden;
+}
+.persp-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}
+.persp-card.entry::before{background:#3498db;}
+.persp-card.impact::before{background:#27ae60;}
+.persp-card.illusion::before{background:#e67e22;}
+.persp-card.harm::before{background:var(--accent);}
+
+.persp-tag{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.persp-card.entry .persp-tag{color:#3498db;}
+.persp-card.impact .persp-tag{color:#27ae60;}
+.persp-card.illusion .persp-tag{color:#e67e22;}
+.persp-card.harm .persp-tag{color:var(--accent-l);}
+
+.persp-name{
+  font-size:20px;font-weight:700;
+  color:#fff;margin-bottom:14px;letter-spacing:-.3px;
+}
+.persp-desc{
+  font-size:15px;font-weight:300;
+  line-height:1.75;color:var(--text2);
+}
+
+/* ── APPLICABILITY ── */
+.applic-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+  margin-bottom:48px;
+}
+.applic-card{
+  background:var(--bg3);
+  padding:32px 28px 36px;
+  border-top:2px solid var(--line);
+}
+.applic-name{
+  font-size:17px;font-weight:700;
+  color:#fff;margin-bottom:12px;letter-spacing:-.2px;
+}
+.applic-desc{
+  font-size:14px;font-weight:300;
+  line-height:1.75;color:var(--text2);
+  margin-bottom:16px;
+}
+.applic-examples{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);line-height:1.6;
+}
+
+/* ── CDPA ── */
+.cdpa-intro{
+  font-size:17px;font-weight:300;line-height:1.9;
+  color:var(--text2);max-width:620px;margin-bottom:48px;
+}
+.cdpa-intro strong{color:var(--text);font-weight:400;}
+.cdpa-distinction{
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;
+  margin-bottom:48px;
+}
+.cdpa-col{
+  background:var(--bg2);padding:32px 28px;
+}
+.cdpa-col-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.cdpa-col.resolve .cdpa-col-label{color:var(--text3);}
+.cdpa-col.maintain .cdpa-col-label{color:var(--accent-l);}
+.cdpa-col-text{
+  font-size:15px;font-weight:300;
+  line-height:1.75;color:var(--text2);
+}
+.cdpa-col.maintain .cdpa-col-text{color:var(--text);}
+.cdpa-link{
+  font-family:'DM Mono',monospace;font-size:12px;
+  letter-spacing:.5px;color:var(--accent-l);
+  text-decoration:none;
+  border-bottom:1px solid rgba(192,57,43,.3);
+  padding-bottom:2px;transition:all .2s;
+}
+.cdpa-link:hover{color:#fff;border-color:rgba(255,255,255,.3);}
+
+/* ── HOW TO USE ── */
+.how-steps{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;margin-bottom:56px;
+}
+.how-step{
+  background:var(--bg3);padding:32px 28px;
+  display:flex;flex-direction:column;gap:16px;
+}
+.how-step-num{
+  font-family:'DM Mono',monospace;font-size:28px;
+  font-weight:500;color:var(--accent);letter-spacing:-1px;
+}
+.how-step-text{
+  font-size:16px;font-weight:300;
+  line-height:1.7;color:var(--text2);
+}
+.how-step-text strong{color:var(--text);font-weight:400;}
+.map-cta-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:'DM Mono',monospace;font-size:12px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--accent-l);text-decoration:none;
+  border:1px solid rgba(192,57,43,.3);
+  padding:14px 28px;border-radius:2px;
+  transition:all .25s;
+}
+.map-cta-btn:hover{
+  color:#fff;
+  border-color:rgba(255,255,255,.2);
+  background:rgba(255,255,255,.03);
+}
+.map-cta-btn span{font-size:16px;}
+
+/* ── TOC ── */
+.toc{
+  display:flex;flex-direction:column;gap:0;
+  margin-bottom:0;
+}
+.toc-item{
+  display:flex;align-items:center;gap:16px;
+  padding:12px 0;border-bottom:1px solid var(--line2);
+  text-decoration:none;transition:color .2s;
+  color:var(--text3);
+}
+.toc-item:hover{color:var(--text);}
+.toc-num{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--accent);min-width:24px;
+}
+.toc-label{font-size:15px;font-weight:300;}
+
+/* ── REVEAL ── */
+.reveal{opacity:1;transform:none;}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-delay{transition-delay:.12s;}
+
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">StratoAtlas</a>
+    <ul class="nav-links">
+      <li><a href="map.html">Map</a></li>
+      <li><a href="foundations.html" class="current">Foundations</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div id="pageheader">
+  <div class="container">
+    <div class="page-label">Foundations</div>
+    <h1 class="page-title">The logic<br>behind the map.</h1>
+    <p class="page-intro">
+      StratoAtlas maps methodologies not as a catalog, but as a system.<br>
+      Each method operates at a specific system level, performs a particular
+      type of action, and behaves differently depending on the perspective
+      from which it is observed.<br><br>
+      <strong>Without these coordinates, methods appear interchangeable.
+      With them, their limits become visible.</strong>
+    </p>
+  </div>
+</div>
+
+<!-- S1: WHY A MAP -->
+<section class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">01</div>
+      <h2 class="sec-title">Why a map?</h2>
+      <p class="why-text">
+        The design and product field contains hundreds of methodologies.
+        Most of them describe their internal logic well.
+        <strong>Few describe how they relate to one another.</strong><br><br>
+        StratoAtlas approaches the landscape from the outside —
+        by mapping where methods operate in the system
+        and what kind of action they perform.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- S2: SYSTEM LEVELS -->
+<section class="section full-bleed">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">02</div>
+      <h2 class="sec-title">System levels</h2>
+      <p class="sec-intro">
+        Problems appear similar on the surface,
+        but live at different depths of the system.
+        A method that works at one level
+        may be invisible, irrelevant, or harmful at another.
+      </p>
+    </div>
+    <div class="levels-grid reveal reveal-delay">
+      <div class="level-row">
+        <div class="level-num-name">
+          <span class="level-num">Level 1</span>
+          <span class="level-name">User Perception</span>
+        </div>
+        <div class="level-desc">
+          How users perceive and experience interfaces — aesthetics, affordances, first impressions, emotional response.
+        </div>
+      </div>
+      <div class="level-row">
+        <div class="level-num-name">
+          <span class="level-num">Level 2</span>
+          <span class="level-name">Behaviour</span>
+        </div>
+        <div class="level-desc">
+          User actions, motivations, and habits. What drives people to act and what prevents them from doing so.
+        </div>
+      </div>
+      <div class="level-row">
+        <div class="level-num-name">
+          <span class="level-num">Level 3</span>
+          <span class="level-name">Interface</span>
+        </div>
+        <div class="level-desc">
+          Interaction design, flows, navigation, and usability. The structure of how the system presents itself to the user.
+        </div>
+      </div>
+      <div class="level-row">
+        <div class="level-num-name">
+          <span class="level-num">Level 4</span>
+          <span class="level-name">Workflow</span>
+        </div>
+        <div class="level-desc">
+          Processes, task sequences, and operational logic. How work actually gets done inside and around the product.
+        </div>
+      </div>
+      <div class="level-row">
+        <div class="level-num-name">
+          <span class="level-num">Level 5</span>
+          <span class="level-name">Organisation</span>
+        </div>
+        <div class="level-desc">
+          Team structures, decision-making patterns, and organisational constraints that shape what is possible.
+        </div>
+      </div>
+      <div class="level-row">
+        <div class="level-num-name">
+          <span class="level-num">Level 6</span>
+          <span class="level-name">Value Model</span>
+        </div>
+        <div class="level-desc">
+          The product's value proposition, business model, and the assumptions about how value is created and captured.
+        </div>
+      </div>
+      <div class="level-row arch">
+        <div class="level-num-name">
+          <span class="level-num">Level 7</span>
+          <span class="level-name">Architecture & Forks</span>
+        </div>
+        <div class="level-desc">
+          Structural contradictions inside the system. Irreversible decisions and the forks that define what the system fundamentally is.
+        </div>
+      </div>
+    </div>
+    <div class="sec-key reveal">
+      Most method failures are level mismatches.
+    </div>
+  </div>
+</section>
+
+<!-- S3: ACTION TYPES -->
+<section class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">03</div>
+      <h2 class="sec-title">Action types</h2>
+      <p class="sec-intro">
+        Methods do different kinds of work inside a system.
+        Some help us understand what is happening.
+        Others generate possibilities, orient choices,
+        resolve contradictions, or improve what already exists.
+      </p>
+    </div>
+    <div class="actions-grid reveal reveal-delay">
+      <div class="action-card">
+        <div class="action-idx">01</div>
+        <div class="action-name">Diagnosis</div>
+        <div class="action-sub">understand the situation</div>
+        <p class="action-desc">Understanding the system and identifying its actual structure. What is really happening and why.</p>
+        <div class="action-examples">Cynefin · Systems Thinking · Wardley Mapping · JTBD</div>
+      </div>
+      <div class="action-card">
+        <div class="action-idx">02</div>
+        <div class="action-name">Generation</div>
+        <div class="action-sub">create options</div>
+        <p class="action-desc">Producing new ideas, approaches, or conceptual directions. Expanding the solution space.</p>
+        <div class="action-examples">Design Sprint · Business Model Canvas · Speculative Design</div>
+      </div>
+      <div class="action-card">
+        <div class="action-idx">03</div>
+        <div class="action-name">Prioritisation</div>
+        <div class="action-sub">orient in solution space</div>
+        <p class="action-desc">Choosing between competing options and focusing effort on what matters most.</p>
+        <div class="action-examples">Kano Model · OKR / North Star</div>
+      </div>
+      <div class="action-card">
+        <div class="action-idx">04</div>
+        <div class="action-name">Resolution</div>
+        <div class="action-sub">resolve the conflict</div>
+        <p class="action-desc">Resolving concrete problems or contradictions within the system. Finding the mechanism, not the workaround.</p>
+        <div class="action-examples">TRIZ · CDPA · SMD / ODG · Poka-Yoke</div>
+      </div>
+      <div class="action-card">
+        <div class="action-idx">05</div>
+        <div class="action-name">Optimisation</div>
+        <div class="action-sub">improve the system</div>
+        <p class="action-desc">Improving an existing system through refinement and iteration. Getting better at doing what is already defined.</p>
+        <div class="action-examples">Shape Up · Kaizen · Lean (Flow) · Theory of Constraints</div>
+      </div>
+    </div>
+    <div class="sec-key reveal">
+      Different methods may operate at the same system level<br>
+      but perform different types of action.
+    </div>
+  </div>
+</section>
+
+<!-- S4: PERSPECTIVES -->
+<section class="section full-bleed">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">04</div>
+      <h2 class="sec-title">Four perspectives</h2>
+      <p class="sec-intro">
+        Methods are usually described from a single perspective — their intended use.
+        <strong>StratoAtlas observes each method from four perspectives.</strong>
+        A method that works well from one angle may create
+        illusions or damage from another.
+      </p>
+    </div>
+    <div class="perspectives-grid reveal reveal-delay">
+      <div class="persp-card entry">
+        <div class="persp-tag">Entry point</div>
+        <div class="persp-name">Where the method typically begins.</div>
+        <p class="persp-desc">The system level and action type where this method is most commonly introduced. Where practitioners naturally start when they reach for it.</p>
+      </div>
+      <div class="persp-card impact">
+        <div class="persp-tag">Maximum impact</div>
+        <div class="persp-name">Where the method produces its strongest results.</div>
+        <p class="persp-desc">The conditions under which this method genuinely moves the system. Not where it is used — where it actually works.</p>
+      </div>
+      <div class="persp-card illusion">
+        <div class="persp-tag">Illusion zone</div>
+        <div class="persp-name">Where the method creates activity without changing the system.</div>
+        <p class="persp-desc">The zone where applying the method produces visible artifacts and a sense of progress — while the underlying problem remains untouched.</p>
+      </div>
+      <div class="persp-card harm">
+        <div class="persp-tag">Harm zone</div>
+        <div class="persp-name">Where the method reinforces the problem it was meant to solve.</div>
+        <p class="persp-desc">Applied at the wrong system level, the method strengthens exactly what it was intended to resolve. More effort produces more damage.</p>
+      </div>
+    </div>
+    <div class="sec-key reveal">
+      These perspectives reveal why methods sometimes fail<br>
+      despite being applied correctly.
+    </div>
+  </div>
+</section>
+
+<!-- S5: APPLICABILITY -->
+<section class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">05</div>
+      <h2 class="sec-title">Applicability</h2>
+      <p class="sec-intro">
+        Not every method belongs to every environment.
+        StratoAtlas marks the origin and native context of each method —
+        because a method developed for manufacturing behaves differently
+        when applied to digital product systems.
+      </p>
+    </div>
+    <div class="applic-grid reveal reveal-delay">
+      <div class="applic-card">
+        <div class="applic-name">Native digital</div>
+        <p class="applic-desc">Created for digital product environments. These methods assume digital constraints, iteration cycles, and user feedback loops.</p>
+        <div class="applic-examples">Design Thinking · Jobs-to-be-Done · Shape Up · Lean UX</div>
+      </div>
+      <div class="applic-card">
+        <div class="applic-name">Adaptable</div>
+        <p class="applic-desc">Originally developed in other fields — manufacturing, engineering, psychology — but usable in product systems with translation.</p>
+        <div class="applic-examples">TRIZ · Theory of Constraints · Cynefin · Kaizen</div>
+      </div>
+      <div class="applic-card">
+        <div class="applic-name">Cross-domain</div>
+        <p class="applic-desc">Methods designed to operate across disciplines. Their power comes from independence from any single domain's assumptions.</p>
+        <div class="applic-examples">Systems Thinking · Wardley Mapping · Scenario Planning</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S6: CDPA LAYER -->
+<section class="section full-bleed">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">06</div>
+      <h2 class="sec-title">Architectural layer</h2>
+      <p class="cdpa-intro">
+        While mapping methodologies, one particular zone stood out.<br><br>
+        The zone around <strong>architectural contradictions.</strong><br>
+        The lowest methodological density on the entire map.
+        Not because the problems there are rare —
+        because the field has not yet developed adequate tools for them.
+      </p>
+    </div>
+    <div class="cdpa-distinction reveal reveal-delay">
+      <div class="cdpa-col resolve">
+        <div class="cdpa-col-label">What TRIZ does</div>
+        <p class="cdpa-col-text">TRIZ resolves contradictions. It finds the inventive principle that satisfies both requirements simultaneously. The contradiction disappears.</p>
+      </div>
+      <div class="cdpa-col maintain">
+        <div class="cdpa-col-label">What CDPA addresses</div>
+        <p class="cdpa-col-text">Some contradictions should not be resolved. They drive the system. CDPA focuses on identifying, maintaining, and creating productive contradictions at the architectural level.</p>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="cdpa-intro" style="margin-bottom:32px;">
+        CDPA — Contradiction-Driven Product Architecture — grew from this observation.
+        Not as a new framework invented to fill a gap,
+        but as the next question in the same investigation.
+      </p>
+      <a href="research.html" class="cdpa-link">Learn more in the research section →</a>
+    </div>
+  </div>
+</section>
+
+<!-- S7: HOW TO USE -->
+<section class="section full-bleed-3">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">07</div>
+      <h2 class="sec-title">How to read the map</h2>
+      <p class="sec-intro">
+        The map becomes a diagnostic tool when used with these coordinates in mind.
+      </p>
+    </div>
+    <div class="how-steps reveal reveal-delay">
+      <div class="how-step">
+        <div class="how-step-num">01</div>
+        <p class="how-step-text">Start with the <strong>level where the problem appears.</strong> What system depth is this problem actually at?</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">02</div>
+        <p class="how-step-text">Identify the <strong>type of action required.</strong> Do you need to understand, generate, prioritise, resolve, or optimise?</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">03</div>
+        <p class="how-step-text">Observe the method from <strong>multiple perspectives.</strong> Where is its maximum impact? Where does it create illusion?</p>
+      </div>
+    </div>
+    <div class="reveal">
+      <a href="map.html" class="map-cta-btn">
+        Explore the map <span>→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}
+  });
+}, {threshold:0.1, rootMargin:'0px 0px -40px 0px'});
+reveals.forEach(el => io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Map — StratoAtlas</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#080b10;
+  --bg2:#0d1117;
+  --bg3:#131820;
+  --text:#e2e6ef;
+  --text2:#7a8699;
+  --text3:#8090a0;
+  --accent:#c0392b;
+  --accent-l:#e07060;
+  --line:rgba(255,255,255,.07);
+  --line2:rgba(255,255,255,.04);
+  --container:1200px;
+}
+
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Geologica',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(8,11,16,.97);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:var(--container);margin:0 auto;
+  padding:16px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
+  letter-spacing:.5px;color:#fff;text-decoration:none;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.current{color:var(--text);}
+.nav-lang{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;
+  border:1px solid var(--line);padding:4px 10px;border-radius:2px;transition:all .2s;
+}
+.nav-lang:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
+
+/* ── HEADER ── */
+#header{
+  padding:80px 48px 48px;
+  max-width:var(--container);margin:0 auto;
+  margin-top:57px; /* nav height */
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:48px;
+  align-items:end;
+  border-bottom:1px solid var(--line);
+}
+.header-left{}
+.header-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:20px;
+}
+.header-title{
+  font-size:clamp(28px,4vw,48px);font-weight:800;
+  letter-spacing:-1.5px;color:#fff;
+  line-height:1.05;margin-bottom:20px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.header-key{
+  font-size:15px;font-weight:300;
+  line-height:1.75;color:var(--text2);
+  max-width:520px;
+}
+.header-key strong{color:var(--text);font-weight:400;}
+
+.header-stats{
+  display:flex;flex-direction:column;gap:16px;
+  align-items:flex-end;flex-shrink:0;
+}
+.stat{text-align:right;}
+.stat-num{
+  font-size:32px;font-weight:800;
+  letter-spacing:-1px;color:#fff;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+  line-height:1;
+}
+.stat-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--text3);margin-top:4px;
+}
+
+/* ── MAP EMBED ── */
+#map-embed{
+  width:100%;
+  height:calc(100vh - 57px);
+  min-height:600px;
+  position:relative;
+  background:var(--bg2);
+  border-bottom:1px solid var(--line);
+}
+#map-embed iframe{
+  width:100%;height:100%;border:none;
+  display:block;
+}
+.map-hint{
+  position:absolute;bottom:24px;left:50%;
+  transform:translateX(-50%);
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:1px;
+  color:var(--text3);
+  background:rgba(8,11,16,.85);
+  padding:8px 16px;border-radius:2px;
+  border:1px solid var(--line);
+  white-space:nowrap;
+  pointer-events:none;
+  transition:opacity .5s;
+}
+
+/* ── BELOW MAP ── */
+.below-map{
+  max-width:var(--container);margin:0 auto;
+  padding:0 48px;
+}
+
+/* ── AXES ── */
+#axes{
+  padding:72px 0;
+  border-bottom:1px solid var(--line);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2px;
+}
+.axis-card{
+  padding:40px 36px;
+  background:var(--bg2);
+}
+.axis-direction{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:20px;
+  display:flex;align-items:center;gap:8px;
+}
+.axis-arrow{color:var(--accent);}
+.axis-name{
+  font-size:20px;font-weight:700;
+  color:#fff;margin-bottom:12px;letter-spacing:-.3px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.axis-desc{
+  font-size:14px;font-weight:300;
+  line-height:1.75;color:var(--text2);
+  margin-bottom:20px;
+}
+.axis-scale{
+  display:flex;align-items:center;gap:8px;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);
+}
+.axis-scale-line{
+  flex:1;height:1px;
+  background:linear-gradient(to right,var(--accent),var(--text3));
+}
+.axis-scale span:first-child{color:var(--accent-l);}
+
+/* ── PERSPECTIVES ── */
+#perspectives{
+  padding:72px 0;
+  border-bottom:1px solid var(--line);
+}
+.persp-header{
+  margin-bottom:40px;
+}
+.persp-title{
+  font-size:clamp(22px,3vw,32px);font-weight:700;
+  letter-spacing:-1px;color:#fff;margin-bottom:12px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.persp-intro{
+  font-size:15px;font-weight:300;
+  line-height:1.75;color:var(--text2);max-width:560px;
+}
+.persp-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:2px;
+}
+.persp-card{
+  padding:28px 24px 32px;
+  background:var(--bg2);
+  position:relative;
+}
+.persp-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}
+.persp-card.entry::before{background:#3498db;}
+.persp-card.impact::before{background:#27ae60;}
+.persp-card.illusion::before{background:#e67e22;}
+.persp-card.harm::before{background:var(--accent);}
+
+.persp-tag{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;
+}
+.persp-card.entry .persp-tag{color:#3498db;}
+.persp-card.impact .persp-tag{color:#27ae60;}
+.persp-card.illusion .persp-tag{color:#e67e22;}
+.persp-card.harm .persp-tag{color:var(--accent-l);}
+
+.persp-name{
+  font-size:15px;font-weight:600;
+  color:#fff;margin-bottom:10px;
+}
+.persp-desc{
+  font-size:13px;font-weight:300;
+  line-height:1.7;color:var(--text2);
+}
+
+/* ── EMPTY ZONES ── */
+#voids{
+  padding:56px 0;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;
+  justify-content:space-between;gap:48px;
+}
+.void-left{
+  display:flex;align-items:center;gap:24px;
+}
+.void-icon{
+  width:40px;height:40px;
+  border:1px dashed rgba(255,255,255,.15);
+  border-radius:2px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.void-icon-dot{
+  width:4px;height:4px;border-radius:50%;
+  background:rgba(255,255,255,.2);
+}
+.void-text{
+  font-size:16px;font-weight:300;
+  line-height:1.6;color:var(--text2);
+}
+.void-text strong{color:var(--text);font-weight:400;}
+.void-right{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:1px;color:var(--text3);
+  white-space:nowrap;flex-shrink:0;
+}
+
+/* ── CTA ── */
+#cta{
+  padding:72px 0 96px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:48px;
+}
+.cta-question{
+  font-size:clamp(20px,2.5vw,28px);font-weight:300;
+  line-height:1.5;color:var(--text2);
+}
+.cta-question strong{color:#fff;font-weight:400;}
+.cta-link{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:'DM Mono',monospace;font-size:12px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--accent-l);text-decoration:none;
+  border:1px solid rgba(192,57,43,.3);
+  padding:14px 28px;border-radius:2px;
+  flex-shrink:0;
+  transition:all .25s;
+}
+.cta-link:hover{
+  color:#fff;
+  border-color:rgba(255,255,255,.2);
+  background:rgba(255,255,255,.03);
+}
+
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">StratoAtlas</a>
+    <ul class="nav-links">
+      <li><a href="map.html" class="current">Map</a></li>
+      <li><a href="foundations.html">Foundations</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div id="header">
+  <div class="header-left">
+    <div class="header-label">Design Methodology Map</div>
+    <h1 class="header-title">Where methods<br>actually operate.</h1>
+    <p class="header-key">
+      <strong>This map does not tell you which method to use.</strong><br>
+      It tells you where a method stops working.
+    </p>
+  </div>
+  <div class="header-stats">
+    <div class="stat">
+      <div class="stat-num">47</div>
+      <div class="stat-label">Methodologies</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">7</div>
+      <div class="stat-label">System levels</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Action types</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div id="map-embed">
+  <iframe
+    src="methodology_map_v7.html"
+    title="StratoAtlas — Design Methodology Map"
+    allowfullscreen>
+  </iframe>
+  <div class="map-hint" id="mapHint">
+    Hover any method · Click to open · Use filters on the left
+  </div>
+</div>
+
+<!-- BELOW MAP -->
+<div class="below-map">
+
+  <!-- AXES -->
+  <div id="axes">
+    <div class="axis-card">
+      <div class="axis-direction">
+        <span class="axis-arrow">↕</span>
+        Vertical axis
+      </div>
+      <div class="axis-name">System levels</div>
+      <p class="axis-desc">
+        Every problem lives at a specific depth of the system.
+        A method that reaches one level may be invisible —
+        or harmful — at another.
+      </p>
+      <div class="axis-scale">
+        <span>Perception</span>
+        <div class="axis-scale-line"></div>
+        <span>Interface</span>
+        <div class="axis-scale-line"></div>
+        <span>Workflow</span>
+        <div class="axis-scale-line"></div>
+        <span>Architecture</span>
+      </div>
+    </div>
+    <div class="axis-card">
+      <div class="axis-direction">
+        <span class="axis-arrow">↔</span>
+        Horizontal axis
+      </div>
+      <div class="axis-name">Action types</div>
+      <p class="axis-desc">
+        Methods do different kinds of work.
+        Diagnosing a system is not the same as resolving a contradiction —
+        even at the same system level.
+      </p>
+      <div class="axis-scale">
+        <span>Diagnosis</span>
+        <div class="axis-scale-line"></div>
+        <span>Optimisation</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERSPECTIVES -->
+  <div id="perspectives">
+    <div class="persp-header">
+      <h2 class="persp-title">Four perspectives on each method</h2>
+      <p class="persp-intro">
+        Methods are usually described from a single perspective:
+        their intended use.<br>
+        StratoAtlas maps four.
+      </p>
+    </div>
+    <div class="persp-grid">
+      <div class="persp-card entry">
+        <div class="persp-tag">Entry point</div>
+        <div class="persp-name">Where it typically begins</div>
+        <p class="persp-desc">The system level where practitioners naturally reach for this method.</p>
+      </div>
+      <div class="persp-card impact">
+        <div class="persp-tag">Maximum impact</div>
+        <div class="persp-name">Where it actually works</div>
+        <p class="persp-desc">The conditions where the method genuinely moves the system.</p>
+      </div>
+      <div class="persp-card illusion">
+        <div class="persp-tag">Illusion zone</div>
+        <div class="persp-name">Where it creates activity without change</div>
+        <p class="persp-desc">Visible outputs accumulate. The underlying problem remains.</p>
+      </div>
+      <div class="persp-card harm">
+        <div class="persp-tag">Harm zone</div>
+        <div class="persp-name">Where it amplifies the problem</div>
+        <p class="persp-desc">Applied outside its operational zone, the method strengthens what it was meant to resolve.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY ZONES -->
+  <div id="voids">
+    <div class="void-left">
+      <div class="void-icon"><div class="void-icon-dot"></div></div>
+      <p class="void-text">
+        <strong>Empty zones are intentional.</strong>
+        They indicate areas where the field has not yet
+        developed stable methods — not gaps in the catalog,
+        but gaps in the discipline.
+        These zones are part of the research program.
+      </p>
+    </div>
+    <div class="void-right">Terra incognita →</div>
+  </div>
+
+  <!-- CTA -->
+  <div id="cta">
+    <p class="cta-question">
+      <strong>Where is your problem<br>on this map?</strong>
+    </p>
+    <a href="research.html" class="cta-link">
+      Bring a case →
+    </a>
+  </div>
+
+</div>
+
+<script>
+const hint = document.getElementById('mapHint');
+const mapEmbed = document.getElementById('map-embed');
+if(hint){
+  mapEmbed.addEventListener('mousemove', () => {
+    hint.style.opacity = '0';
+  }, { once: true });
+  // Fallback: hide after 8s if no interaction
+  setTimeout(() => { hint.style.opacity = '0'; }, 8000);
+}
+</script>
+</body>
+</html>

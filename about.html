@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — StratoAtlas</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#080b10;
+  --bg2:#0d1117;
+  --bg3:#131820;
+  --text:#e2e6ef;
+  --text2:#7a8699;
+  --text3:#8090a0;
+  --accent:#c0392b;
+  --accent-l:#e07060;
+  --line:rgba(255,255,255,.07);
+  --line2:rgba(255,255,255,.04);
+  --container:1200px;
+}
+
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Geologica',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:linear-gradient(to bottom,rgba(8,11,16,.97) 60%,transparent);
+}
+.nav-inner{
+  max-width:var(--container);margin:0 auto;
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
+  letter-spacing:.5px;color:#fff;text-decoration:none;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.current{color:var(--text);}
+.nav-lang{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;
+  border:1px solid var(--line);padding:4px 10px;border-radius:2px;transition:all .2s;
+}
+.nav-lang:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
+
+/* ── LAYOUT ── */
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 48px;}
+
+/* Essay column — 7/12 of container */
+.essay{max-width:680px;}
+
+/* ── PAGE HEADER ── */
+#pageheader{
+  padding-top:160px;padding-bottom:96px;
+  border-bottom:1px solid var(--line);
+}
+.page-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:32px;
+}
+.page-title{
+  font-size:clamp(38px,5.5vw,64px);font-weight:800;
+  letter-spacing:-2px;color:#fff;line-height:1.05;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+
+/* ── ESSAY SECTIONS ── */
+.essay-section{
+  padding:72px 0;
+  border-bottom:1px solid var(--line);
+}
+.essay-section:last-of-type{border-bottom:none;}
+
+.sec-marker{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:28px;
+}
+
+.essay-body{
+  font-size:17px;font-weight:300;
+  line-height:1.95;color:var(--text2);
+}
+.essay-body + .essay-body{margin-top:24px;}
+.essay-body strong{color:var(--text);font-weight:400;}
+.essay-body em{font-style:italic;color:var(--text);}
+
+.essay-pull{
+  margin:40px 0;
+  border-left:2px solid var(--accent);
+  padding-left:28px;
+  font-size:19px;font-weight:400;
+  line-height:1.7;color:var(--text);
+}
+
+/* ── CURRENT FORMS ── */
+.forms-list{
+  display:flex;flex-direction:column;gap:0;
+  margin-top:40px;
+}
+.form-item{
+  display:flex;align-items:baseline;gap:20px;
+  padding:16px 0;
+  border-bottom:1px solid var(--line2);
+}
+.form-item:first-child{border-top:1px solid var(--line2);}
+.form-dot{
+  color:var(--accent);font-family:'DM Mono',monospace;
+  font-size:12px;flex-shrink:0;
+}
+.form-text{
+  font-size:16px;font-weight:300;
+  line-height:1.6;color:var(--text2);
+}
+.form-text strong{color:var(--text);font-weight:400;}
+
+/* ── ROMAN KIR BLOCK ── */
+.person-block{
+  margin-top:48px;
+  padding:36px 32px;
+  background:var(--bg2);
+  border-left:2px solid var(--line);
+}
+.person-name{
+  font-size:22px;font-weight:700;
+  color:#fff;margin-bottom:6px;
+  letter-spacing:-.3px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.person-role{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:20px;
+}
+.person-bio{
+  font-size:15px;font-weight:300;
+  line-height:1.8;color:var(--text2);
+}
+.person-bio strong{color:var(--text);font-weight:400;}
+
+/* ── CONTACT ── */
+#contact{padding:72px 0 96px;}
+.contact-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:32px;
+}
+.contact-links{
+  display:flex;flex-direction:column;gap:16px;
+}
+.contact-link{
+  display:flex;align-items:center;gap:16px;
+  text-decoration:none;
+  font-size:17px;font-weight:300;
+  color:var(--text2);
+  transition:color .2s;
+  width:fit-content;
+}
+.contact-link:hover{color:#fff;}
+.contact-link-type{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--text3);min-width:80px;
+}
+.contact-link:hover .contact-link-type{color:var(--text3);}
+
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">StratoAtlas</a>
+    <ul class="nav-links">
+      <li><a href="map.html">Map</a></li>
+      <li><a href="foundations.html">Foundations</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="about.html" class="current">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div id="pageheader">
+  <div class="container">
+    <div class="page-label">About</div>
+    <h1 class="page-title">Where StratoAtlas<br>comes from.</h1>
+  </div>
+</div>
+
+<!-- S1: ORIGIN -->
+<div class="essay-section">
+  <div class="container">
+    <div class="essay">
+      <div class="sec-marker">Origin</div>
+      <p class="essay-body">
+        StratoAtlas did not begin as a framework.
+        It began as a practical question.
+      </p>
+      <p class="essay-body">
+        In complex product systems, teams often apply well-known methods correctly —
+        yet the system does not move. Progress accumulates visibly.
+        The core problem remains. Sometimes it grows.
+      </p>
+      <div class="essay-pull">
+        The question was not which method to use.<br>
+        The question was where methods stop working.
+      </div>
+      <p class="essay-body">
+        That question does not have a straightforward answer inside any single methodology.
+        It requires looking at the methodological landscape from the outside —
+        asking not "how does this method work?" but
+        <em>"at what level of the system does it actually reach?"</em>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- S2: PATH -->
+<div class="essay-section">
+  <div class="container">
+    <div class="essay">
+      <div class="sec-marker">The path that led here</div>
+      <p class="essay-body">
+        The investigation grew from years of working with complex B2B product systems —
+        environments where structural contradictions accumulate over time
+        and where standard tools consistently fall short at the same points.
+      </p>
+      <p class="essay-body">
+        Recurring patterns appeared. Teams would diagnose at one system level
+        and intervene at another. Methods would produce correct outputs
+        and incorrect outcomes. Contradictions would be resolved at the surface
+        and reappear at the architecture.
+      </p>
+      <p class="essay-body">
+        Over time, the question shifted from individual methods
+        to the structure of the methodological landscape itself.
+        Instead of asking which method to apply,
+        the investigation asked <strong>where different methods actually operate in the system</strong> —
+        and what happens when they are applied outside that zone.
+      </p>
+      <p class="essay-body">
+        TRIZ introduced a key insight: that unsolvable problems contain contradictions,
+        and contradictions have structure. That structure can be found.
+        The next question was whether this principle extended beyond TRIZ —
+        and whether the landscape of methods as a whole could be mapped
+        from the same position.
+      </p>
+      <p class="essay-body">
+        It could. The map is the result.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- S3: COLLABORATION -->
+<div class="essay-section">
+  <div class="container">
+    <div class="essay">
+      <div class="sec-marker">The collaboration</div>
+      <p class="essay-body">
+        Although StratoAtlas has a visible front, the work itself is not solitary.
+      </p>
+      <p class="essay-body">
+        The investigation develops through an ongoing dialogue between several minds —
+        human and artificial — testing ideas, challenging assumptions,
+        and mapping patterns across cases.
+        The methodology is shaped through this dialogue as much as through direct observation.
+      </p>
+      <div class="essay-pull">
+        Thinking-as-dialogue is not a metaphor here.<br>
+        It is the method.
+      </div>
+      <p class="essay-body">
+        This mode of work is itself part of what StratoAtlas investigates:
+        how productive contradictions are maintained over time,
+        how positions shift when a new interlocutor enters,
+        and what becomes visible only through the friction of real exchange.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- S4: CURRENT POSITION -->
+<div class="essay-section">
+  <div class="container">
+    <div class="essay">
+      <div class="sec-marker">Current position</div>
+      <p class="essay-body">
+        At this moment, StratoAtlas exists in three forms:
+      </p>
+      <div class="forms-list">
+        <div class="form-item">
+          <span class="form-dot">→</span>
+          <p class="form-text"><strong>A methodological map</strong> — 47 methodologies across system levels and action types, with four perspectives on each.</p>
+        </div>
+        <div class="form-item">
+          <span class="form-dot">→</span>
+          <p class="form-text"><strong>An open research program</strong> — active investigation into illusion zones, harm zones, and architectural contradictions in product systems.</p>
+        </div>
+        <div class="form-item">
+          <span class="form-dot">→</span>
+          <p class="form-text"><strong>An evolving architectural layer</strong> — CDPA, a diagnostic framework for structural contradictions that drive systems rather than obstruct them.</p>
+        </div>
+      </div>
+      <p class="essay-body" style="margin-top:40px;">
+        The project is intentionally unfinished.
+        The empty zones on the map are not gaps to be filled —
+        they are the research program.
+      </p>
+
+      <div class="person-block">
+        <div class="person-name">Roman Kir</div>
+        <div class="person-role">Product architect · Researcher</div>
+        <p class="person-bio">
+          Roman Kir is a product and system designer with a focus on
+          <strong>complex B2B environments</strong> where structural contradictions
+          accumulate over time.<br><br>
+          His work combines product practice with methodological research,
+          drawing from systems thinking, TRIZ, and cybernetics.
+          StratoAtlas is the visible part of that investigation.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="container">
+    <div class="essay">
+      <div class="contact-label">Presence</div>
+      <div class="contact-links">
+        <a href="https://linkedin.com/in/romankir" class="contact-link" target="_blank" rel="noopener">
+          <span class="contact-link-type">LinkedIn</span>
+          <span>Roman Kir</span>
+        </a>
+        <a href="https://romankir.com" class="contact-link" target="_blank" rel="noopener">
+          <span class="contact-link-type">Web</span>
+          <span>romankir.com</span>
+        </a>
+        <a href="/cdn-cgi/l/email-protection#75071006101407161d3506010714011a14011914065b161a18" class="contact-link">
+          <span class="contact-link-type">Email</span>
+          <span><span class="__cf_email__" data-cfemail="51233422343023

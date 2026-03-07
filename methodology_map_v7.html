@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Methodology Map v7</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+  :root{
+    --bg:#080b10; --bg2:#0d1117; --bg3:#131820;
+    --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.04);
+    --text:#e2e6ef; --text2:#7a8699;
+    /* WCAG fix: was #3e4858 (~2.2:1 contrast) → now #8090a0 (~5.9:1) */
+    --text3:#8090a0;
+    --accent:#c0392b; --panel-w:320px;
+  }
+
+  /* ── SKIP LINK ── */
+  .skip-link{
+    position:absolute;top:-100%;left:8px;
+    background:#fff;color:#000;
+    padding:8px 16px;border-radius:0 0 4px 4px;
+    font-family:'Geologica', sans-serif;font-size:14px;font-weight:600;
+    z-index:9999;text-decoration:none;
+    transition:top .1s;
+  }
+  .skip-link:focus{top:0;}
+
+  /* ── FOCUS STYLES (WCAG 2.4.7 / 2.4.11) ── */
+  :focus-visible{
+    outline:2px solid #6ab0ff;
+    outline-offset:2px;
+    border-radius:2px;
+  }
+
+  body{font-family:'Geologica', sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+  /* ── NARRATIVE MODE ── */
+  body.narrative header,
+  body.narrative .filter-bar,
+  body.narrative .panel,
+  body.narrative .callout,
+  body.narrative .pf-note,
+  body.narrative .skip-link{display:none!important;}
+  body.narrative .main-area{height:100vh;}
+  body.narrative .map-area{overflow:hidden;}
+  body.narrative .chip{cursor:default!important;}
+  body.narrative .chip:hover{transform:translateY(-1px)!important;filter:brightness(1.15)!important;}
+
+  /* ── LAYOUT ── */
+  .app{display:flex;flex-direction:column;min-height:100vh;}
+  .main-area{display:flex;flex:1;overflow:hidden;}
+  .map-area{flex:1;overflow-y:auto;min-width:0;}
+
+  /* ── HEADER ── */
+  header{
+    padding:24px 40px 18px;border-bottom:1px solid var(--line);
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+    flex-shrink:0;
+  }
+  .header-left h1{font-family:'Geologica', sans-serif;font-size:19px;font-weight:800;letter-spacing:-.4px;color:#fff;}
+  .header-left p{margin-top:3px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;}
+  .legend{display:flex;flex-wrap:wrap;gap:5px 12px;max-width:460px;}
+
+  /* legend items → button elements for keyboard access */
+  .legend-item{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:11px;color:var(--text2);
+    cursor:pointer;transition:color .15s;user-select:none;
+    position:relative;
+    background:transparent;border:none;padding:2px 0;
+    font-family:'Geologica', sans-serif;
+  }
+  .legend-item:hover,.legend-item:focus-visible{color:var(--text);outline-offset:3px;}
+  .legend-item[aria-pressed="false"]{opacity:.2;}
+  /* Tooltip on hover AND focus */
+  .legend-item:hover .legend-tip,
+  .legend-item:focus .legend-tip{opacity:1;pointer-events:none;}
+  .legend-tip{
+    position:absolute;top:calc(100% + 9px);left:0;
+    background:#161e2c;border:1px solid rgba(255,255,255,.1);
+    border-radius:4px;padding:10px 13px;width:220px;
+    font-size:11px;color:var(--text2);line-height:1.55;
+    opacity:0;transition:opacity .15s;pointer-events:none;
+    box-shadow:0 8px 28px rgba(0,0,0,.65);z-index:300;
+    font-family:'Geologica', sans-serif;white-space:normal;
+  }
+  .legend-tip b{display:block;margin-bottom:4px;font-family:'Geologica', sans-serif;font-size:12px;color:#fff;font-weight:700;}
+  .legend-tip::before{content:'';position:absolute;bottom:100%;left:10px;border:5px solid transparent;border-bottom-color:#161e2c;}
+  .legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+  .legend-dot.pf{background:transparent!important;border:1.5px dashed #4a5568;}
+  .legend-meta-item{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:11px;color:var(--text3);margin-top:5px;
+    font-family:'Geologica',sans-serif;
+  }
+  .legend-meta-item span:last-child{font-size:11px;color:var(--text3);}
+  .legend-meta-item span:first-child{font-size:11px;color:var(--text3);opacity:.7;}
+
+  /* ── FILTER BAR ── */
+  .filter-bar{
+    padding:10px 40px;display:flex;align-items:center;gap:8px;
+    border-bottom:1px solid var(--line2);flex-shrink:0;
+    background:var(--bg);
+  }
+  .filter-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-right:4px;}
+  .filter-btn{
+    font-family:'DM Mono',monospace;font-size:10px;
+    padding:3px 9px;border-radius:2px;border:1px solid var(--line);
+    background:transparent;color:var(--text3);
+    cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:.5px;
+  }
+  .filter-btn:hover,
+  .filter-btn[aria-pressed="true"]{background:var(--bg3);color:var(--text);border-color:rgba(255,255,255,.15);}
+  .meta-legend{margin-left:auto;display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);}
+  .meta-icon-sample{font-size:9px;color:#3a4a7e;opacity:.8;}
+
+  /* ── MAP ── */
+  .map-wrapper{padding:20px 32px 20px 8px;display:flex;gap:0;}
+  .y-label{writing-mode:vertical-rl;transform:rotate(180deg);font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;padding:0 8px;display:flex;align-items:center;flex-shrink:0;}
+  .map-inner{flex:1;display:flex;flex-direction:column;}
+  .x-axis{display:grid;grid-template-columns:120px 1fr 1fr 1fr 1fr 1fr;margin-bottom:3px;}
+  .x-axis-cell{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;text-align:center;padding:0 4px 8px;}
+  .x-axis-cell span{display:block;font-size:9px;color:var(--text3);opacity:.6;margin-top:2px;font-style:italic;}
+
+  /* ── GRID ── */
+  .grid{display:grid;grid-template-columns:120px 1fr 1fr 1fr 1fr 1fr;border:1px solid var(--line);border-radius:4px;overflow:visible;position:relative;}
+  .row-label{padding:9px 12px 9px 0;font-family:'DM Mono',monospace;font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;border-right:1px solid var(--line);border-bottom:1px solid var(--line2);text-align:right;justify-content:flex-end;line-height:1.3;}
+  .row-label.arch-row{color:rgba(222,100,90,.85);}
+  .row-label:last-child{border-bottom:none;}
+  .cell{border-right:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:7px 6px;min-height:78px;display:flex;flex-wrap:wrap;gap:3px;align-content:flex-start;position:relative;}
+  .cell.last-col{border-right:none;}
+  .cell.last-row{border-bottom:none;}
+  .cell.arch-row-cell{background:rgba(192,57,43,.025);border-bottom:1px solid rgba(192,57,43,.1);}
+  .cell.arch-row-cell.last-row{border-bottom:none;}
+  .cell.cdpa-zone{background:rgba(192,57,43,.04);}
+  .cell.cdpa-zone::after{content:'';position:absolute;inset:0;border:1px solid rgba(192,57,43,.18);pointer-events:none;}
+  .cell.prio-col{background:rgba(180,175,100,.025);}
+  .cell.prio-col.cdpa-zone{background:rgba(192,57,43,.04);}
+  .gap-label{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.8px;position:absolute;bottom:4px;right:6px;pointer-events:none;display:flex;align-items:center;gap:3px;}
+  .gap-structural .gap-dot{background:rgba(100,120,160,.35);width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+  .gap-structural .gap-text{color:rgba(160,180,210,.7);}
+  .gap-historical .gap-dot{background:rgba(192,57,43,.5);width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+  .gap-historical .gap-text{color:rgba(220,100,80,.75);}
+  .gap-outofscope .gap-dot{background:rgba(100,140,80,.5);width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+  .gap-outofscope .gap-text{color:rgba(140,190,100,.7);}
+  .gap-contested .gap-dot{background:rgba(180,160,60,.6);width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+  .gap-contested .gap-text{color:rgba(200,185,80,.75);}
+  .cell.void-structural{background:rgba(255,255,255,.008);}
+  .cell.void-historical{background:rgba(192,57,43,.035);}
+  .cell.void-outofscope{background:rgba(80,110,50,.02);}
+  .cell.void-contested{background:rgba(180,160,60,.02);}
+
+  /* void legend in filter bar */
+  .void-legend{display:flex;align-items:center;gap:16px;margin-left:auto;}
+
+  /* void items → button elements for keyboard tooltip access */
+  .void-item{
+    display:inline-flex;align-items:center;gap:5px;
+    font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);
+    position:relative;cursor:default;padding:2px 0;
+    background:transparent;border:none;
+    font-family:'DM Mono',monospace;
+  }
+  .void-item:hover .void-tip,
+  .void-item:focus .void-tip{opacity:1;}
+  .void-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .void-dot.s{background:rgba(100,120,160,.5);}
+  .void-dot.h{background:rgba(192,57,43,.6);}
+  .void-dot.o{background:rgba(100,140,80,.5);}
+  .void-dot.c{background:rgba(180,160,60,.6);}
+  .void-item span{border-bottom:1px dashed rgba(255,255,255,.1);}
+  .void-tip{
+    position:absolute;top:calc(100% + 10px);right:0;
+    background:#161e2c;border:1px solid rgba(255,255,255,.1);
+    border-radius:4px;padding:11px 13px;width:230px;
+    font-size:11px;color:var(--text2);
+    line-height:1.55;opacity:0;transition:opacity .15s;pointer-events:none;
+    box-shadow:0 8px 28px rgba(0,0,0,.65);z-index:200;
+    font-family:'Geologica', sans-serif;
+  }
+  .void-tip b{display:block;margin-bottom:5px;font-family:'Geologica', sans-serif;font-size:12px;color:#fff;font-weight:700;}
+  .void-tip::after{content:'';position:absolute;bottom:100%;right:12px;border:5px solid transparent;border-bottom-color:#161e2c;}
+
+  /* ── CHIPS (now button elements) ── */
+  .chip{
+    display:inline-flex;align-items:center;gap:4px;
+    padding:3px 7px;border-radius:3px;
+    font-size:10px;font-weight:500;
+    cursor:pointer;transition:all .15s;
+    line-height:1.3;user-select:none;position:relative;
+    /* button reset */
+    font-family:'Geologica', sans-serif;border-style:solid;
+  }
+  .chip:hover{transform:translateY(-1px);filter:brightness(1.3);z-index:10;}
+  .chip:focus-visible{transform:translateY(-1px);z-index:10;outline:2px solid #6ab0ff;outline-offset:2px;}
+  .chip[aria-pressed="true"]{transform:translateY(-1px);filter:brightness(1.4);z-index:10;outline:1px solid rgba(255,255,255,.25);outline-offset:1px;}
+  .chip[aria-disabled="true"]{opacity:.08;pointer-events:none;}
+  .chip.pf-chip{background:transparent!important;border-style:dashed!important;font-style:italic;}
+  .chip.star{font-weight:700;box-shadow:0 0 10px rgba(192,57,43,.35);}
+  .meta-marker{font-size:8px;opacity:.7;flex-shrink:0;}
+
+  /* ── SIDE PANEL ── */
+  .panel{
+    width:0;flex-shrink:0;overflow:hidden;
+    border-left:1px solid var(--line);
+    background:var(--bg2);
+    transition:width .25s cubic-bezier(.4,0,.2,1);
+    display:flex;flex-direction:column;
+  }
+  .panel.open{width:var(--panel-w);}
+  .panel-inner{width:var(--panel-w);padding:20px 20px;overflow-y:auto;flex:1;}
+
+  .panel-close{
+    position:absolute;top:12px;right:12px;
+    width:24px;height:24px;border:1px solid var(--line);border-radius:2px;
+    background:transparent;color:var(--text2);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;line-height:1;transition:all .15s;
+  }
+  .panel-close:hover{border-color:rgba(255,255,255,.2);color:var(--text);}
+
+  .panel-header{position:relative;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:16px;}
+  .panel-group-tag{
+    font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;
+    letter-spacing:1px;margin-bottom:6px;
+  }
+  .panel-name{font-family:'Geologica', sans-serif;font-size:16px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:6px;}
+  .panel-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+
+  /* WCAG: panel chip colors with sufficient contrast on --bg2 (#0d1117) */
+  .panel-chip{font-family:'DM Mono',monospace;font-size:9px;padding:2px 6px;border-radius:2px;border:1px solid var(--line);color:var(--text2);text-transform:uppercase;}
+  /* cdpa: was rgba(192,57,43,.8) → ~2.8:1 FAIL; now #e06050 → ~5.8:1 PASS */
+  .panel-chip.cdpa{color:#e06050;border-color:rgba(224,96,80,.35);}
+  /* pf: was #4a6080 → ~3.3:1 FAIL; now #7a90b0 → ~6.3:1 PASS */
+  .panel-chip.pf{color:#7a90b0;border-color:rgba(122,144,176,.3);}
+  /* meta: was #3a5a9e → ~2.7:1 FAIL; now #6a8fce → ~6.4:1 PASS */
+  .panel-chip.meta{color:#6a8fce;border-color:rgba(106,143,206,.3);}
+
+  .panel-section{margin-bottom:16px;}
+  .panel-section-label{
+    font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);
+    text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .panel-section-label::after{content:'';flex:1;height:1px;background:var(--line2);}
+  .panel-section-content{font-size:11px;color:var(--text2);line-height:1.6;}
+  .panel-section-content.highlight{
+    color:var(--text);font-size:11px;
+    padding:8px 10px;background:var(--bg3);border-radius:3px;
+    border-left:2px solid;
+  }
+  .panel-list{list-style:none;padding:0;}
+  .panel-list li{
+    font-size:11px;color:var(--text2);line-height:1.5;
+    padding:4px 0;border-bottom:1px solid var(--line2);
+    display:flex;gap:8px;
+  }
+  .panel-list li:last-child{border-bottom:none;}
+  .panel-list li::before{content:'–';color:var(--text3);flex-shrink:0;}
+  .panel-empty{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);font-style:italic;}
+
+  /* ── CALLOUT ── */
+  .callout{margin:14px 0 0 120px;display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid rgba(192,57,43,.22);border-radius:3px;background:rgba(192,57,43,.04);max-width:660px;}
+  .callout-bar{width:3px;min-height:100%;background:rgba(192,57,43,.45);border-radius:2px;flex-shrink:0;align-self:stretch;}
+  .callout p{font-size:11px;color:var(--text2);line-height:1.55;}
+  .callout strong{color:#e07060;}
+  .pf-note{margin:8px 0 0 120px;display:flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);max-width:500px;}
+  .pf-swatch{display:inline-block;width:18px;height:9px;border:1.5px dashed #4a5568;border-radius:2px;flex-shrink:0;}
+  /* View bar hint */
+  .view-bar{margin-top:0;border-top:none;padding-top:4px;}
+  .view-hint{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-left:8px;font-style:italic;}
+  /* Rakurs chip overlays */
+  .chip.rakurs-entry{outline:2px solid rgba(100,220,130,.75)!important;outline-offset:1px;}
+  .chip.rakurs-max  {outline:2px solid rgba(80,160,255,.75)!important;outline-offset:1px;}
+  .chip.rakurs-ill  {outline:2px solid rgba(255,200,50,.75)!important;outline-offset:1px;}
+  .chip.rakurs-harm {outline:2px solid rgba(230,80,70,.75)!important;outline-offset:1px;}
+  .chip.rakurs-ghost{opacity:.2;pointer-events:none;}
+  .chip.rakurs-displaced{display:none;}
+</style>
+</head>
+<body>
+
+<!-- Skip navigation for keyboard users -->
+<a class="skip-link" href="#map-grid">Skip to methodology map</a>
+
+<div class="app">
+
+<header>
+  <div class="header-left">
+    <h1>Design Methodology Map <span style="color:var(--text3);font-weight:400;font-size:13px" aria-label="version 7">v7</span></h1>
+    <p>47 methodologies · 7 levels · 5 action axes · decision support</p>
+  </div>
+  <nav aria-label="Filter by group">
+    <div class="legend" id="legend" role="group" aria-label="Toggle methodology groups">
+      <!-- group items injected by JS, meta-method separator added after -->
+    </div>
+    <div class="legend-meta-item" aria-label="Diamond symbol indicates meta-method">
+      <span class="legend-dot" style="background:transparent;width:12px;height:12px;display:inline-flex;align-items:center;justify-content:center;" aria-hidden="true">◆</span>
+      <span>meta-method</span>
+    </div>
+  </nav>
+</header>
+
+<div class="filter-bar" role="toolbar" aria-label="Applicability filter">
+  <span class="filter-label" id="filter-label">Applicability:</span>
+  <button class="filter-btn" data-filter="all" aria-pressed="true" aria-describedby="filter-label">All methods</button>
+  <button class="filter-btn" data-filter="native" aria-pressed="false" aria-describedby="filter-label">Native digital</button>
+  <button class="filter-btn" data-filter="adaptable" aria-pressed="false" aria-describedby="filter-label">Adaptable</button>
+  <div aria-hidden="true" style="width:1px;height:16px;background:var(--line);margin:0 4px;"></div>
+  <div class="void-legend" role="group" aria-label="Empty cell types legend">
+    <button class="void-item" type="button">
+      <div class="void-dot s" aria-hidden="true"></div>
+      <span>structural</span>
+      <div class="void-tip" role="tooltip"><b>Structural void</b>The combination does not make sense as a class of activity. For example, "conflict resolution" at the perception level — there are no architectural contradictions there. A normal cognitive vacuum.</div>
+    </button>
+    <button class="void-item" type="button">
+      <div class="void-dot h" aria-hidden="true"></div>
+      <span>historical gap</span>
+      <div class="void-tip" role="tooltip"><b>Historical gap</b>Methodologies should exist, but the industry has not created them. This is the zone of lowest methodological density — and a real opportunity for new tools, including CDPA.</div>
+    </button>
+    <button class="void-item" type="button">
+      <div class="void-dot o" aria-hidden="true"></div>
+      <span>out of scope</span>
+      <div class="void-tip" role="tooltip"><b>Out of design scope</b>Methods exist, but in adjacent disciplines — organizational design, systems engineering, business analysis. Not yet integrated into product design.</div>
+    </button>
+    <button class="void-item" type="button">
+      <div class="void-dot c" aria-hidden="true"></div>
+      <span>contested zone</span>
+      <div class="void-tip" role="tooltip"><b>Contested zone</b>Area appears covered, but is functionally empty. Several methods compete for it, none covers it adequately. More dangerous than a structural gap: the gap is invisible. No examples in current map version — type is reserved.</div>
+    </button>
+  </div>
+</div>
+
+<div class="filter-bar view-bar" role="toolbar" aria-label="Viewpoint filter" id="view-bar">
+  <span class="filter-label">View:</span>
+  <button class="filter-btn view-btn" data-view="natural" aria-pressed="true">Natural positions</button>
+  <button class="filter-btn view-btn" data-view="entry" aria-pressed="false">Entry points</button>
+  <button class="filter-btn view-btn" data-view="max" aria-pressed="false">Maximum impact</button>
+  <button class="filter-btn view-btn" data-view="ill" aria-pressed="false">Illusion zone</button>
+  <button class="filter-btn view-btn" data-view="harm" aria-pressed="false">Harm zone</button>
+  <span class="view-hint" id="view-hint"></span>
+</div>
+
+<div class="main-area">
+  <div class="map-area" id="map-area">
+    <div class="map-wrapper">
+      <div class="y-label" aria-hidden="true">System Level</div>
+      <div class="map-inner">
+        <div class="x-axis" role="row" aria-label="Action axes">
+          <div aria-hidden="true"></div>
+          <div class="x-axis-cell" role="columnheader">Diagnosis<span>understand the situation</span></div>
+          <div class="x-axis-cell" role="columnheader">Generation<span>create options</span></div>
+          <div class="x-axis-cell" role="columnheader" style="color:rgba(180,180,120,.7);">Prioritisation<span>orient in solution space</span></div>
+          <div class="x-axis-cell" role="columnheader">Resolution<span>resolve the conflict</span></div>
+          <div class="x-axis-cell" role="columnheader">Optimisation<span>improve the system</span></div>
+        </div>
+        <div class="grid" id="map-grid" role="grid" aria-label="Methodology map: system levels vs action axes" tabindex="0"></div>
+        <div class="callout" role="note" aria-label="CDPA zone note" style="display:none">
+          <div class="callout-bar" aria-hidden="true"></div>
+          <p><strong>CDPA zone</strong> — lowest methodological density. Contradiction resolution at the Architecture / Interface / Workflow levels is covered only by TRIZ (not adapted for digital products) and partially by CDPA. <strong>Confirmed gap.</strong> Prioritisation axis added on cybernetic grounds: incoming signal (Diagnosis) → expand space (Generation) → orient (Prioritisation) → resolve (Resolution) → adapt (Optimisation).</p>
+        </div>
+        <div class="pf-note" aria-label="Process framework indicator explanation" style="display:none">
+          <span class="pf-swatch" aria-hidden="true"></span>
+          <span>Dashed border — process frameworks: describe the workflow, do not provide a resolution mechanism</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDE PANEL -->
+  <div
+    class="panel"
+    id="panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="p-name"
+    aria-hidden="true"
+  >
+    <div class="panel-inner" id="panel-inner">
+      <div class="panel-header" id="panel-header">
+        <button class="panel-close" id="panel-close" aria-label="Close method detail panel">
+          <span aria-hidden="true">✕</span>
+        </button>
+        <div class="panel-group-tag" id="p-group"></div>
+        <div class="panel-name" id="p-name"></div>
+        <div class="panel-chips" id="p-chips" aria-label="Method attributes"></div>
+      </div>
+      <div id="p-body" aria-live="polite" aria-atomic="true"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- .app -->
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────
+
+const GROUPS = [
+  {id:0, label:"Process Frameworks", color:"#4a5568", pf:true,
+   tip:"Describe the workflow and phases, but do not provide a resolution mechanism. Useful for process management, not for solving the task. Example: Double Diamond explains when to diverge — but not how to resolve."},
+  {id:1, label:"Discovery / Framing", color:"#2d6a4f",
+   tip:"Extract the right problem and context before designing. Object — reality: work practices, mental models, scenarios. Output — an 'as is' map, not a solution."},
+  {id:2, label:"Value & Strategy", color:"#1d4e89",
+   tip:"Determine what the value is, for whom, and how to choose directions. Object — value model, market, outcomes. Answers 'what to build and why' — before 'how'."},
+  {id:3, label:"Behaviour", color:"#7a4fa8",
+   tip:"Explain and design user behaviour change. Object — motivation, triggers, barriers, habits. Operate at User Perception and Behaviour levels — not architecture."},
+  {id:4, label:"Synthesis / Resolution", color:"#c0392b",
+   tip:"Create a solution and resolve systemic conflict. A rare zone — most methods here are either engineering (TRIZ) or not adapted for the product. This is exactly where CDPA is located."},
+  {id:5, label:"Delivery / Improvement", color:"#c97b1a",
+   tip:"Ensure stable production of results and continuous improvement. Object — flow, process, waste elimination. Kaizen, Lean. Not about 'what to do' — about 'how to do it sustainably'."},
+  {id:6, label:"Quality / Errors", color:"#1a7a6e",
+   tip:"Reduce defects, prevent errors, control quality. Object — failure points, usability issues. Work diagnostically (audits) or constructively (Poka-Yoke)."},
+  {id:7, label:"Perception / Aesthetics", color:"#8a5225",
+   tip:"Manage perception, cognitive load, and aesthetic frame. Object — how the brain perceives form. Gestalt, Ma, Wabi-Sabi. Not solution methods — laws and principles."},
+  {id:8, label:"Complexity Navigation", color:"#3a4a7e",
+   tip:"Help choose the right approach depending on the type of situation. Do not change the system themselves — navigate to the right method. Marked ◆. Cynefin, Wardley, Three Horizons."},
+];
+
+const ROWS = [
+  {label:"User Perception", arch:false},
+  {label:"Behaviour",        arch:false},
+  {label:"Interface",        arch:false},
+  {label:"Workflow",         arch:false},
+  {label:"Organisation",     arch:false},
+  {label:"Value Model",      arch:false},
+  {label:"Architecture\n& Forks", arch:true},
+];
+
+// col: 0=Diagnosis, 1=Generation, 2=Resolution, 3=Optimisation
+// row: 0=UserPerception … 6=Architecture
+const METHODS = [
+  // ── PROCESS FRAMEWORKS ──
+  {name:"Design Thinking",       g:0,col:0,row:1,digital:"native",pf:true,
+   desc:"Process framework: empathy → ideas → prototypes. Describes movement, does not provide a resolution mechanism. Often mistakenly perceived as a design method.",
+   mechanism:"Empathize → Define → Ideate → Prototype → Test",
+   when:"Start of a project when the problem is not yet formulated. A direction is needed.",
+   whenNot:"When the problem is known. When a mechanism is needed, not a process.",
+   uncertainty:"Problem-related",
+   output:"Insights about pains, directions for ideas, hypothesis prototypes",
+   limits:"Does not resolve contradictions. Result depends on quality of empathy and facilitation.",
+   tags:["process","empathy","ideo"]},
+
+  {name:"HCD",                   g:0,col:0,row:1,digital:"native",pf:true,
+   desc:"Human-Centered Design. Extended DT with focus on social, cultural, and physical life context of the person.",
+   mechanism:"Inspiration → Ideation → Implementation (with constant return to the human)",
+   when:"When broad life context matters. Social and humanitarian products.",
+   whenNot:"When the social aspect is secondary. Technical B2B systems.",
+   uncertainty:"Contextual",
+   output:"Picture of user's life, hidden needs, humanistically grounded solutions",
+   limits:"Methodologically close to DT. Difficult to separate in practice.",
+   tags:["process","context","ideo"]},
+
+  {name:"Double Diamond",        g:0,col:0,row:2,digital:"native",pf:true,
+   desc:"Divergence → convergence in two diamonds: first the right problem, then the right solution.",
+   mechanism:"Discover → Define → Develop → Deliver",
+   when:"Structuring chaos in a team. Explaining the process to stakeholders.",
+   whenNot:"When a specific resolution mechanism is needed. Does not provide tools within phases.",
+   uncertainty:"Problem-related / process",
+   output:"Clear understanding of which phase the team is in and where it gets stuck",
+   limits:"Only a frame. What to do inside each diamond is not explained.",
+   tags:["process","framework","UK Design Council"]},
+
+  {name:"Lean UX (cycle)",        g:0,col:0,row:2,digital:"native",pf:true,
+   desc:"Iterative cycle: hypothesis → minimal experiment → learning. A process framework for product teams.",
+   mechanism:"Think → Make → Check (continuously)",
+   when:"Agile teams. Startups. When speed of learning is needed.",
+   whenNot:"Regulated industries. When documentation is required. Enterprise with strict requirements.",
+   uncertainty:"Process",
+   output:"Verified hypothesis, updated understanding, next experiment",
+   limits:"Easy to lose strategy behind tactics. Technical debt accumulates.",
+   tags:["process","lean","agile"]},
+
+  {name:"Design Sprint",         g:0,col:1,row:2,digital:"native",pf:true,
+   desc:"5-day intensive to test one critical hypothesis. A time-box framework, not a resolution method.",
+   mechanism:"Mon: map+question → Tue: ideas → Wed: decision → Thu: prototype → Fri: test",
+   when:"Start of a new product. Stuck decisions. The team needs focus.",
+   whenNot:"Operational improvements. No access to users within 5 days.",
+   uncertainty:"Problem-related / time",
+   output:"Answer to the key question + reactions from 5 real users",
+   limits:"Rigid structure. Superficial for complex problems. Everyone must be present all week.",
+   tags:["sprint","5-days","google ventures"]},
+
+  {name:"Shape Up",              g:0,col:4,row:3,digital:"native",pf:true,
+   desc:"6-week cycles with flexible scope. Pitch → bet → autonomous development → delivery.",
+   mechanism:"Pitch → bet on cycle → autonomous development → delivery → cool-down",
+   when:"Teams with accumulated backlog. When real autonomy is needed.",
+   whenNot:"Frequent releases needed. Enterprise with tight deadlines. Immature teams.",
+   uncertainty:"Process",
+   output:"Shipped increment in 6 weeks; pitches for the next cycle",
+   limits:"Created for Basecamp. Hard to scale. Requires mature PMs.",
+   tags:["process","basecamp","37signals"]},
+
+  // ── DISCOVERY / FRAMING ──
+  {name:"Contextual Design",     g:1,col:0,row:3,digital:"native",
+   desc:"Full research methodology: field observation → work models → design vision. Alternative to DT in enterprise.",
+   mechanism:"Contextual inquiry → interpretation → work models (flow/sequence/artifact/cultural/physical) → affinity diagram → design vision",
+   when:"Enterprise, B2B. When the usage context is complex and insufficiently understood.",
+   whenNot:"Consumer products with simple context. Startups. Short projects.",
+   uncertainty:"Contextual",
+   output:"Work models + affinity diagram + design vision + system prototype",
+   limits:"Labour-intensive (weeks of fieldwork). Expensive. Requires experienced team.",
+   tags:["field research","work models","holtzblatt"]},
+
+  {name:"Mental Models",         g:1,col:0,row:1,digital:"native",
+   desc:"Building user mental models through deep interviews. Not tied to the current product.",
+   mechanism:"Interviews → coding → grouping by thinking tasks → diagram → gap analysis with product",
+   when:"Long-term strategic research. Product rethinking.",
+   whenNot:"Short projects. Tactical UI tasks.",
+   uncertainty:"Cognitive / contextual",
+   output:"Mental model diagram + product alignment",
+   limits:"Very labour-intensive. Hard to sell to stakeholders. Doesn't provide solutions — only understanding.",
+   tags:["mental model","interview","indi young"]},
+
+  {name:"Scenario-Based Design", g:1,col:0,row:2,digital:"native",
+   desc:"Narrative scenarios: who, in what situation, what hinders, what success looks like. Designing in context.",
+   mechanism:"Actors → problem scenarios → activity scenarios → design scenarios → validation",
+   when:"Designing new systems. Team education. Stakeholder presentations.",
+   whenNot:"Open platforms with unpredictable scenarios. Very simple interfaces.",
+   uncertainty:"Contextual",
+   output:"Set of scenarios + solutions verified through them",
+   limits:"Scenarios can be invented without research. Easy to idealise the user.",
+   tags:["scenario","narrative","carroll"]},
+
+  {name:"Genchi Genbutsu",       g:1,col:0,row:3,digital:"adaptable",
+   desc:"Go and see for yourself on site. Toyota. Direct observation as the basis of any decision.",
+   mechanism:"Go to the place (gemba) → observe without bias → record facts → decide",
+   when:"Always before making a decision about a process or product. Audits.",
+   whenNot:"When direct physical access is impossible.",
+   uncertainty:"Contextual",
+   output:"Direct observations + verified understanding of the situation",
+   limits:"Not a method — a principle. Other tools are needed for analysis and resolution.",
+   tags:["observation","toyota","lean"]},
+
+  {name:"Goal-Directed Design",  g:1,col:0,row:1,digital:"native",
+   desc:"Designing for real user goals (not tasks) through behavioural personas.",
+   mechanism:"Research → behavioural personas → usage scenarios → interface requirements",
+   when:"Complex multi-functional product. Different goals for different users. Enterprise UX.",
+   whenNot:"Simple products. No resources for field research.",
+   uncertainty:"Contextual / goal-related",
+   output:"Behavioural personas + scenarios + interface requirements",
+   limits:"Personas without real research are useless. Quickly become outdated.",
+   tags:["personas","goals","alan cooper"]},
+
+  {name:"Participatory Design",  g:1,col:1,row:3,digital:"native",
+   desc:"Users as co-authors, not informants. Scandinavian co-design school.",
+   mechanism:"Recruit as partners → joint sessions → prototyping together → joint evaluation",
+   when:"Corporate internal products. Public sector. Education. High user resistance.",
+   whenNot:"B2C scale. Very heterogeneous users. Tight deadlines.",
+   uncertainty:"Contextual / values-based",
+   output:"Jointly created concepts + high product acceptance",
+   limits:"Slow. Users don't always know what they want. Hard to scale.",
+   tags:["co-design","participatory","scandinavia"]},
+
+  {name:"Activity Theory",       g:1,col:0,row:3,digital:"adaptable",
+   desc:"Soviet activity theory adapted for HCI. Unit of analysis — activity (motive+goals+operations), not task.",
+   mechanism:"Define activity → decompose into goals and operations → identify tools and contradictions → redesign",
+   when:"Complex work systems. Enterprise. Medicine. Aviation.",
+   whenNot:"Simple consumer products. No access to work context.",
+   uncertainty:"Systemic / activity-based",
+   output:"Activity map + systemic contradictions + recommendations",
+   limits:"Academically complex. Few practitioners. Hard to justify to clients.",
+   tags:["activity","HCI","vygotsky","leontiev"]},
+
+  {name:"Service Design",        g:1,col:0,row:3,digital:"native",
+   desc:"Service design across all touchpoints: frontstage + backstage. Systemic view.",
+   mechanism:"Ecosystem map → customer journey → identify pain points → redesign front and backstage",
+   when:"Complex services: banking, insurance, healthcare, public services.",
+   whenNot:"Simple digital products without a physical channel.",
+   uncertainty:"Systemic / contextual",
+   output:"Service blueprint + customer journey map + redesigned system",
+   limits:"Long. Requires cross-functional access and engagement of the entire organisation.",
+   tags:["service","blueprint","birgit mager"]},
+
+  {name:"Inclusive Design",      g:1,col:0,row:0,digital:"native",
+   desc:"Extreme users as a source of insights for everyone. Diversity → better design.",
+   mechanism:"Identify excluded users → understand limitations → find solution → verify it's better for all",
+   when:"Public products. Public services. When the product loses users due to barriers.",
+   whenNot:"Niche B2B with a homogeneous audience.",
+   uncertainty:"Contextual / functional",
+   output:"Inclusive solution + expanded audience + more robust design",
+   limits:"Requires additional research of extreme users. Often remains a declaration.",
+   tags:["inclusion","access","microsoft","ronald mace"]},
+
+  // ── VALUE & STRATEGY ──
+  {name:"JTBD",                  g:2,col:0,row:5,digital:"native",
+   desc:"People 'hire' a product to do a job — functional, social, or emotional. Understand the switching motive.",
+   mechanism:"Capture the switching moment → understand the 'job' → identify competing alternatives → rework the solution",
+   when:"When it's unclear why users choose or don't choose the product.",
+   whenNot:"When the product is in active development with fixed features.",
+   uncertainty:"Value-based",
+   output:"Clearly formulated Job + understanding of the real competitive landscape",
+   limits:"Ignores emotional nuances. Weak for identifying fundamentally new Jobs.",
+   tags:["motivation","switching","christensen"]},
+
+  {name:"ODI",                   g:2,col:0,row:5,digital:"native",
+   desc:"Outcome-Driven Innovation. Users define desired outcomes; find uncovered ones through opportunity score.",
+   mechanism:"Identify all outcomes → survey by importance and satisfaction → calculate opportunity score → design for uncovered ones",
+   when:"Objective search for innovation direction. B2B and complex products.",
+   whenNot:"No resources for large-scale survey. Consumer markets with emotional decisions.",
+   uncertainty:"Value-based / functional",
+   output:"Opportunity map + prioritised uncovered outcomes + strategy",
+   limits:"Labour-intensive. Expensive. Difficult for fundamentally new products.",
+   tags:["outcomes","quantitative","ulwick"]},
+
+  {name:"Kano Model",            g:2,col:2,row:5,digital:"adaptable",
+   desc:"Feature classification: must-be / performance / delighters / indifferent / reverse. What is mandatory, what delights.",
+   mechanism:"List attributes → Kano survey (functional+dysfunctional) → matrix → priorities",
+   when:"Roadmap prioritisation. Feature evaluation. When there are many ideas and focus is needed.",
+   whenNot:"Radical innovations. Early startups without a product.",
+   uncertainty:"Value-based",
+   output:"Kano matrix + prioritised roadmap",
+   limits:"Categories change over time (delighter → must-be). Depends on sample.",
+   tags:["prioritisation","satisfaction","kano","japan"]},
+
+  {name:"Value Prop. Canvas",    g:2,col:0,row:5,digital:"native",
+   desc:"Jobs/Pains/Gains of customer vs Pain Relievers/Gain Creators of product. Find real product–market fit.",
+   mechanism:"Describe Jobs/Pains/Gains → formulate Products/Pain Relievers/Gain Creators → find mismatches",
+   when:"Developing or revising the value proposition. Preparing a pitch.",
+   whenNot:"When the product is fixed and nothing can be changed.",
+   uncertainty:"Value-based",
+   output:"Value proposition map + identified mismatches",
+   limits:"Superficial without deep research. Result depends on data quality.",
+   tags:["value","fit","osterwalder"]},
+
+  {name:"Business Model Canvas", g:2,col:1,row:5,digital:"native",
+   desc:"9 blocks of business model on one page. Structuring and analysing the value model.",
+   mechanism:"Segments → value proposition → channels → relationships → revenue → resources → activities → partners → costs",
+   when:"Strategic sessions. Startups. Competitor analysis. Investor presentations.",
+   whenNot:"Operational management. Detailed financial modelling.",
+   uncertainty:"Value-based / business",
+   output:"Completed BMC + identified gaps + hypotheses",
+   limits:"Static. Superficial. Does not show dynamics and competition.",
+   tags:["business model","BMC","osterwalder"]},
+
+  {name:"Ten Types of Innovation",g:2,col:1,row:5,digital:"native",
+   desc:"Innovation across 10 dimensions: from business configuration to consumer experience.",
+   mechanism:"Audit across 10 types → compare with competitors → generate in underutilised dimensions",
+   when:"Strategic sessions. Stagnating business. Seeking differentiation.",
+   whenNot:"Operational tasks. Early startups.",
+   uncertainty:"Strategic / value-based",
+   output:"Innovation map + strategy across 10 dimensions",
+   limits:"Abstract without adaptation. No built-in implementation mechanism.",
+   tags:["innovation","10 types","doblin","keeley"]},
+
+  {name:"Value-Sensitive Design", g:2,col:0,row:5,digital:"native",
+   desc:"Ethical values embedded in product architecture from the outset. Relevant for AI products.",
+   mechanism:"Conceptual value analysis → empirical research → technical analysis → integration",
+   when:"AI products. Platforms with large reach. Sensitive areas: health, children, finance.",
+   whenNot:"Simple utilitarian products. Early prototypes.",
+   uncertainty:"Value-based / ethical",
+   output:"Map of value conflicts + ethical requirements + decision audit",
+   limits:"Few practitioners. Market pressure often outweighs. ROI hard to justify.",
+   tags:["ethics","values","batya friedman"]},
+
+  {name:"Ikigai",                g:2,col:0,row:5,digital:"adaptable",
+   desc:"Intersection: what you love / what you're good at / what you're paid for / what the world needs. Navigation of meaning and positioning.",
+   mechanism:"Map passion/mission/profession/vocation → find the centre → verify for sustainability",
+   when:"Product or specialist positioning. Strategic sessions.",
+   whenNot:"Operational tasks. Early startups without a product.",
+   uncertainty:"Value-based / meaning",
+   output:"Ikigai map + positioning",
+   limits:"Often applied superficially. Not a design method — a navigational tool.",
+   tags:["positioning","meaning","ikigai","japan"]},
+
+  {name:"OKR / North Star",      g:2,col:2,row:4,digital:"native",
+   desc:"Strategic alignment: North Star — single value metric, OKR — quarterly goals. Not system optimisation — strategy alignment.",
+   mechanism:"Choose North Star → decompose into OKR → align teams → track → adjust",
+   when:"Scaling products. Team alignment. No clarity in priorities.",
+   whenNot:"Early startups before PMF. Creative and research teams.",
+   uncertainty:"Value-based / process",
+   output:"OKR set + North Star Metric + aligned team",
+   limits:"Goodhart's Law: a measure ceases to be a good measure once it becomes a target.",
+   tags:["goals","alignment","OKR","north star","andy grove"]},
+
+  // ── BEHAVIOUR ──
+  {name:"Behavioral Design",     g:3,col:1,row:1,digital:"native",
+   desc:"B=MAP: behaviour = motivation × ability × trigger. Design the desired user behaviour.",
+   mechanism:"Choose target behaviour → check B=MAP → remove ability barriers → set trigger",
+   when:"Onboarding. Habit formation. Users not converting despite interest.",
+   whenNot:"When the problem is in the value proposition. Ethically questionable tasks.",
+   uncertainty:"Behavioural",
+   output:"Behavioural product model; trigger map; simplification recommendations",
+   limits:"Borders on manipulation — requires ethical reflection.",
+   tags:["behavior","trigger","fogg","stanford"]},
+
+  {name:"Nudge Design",          g:3,col:1,row:1,digital:"adaptable",
+   desc:"Choice architecture: change behaviour through context, not prohibition. Behavioural economics in design.",
+   mechanism:"Identify target behaviour → change default or context → preserve freedom of choice",
+   when:"Financial products. Health. Public sector. When prohibition is impossible or undesirable.",
+   whenNot:"When explicit instruction is needed. When the audience does not accept covert influence.",
+   uncertainty:"Behavioural",
+   output:"New default / choice context → measurable behaviour change",
+   limits:"Borders on manipulation. Works only for certain types of decisions.",
+   tags:["nudge","choice architecture","thaler","sunstein"]},
+
+  // ── SYNTHESIS / RESOLUTION ──
+  {name:"TRIZ",                  g:4,col:3,row:6,digital:"adaptable",cdpa:true,
+   desc:"Theory of Inventive Problem Solving. Systematic method for resolving contradictions: 40 principles, ARIZ, IFR. Developed for engineering and physical systems — no direct application to digital products exists.",
+   mechanism:"Formalize technical contradiction → contradiction matrix / 40 principles → formulate IFR → verify solution",
+   when:"Engineering tasks with a clear physical or technical contradiction. When all standard approaches are exhausted.",
+   whenNot:"Unformalized tasks. Early discovery stages. Tasks without a clear contradiction. Digital products — without adaptation.",
+   uncertainty:"Functional / systemic",
+   output:"Solution without compromise + modified system + verified principle",
+   limits:"High entry threshold — TRIZ expertise required. Language incompatible with product teams without translation. Weak for tasks without engineering structure.",
+   tags:["contradiction","inventive","altshuller","USSR"]},
+
+  {name:"CDPA",                  g:4,col:3,row:6,digital:"native",cdpa:true,star:true,
+   desc:"Contradiction-Driven Product Architecture. Practical adaptation of systems and TRIZ thinking for product systems. Resolves requirement conflicts without compromising functionality — where standard UX methods are exhausted.",
+   mechanism:"Identify requirement conflict → find independent variable → redesign architecture → measure effect",
+   when:"B2B SaaS with accumulated systemic problems. When iterative UX fixes don't produce results. Architectural dead ends: adding features worsens the problem.",
+   whenNot:"Not suitable when the conflict is in product priorities or resources, not architecture. Simple tactical UI tasks. Startups without an established system.",
+   uncertainty:"Requirement conflict / architectural complexity",
+   output:"Architectural solution + measurable reduction in complexity, cost, or time at the system level",
+   limits:"Requires understanding the whole system — does not work with fragmented access to architecture. Expert-dependent. Currently limited reproducibility without the author.",
+   tags:["product","contradiction","architecture","CDPA"]},
+
+  {name:"Theory of Constraints", g:4,col:4,row:3,digital:"adaptable",
+   desc:"Find the main systemic flow constraint, concentrate resources there, eliminate, repeat. Systemic optimisation — not resolving a contradiction, but sequentially removing bottlenecks.",
+   mechanism:"Find constraint → exploit to the maximum → subordinate everything else to this decision → elevate the constraint → repeat",
+   when:"System produces less than it could. Need one point of focus. IT, manufacturing, product delivery.",
+   whenNot:"Evenly distributed problems without a clear bottleneck. Creative and research tasks.",
+   uncertainty:"Systemic / bottleneck",
+   output:"Identified constraint + elimination plan + restructured flow + measurable throughput increase",
+   limits:"Hard to find the real constraint — people often identify the symptom. After elimination, the next one immediately appears: the work is endless.",
+   tags:["constraint","throughput","goldratt","TOC"]},
+
+  {name:"SMD / ODG",             g:4,col:3,row:4,digital:"adaptable",cdpa:true,
+   desc:"Shchedrovitsky: collective mental activity. Conflict of positions → schematization → new understanding. Works with unsolvable problems — where the very formulation of the problem is part of the problem.",
+   mechanism:"Divide into positions → introduce the real problem → organise conflict → schematize → reflection → new understanding → programme",
+   when:"Complex inter-systemic problems. High-level strategic sessions. Reforms. When the problem is not formalized.",
+   whenNot:"Simple product tasks. No time for 3–5 days. Participants not ready for intellectual conflict.",
+   uncertainty:"Systemic — uncertainty of the problem formulation itself",
+   output:"Thinking diagrams + collective understanding + activity programme",
+   limits:"Very few qualified facilitators in the world. Requires 3–5 days. Culturally complex for Western audiences.",
+   tags:["collective","systems","schedrovitsky","USSR"]},
+
+  {name:"Morphological Analysis", g:4,col:3,row:6,digital:"adaptable",cdpa:true,
+   desc:"Architectural variability tool: systematic exploration of the solution space through a parameter matrix.",
+   mechanism:"Identify key system parameters → build matrix → systematically explore combinations → select optimal",
+   when:"Finding architectural solutions with many parameters. Generating non-standard combinations.",
+   whenNot:"When system parameters are unknown. Early discovery stages.",
+   uncertainty:"Functional / architectural",
+   output:"Morphological matrix + set of architectural options",
+   limits:"Combinatorial explosion with many parameters. Requires preliminary decomposition.",
+   tags:["synthesis","matrix","zwicky","architecture"]},
+
+  {name:"Biomimicry",            g:4,col:3,row:6,digital:"adaptable",
+   desc:"Analogies with natural systems. Transfer the solution principle — not the form, but the mechanism.",
+   mechanism:"Translate the problem into a function → search biological database → transfer principle → adapt",
+   when:"Sustainable design. Seeking non-standard solutions. Innovation sprints.",
+   whenNot:"Digital interfaces (weakly applicable). When there's no time to search for analogies.",
+   uncertainty:"Functional / systemic",
+   output:"Natural analogue + transferred principle + design solution",
+   limits:"Requires knowledge of biology. Analogies don't always transfer. Better for physical products.",
+   tags:["analogy","nature","benyus"]},
+
+  // ── DELIVERY / IMPROVEMENT ──
+  {name:"Kaizen",                g:5,col:4,row:3,digital:"adaptable",
+   desc:"Continuous small improvements through elimination of muda. PDCA cycle. A culture, not an event.",
+   mechanism:"Gemba → identify muda → PDCA cycle → standardise → next step",
+   when:"Mature products and processes. When a culture of improvement is needed.",
+   whenNot:"Radical innovations. Crisis situations.",
+   uncertainty:"Process",
+   output:"Improved process standard; eliminated waste; culture",
+   limits:"Slow. Not for breakthrough changes. Requires cultural shift.",
+   tags:["continuous","improvement","kaizen","toyota"]},
+
+  {name:"Lean (Flow)",           g:5,col:4,row:3,digital:"adaptable",
+   desc:"Optimisation of the value creation flow. Elimination of waste (muda) in the production system.",
+   mechanism:"Map value stream → identify waste → eliminate → standardise → repeat",
+   when:"Manufacturing, operations, IT processes. When there is clear waste in the flow.",
+   whenNot:"Creative and research tasks. Non-repeatable processes.",
+   uncertainty:"Process",
+   output:"Value stream map + optimised flow + eliminated waste",
+   limits:"Works poorly in unpredictable environments. Requires flow data.",
+   tags:["flow","waste","lean","toyota"]},
+
+  // ── QUALITY / ERRORS ──
+  {name:"Poka-Yoke",             g:6,col:3,row:2,digital:"adaptable",
+   desc:"Make mistakes structurally impossible. Prevention before consequences.",
+   mechanism:"Find potential mistake → determine type (prevention vs detection) → build protection mechanism",
+   when:"Critical interfaces: medicine, finance, aviation. Forms and transactions.",
+   whenNot:"Creative tasks. When the 'wrong' path is a normal variation.",
+   uncertainty:"Error risk",
+   output:"Protection mechanism; eliminated failure point",
+   limits:"May limit flexibility. Does not eliminate systemic design errors.",
+   tags:["error-proof","constraints","shingo","toyota"]},
+
+  {name:"Heuristic Evaluation",  g:6,col:0,row:2,digital:"native",
+   desc:"Expert audit against Nielsen's 10 principles. Fast way to find usability issues without users.",
+   mechanism:"3–5 experts → independent interface walkthrough → compare findings → prioritise",
+   when:"Fast audit of existing interface. Limited budget. No user access.",
+   whenNot:"Early concepts. When actual user behaviour matters.",
+   uncertainty:"Functional / perceptual",
+   output:"List of usability issues with severity + recommendations",
+   limits:"Experts are not users. Misses contextual and cultural issues.",
+   tags:["audit","heuristics","nielsen"]},
+
+  {name:"Cognitive Walkthrough", g:6,col:0,row:2,digital:"native",
+   desc:"Simulation of new user steps. Evaluation of interface learnability.",
+   mechanism:"Select task → steps → at each: is goal clear? is action visible? is connection obvious? is feedback understandable?",
+   when:"Evaluating onboarding. Interfaces for new users.",
+   whenNot:"For experienced users. When speed matters, not learnability.",
+   uncertainty:"Cognitive / functional",
+   output:"List of cognitive breakdown points + onboarding recommendations",
+   limits:"Evaluates learnability only. Slow with large number of steps.",
+   tags:["cognitive","onboarding","lewis","rieman"]},
+
+  {name:"5 Whys",                g:6,col:0,row:3,digital:"adaptable",
+   desc:"Iterative 'why' questions down to the root cause. Toyota. Universal for any diagnosis.",
+   mechanism:"Describe problem → why? ×5 → root cause → systemic solution",
+   when:"Recurring problems. Retrospectives. UX problem diagnosis.",
+   whenNot:"Complex systemic problems with many variables (better: Ishikawa or TOC).",
+   uncertainty:"Functional / causal",
+   output:"5 Whys diagram + root cause + fix recommendation",
+   limits:"People stop before the root. Different teams — different causes.",
+   tags:["root cause","diagnostic","toyota"]},
+
+  // ── PERCEPTION / AESTHETICS ──
+  {name:"Gestalt Principles",    g:7,col:4,row:0,digital:"adaptable",
+   desc:"Laws of perception: proximity, similarity, closure, figure/ground. Foundation of visual design.",
+   mechanism:"Analyse → group by meaning → apply laws → verify readability",
+   when:"Always — when creating any visual interface.",
+   whenNot:"No situations where inapplicable. This is basic literacy.",
+   uncertainty:"Perceptual",
+   output:"Visually clear and structured design",
+   limits:"Describes perception, does not provide solutions for complex UX tasks.",
+   tags:["perception","visual","gestalt","wertheimer"]},
+
+  {name:"Ma (間)",               g:7,col:4,row:0,digital:"adaptable",
+   desc:"Negative space and pause as active design elements. Japanese aesthetics.",
+   mechanism:"Determine what to remove → find balance of emptiness and presence → create rhythm",
+   when:"Overloaded interfaces. Premium and minimalist design.",
+   whenNot:"Interfaces with maximum density: trading, monitoring.",
+   uncertainty:"Perceptual",
+   output:"Design with intentional whitespace, rhythm, and pauses",
+   limits:"Hard to justify to stakeholders. Subjective. Requires mature judgement.",
+   tags:["space","rhythm","ma","japan","kenya hara"]},
+
+  {name:"Wabi-Sabi",             g:7,col:4,row:0,digital:"adaptable",
+   desc:"Beauty of imperfection, incompleteness, and transience. Authenticity over sterile polish.",
+   mechanism:"Rethink 'defects' as value → remove excess finishing → leave traces of the process",
+   when:"Brand design. Products with emotional connection. Counterpoint to 'plastic' perfection.",
+   whenNot:"Technical B2B interfaces. Products where precision is critical.",
+   uncertainty:"Emotional / values-based",
+   output:"Design with emphasis on authenticity and warm imperfection",
+   limits:"Hard to operationalise. Easily becomes an excuse for carelessness.",
+   tags:["aesthetics","authentic","wabi-sabi","japan"]},
+
+  // ── COMPLEXITY NAVIGATION ── meta:true ──
+  {name:"Cynefin",               g:8,col:0,row:4,digital:"native",meta:true,
+   desc:"Sensemaking framework: classifies the situation by complexity type and points to the appropriate approach. Does not change the system — helps choose the method. Main value: prevents applying the right tool to the wrong problem.",
+   mechanism:"Assess situation → domain: Simple (best practice) / Complicated (expertise) / Complex (experiment) / Chaotic (act) → choose approach",
+   when:"Before choosing a method in a complex context. Crisis situations. Multi-component projects with unclear problem type.",
+   whenNot:"Simple operational tasks. When methodology is already defined and situation type is obvious.",
+   uncertainty:"Systemic — classifies the type of uncertainty",
+   output:"Situation classification + justified approach choice + prevented application errors",
+   limits:"Boundaries between domains are blurry. Classification is subjective. Does not provide solutions — only navigation to a method.",
+   tags:["complexity","sense-making","snowden","IBM"]},
+
+  {name:"Systems Thinking",      g:8,col:0,row:4,digital:"adaptable",meta:true,
+   desc:"Feedback loops, leverage points. Understand the system before intervening. Navigates — does not change.",
+   mechanism:"Describe system → causal loop diagram → reinforcing and balancing loops → leverage points → recommendations",
+   when:"Complex organisational and social problems. When solutions create new problems.",
+   whenNot:"Fast tactical decisions. Simple product tasks.",
+   uncertainty:"Systemic",
+   output:"System map (CLD) + identified loops + intervention recommendations",
+   limits:"Slow. Maps quickly become complex. Hard to translate into action plan.",
+   tags:["systems","loops","meadows","forrester"]},
+
+  {name:"Wardley Mapping",       g:8,col:0,row:5,digital:"native",meta:true,
+   desc:"Components by evolution and visibility axis. Strategic moves in the market. Navigates strategy.",
+   mechanism:"Identify need → decompose chain → place on evolution map → find moves",
+   when:"Strategic decisions. Technology strategy. Competitive analysis.",
+   whenNot:"Tactical and operational tasks.",
+   uncertainty:"Strategic",
+   output:"Wardley Map + strategic insights on build/buy/partner",
+   limits:"Learning curve. Subjectivity in placement. Few practitioners.",
+   tags:["strategy","evolution","wardley"]},
+
+  {name:"Three Horizons",        g:8,col:0,row:5,digital:"native",meta:true,
+   desc:"H1 (current) / H2 (transitional) / H3 (desired). Holding three horizons simultaneously. Navigates strategy over time.",
+   mechanism:"Describe H1 → envision H3 → find seeds of H3 → design H2 transition",
+   when:"Corporate strategy. Innovation portfolios. Foresight.",
+   whenNot:"Operational tasks. Short horizon.",
+   uncertainty:"Systemic / values-based",
+   output:"Three horizons map + initiative portfolio",
+   limits:"Blurriness between horizons. Does not provide operational plan.",
+   tags:["foresight","strategy","three horizons"]},
+
+  {name:"Speculative Design",    g:8,col:1,row:5,digital:"native",meta:true,
+   desc:"Design of questions about the future — not solutions. Artifacts for dialogue. Critique through form.",
+   mechanism:"Choose contradiction → design a 'possible world' → create artifact → dialogue",
+   when:"Foresight sessions. Research projects. Ethical debates around technologies.",
+   whenNot:"Concrete product tasks. When solutions are needed, not questions.",
+   uncertainty:"Values-based / systemic",
+   output:"Provocative artifacts + discussion + values reassessment",
+   limits:"Does not provide solutions. Works only if the audience is ready for dialogue.",
+   tags:["futures","critical","dunne","raby","RCA"]},
+
+  {name:"Transition Design",     g:8,col:3,row:4,digital:"adaptable",
+   desc:"Systemic transitions to sustainable patterns. Wicked problems: climate, inequality, healthcare. 20–50 year horizon.",
+   mechanism:"Map system → vision → leverage points → transition pathways → interventions",
+   when:"Complex social and environmental problems. Policy design. Decade-scale horizon.",
+   whenNot:"Commercial product tasks. Short projects.",
+   uncertainty:"Systemic / values-based",
+   output:"System maps + vision + transition pathways + interventions",
+   limits:"Very slow. No success metric in the short term. Few practitioners.",
+   tags:["transition","systemic","wicked","CMU","terry irwin"]},
+];
+
+// ── RAKURSY (Viewpoints) ─────────────────────────────────────────────────────
+// entry=точка входа, max=точка максимума, ill=зона иллюзии, harm=зона вреда
+// Each: {c: col(0-4), r: row(0-6)} matching the grid axes/levels
+const RAKURSY = {
+  'Design Thinking': {entry:{c:0,r:0},max:{c:2,r:3},ill:{c:1,r:2},harm:{c:3,r:6}},
+  'HCD': {entry:{c:0,r:0},max:{c:0,r:2},ill:{c:0,r:0},harm:{c:0,r:5}},
+  'Double Diamond': {entry:{c:0,r:4},max:{c:0,r:3},ill:{c:0,r:0},harm:{c:0,r:4}},
+  'JTBD': {entry:{c:0,r:0},max:{c:0,r:5},ill:{c:0,r:1},harm:{c:0,r:6}},
+  'ODI': {entry:{c:2,r:5},max:{c:2,r:5},ill:{c:0,r:0},harm:{c:2,r:6}},
+  'Lean UX (cycle)': {entry:{c:4,r:3},max:{c:0,r:1},ill:{c:4,r:2},harm:{c:0,r:6}},
+  'Design Sprint': {entry:{c:1,r:4},max:{c:1,r:2},ill:{c:1,r:2},harm:{c:1,r:5}},
+  'Service Design': {entry:{c:0,r:3},max:{c:0,r:4},ill:{c:0,r:3},harm:{c:0,r:5}},
+  'Systems Thinking': {entry:{c:0,r:3},max:{c:0,r:5},ill:{c:0,r:3},harm:{c:0,r:4}},
+  'Wardley Mapping': {entry:{c:0,r:5},max:{c:0,r:6},ill:{c:0,r:5},harm:{c:0,r:2}},
+  'Business Model Canvas': {entry:{c:0,r:5},max:{c:1,r:4},ill:{c:0,r:5},harm:{c:1,r:3}},
+  'Value Prop. Canvas': {entry:{c:0,r:0},max:{c:0,r:5},ill:{c:0,r:0},harm:{c:0,r:4}},
+  'OKR / North Star': {entry:{c:2,r:5},max:{c:2,r:4},ill:{c:2,r:5},harm:{c:2,r:3}},
+  'Cynefin': {entry:{c:0,r:5},max:{c:2,r:4},ill:{c:0,r:5},harm:{c:0,r:3}},
+  'TRIZ': {entry:{c:3,r:6},max:{c:3,r:6},ill:{c:1,r:2},harm:{c:3,r:4}},
+  'Theory of Constraints': {entry:{c:0,r:3},max:{c:4,r:3},ill:{c:4,r:3},harm:{c:4,r:5}},
+  'Goal-Directed Design': {entry:{c:0,r:0},max:{c:0,r:2},ill:{c:0,r:0},harm:{c:0,r:3}},
+  'Ten Types of Innovation': {entry:{c:0,r:5},max:{c:2,r:5},ill:{c:0,r:5},harm:{c:1,r:2}},
+  'Shape Up': {entry:{c:4,r:4},max:{c:4,r:3},ill:{c:4,r:4},harm:{c:4,r:5}},
+  'Mental Models': {entry:{c:0,r:0},max:{c:0,r:2},ill:{c:0,r:0},harm:{c:0,r:4}},
+  'Kano Model': {entry:{c:2,r:2},max:{c:2,r:1},ill:{c:2,r:2},harm:{c:2,r:5}},
+  'Behavioral Design': {entry:{c:4,r:1},max:{c:1,r:1},ill:{c:4,r:2},harm:{c:1,r:0}},
+  'Nudge Design': {entry:{c:4,r:1},max:{c:1,r:1},ill:{c:4,r:1},harm:{c:1,r:0}},
+  'Contextual Design': {entry:{c:0,r:1},max:{c:0,r:3},ill:{c:0,r:1},harm:{c:0,r:2}},
+  'Kaizen': {entry:{c:4,r:3},max:{c:4,r:4},ill:{c:4,r:3},harm:{c:4,r:6}},
+  'Poka-Yoke': {entry:{c:4,r:2},max:{c:3,r:3},ill:{c:4,r:2},harm:{c:3,r:4}},
+  'Ma (間)': {entry:{c:4,r:2},max:{c:4,r:0},ill:{c:4,r:2},harm:{c:4,r:3}},
+  'Wabi-Sabi': {entry:{c:4,r:0},max:{c:4,r:0},ill:{c:4,r:2},harm:{c:4,r:5}},
+  'Ikigai': {entry:{c:0,r:5},max:{c:0,r:5},ill:{c:0,r:5},harm:{c:0,r:3}},
+  'Participatory Design': {entry:{c:0,r:4},max:{c:1,r:0},ill:{c:0,r:4},harm:{c:1,r:5}},
+  'Activity Theory': {entry:{c:0,r:3},max:{c:0,r:3},ill:{c:0,r:3},harm:{c:0,r:2}},
+  'Genchi Genbutsu': {entry:{c:0,r:1},max:{c:0,r:3},ill:{c:0,r:1},harm:{c:0,r:4}},
+  '5 Whys': {entry:{c:0,r:3},max:{c:0,r:4},ill:{c:0,r:3},harm:{c:0,r:6}},
+  'Inclusive Design': {entry:{c:0,r:0},max:{c:0,r:6},ill:{c:0,r:2},harm:{c:0,r:4}},
+  'Speculative Design': {entry:{c:1,r:5},max:{c:1,r:0},ill:{c:1,r:2},harm:{c:1,r:4}},
+  'Value-Sensitive Design': {entry:{c:0,r:5},max:{c:0,r:4},ill:{c:0,r:5},harm:{c:0,r:2}},
+  'SMD / ODG': {entry:{c:3,r:5},max:{c:3,r:4},ill:{c:0,r:5},harm:{c:3,r:2}},
+  'Gestalt Principles': {entry:{c:4,r:2},max:{c:4,r:0},ill:{c:4,r:2},harm:{c:4,r:3}},
+  'Scenario-Based Design': {entry:{c:0,r:1},max:{c:0,r:3},ill:{c:0,r:1},harm:{c:0,r:5}},
+  'Transition Design': {entry:{c:0,r:5},max:{c:3,r:5},ill:{c:0,r:5},harm:{c:3,r:3}},
+  'Biomimicry': {entry:{c:1,r:6},max:{c:3,r:6},ill:{c:1,r:2},harm:{c:3,r:5}},
+  'Morphological Analysis': {entry:{c:1,r:6},max:{c:3,r:6},ill:{c:1,r:6},harm:{c:3,r:6}},
+  'Heuristic Evaluation': {entry:{c:0,r:2},max:{c:0,r:2},ill:{c:4,r:2},harm:{c:0,r:0}},
+  'Cognitive Walkthrough': {entry:{c:0,r:2},max:{c:0,r:3},ill:{c:0,r:2},harm:{c:0,r:4}},
+  'Three Horizons': {entry:{c:0,r:5},max:{c:2,r:5},ill:{c:0,r:5},harm:{c:0,r:4}},
+  'CDPA': {entry:{c:0,r:6},max:{c:3,r:6},ill:{c:1,r:6},harm:{c:3,r:4}},
+};
+
+// ── VOID CELL TYPES ──────────────────────────────────────────────────────────
+const VOID_MAP = {
+  // Structural — combinations that make no sense as a class of activity
+  '1-0': {type:'structural', label:'structural'},  // Generation / User Perception
+  '3-0': {type:'structural', label:'structural'},  // Resolution / User Perception
+  '4-0': {type:'structural', label:'structural'},  // Optimisation / User Perception
+  '3-1': {type:'structural', label:'structural'},  // Resolution / Behaviour
+  '4-1': {type:'structural', label:'structural'},  // Optimisation / Behaviour
+  '2-0': {type:'structural', label:'structural'},  // Prioritisation / User Perception
+  '2-1': {type:'structural', label:'structural'},  // Prioritisation / Behaviour
+  '2-2': {type:'structural', label:'structural'},  // Prioritisation / Interface
+  // Historical gap — should exist but industry hasn't created it
+  '0-6': {type:'historical', label:'historical gap'},  // Diagnosis / Architecture
+  '1-6': {type:'historical', label:'historical gap'},  // Generation / Architecture
+  '2-6': {type:'historical', label:'historical gap'},  // Prioritisation / Architecture
+  '4-6': {type:'historical', label:'historical gap'},  // Optimisation / Architecture
+  '4-2': {type:'historical', label:'historical gap'},  // Optimisation / Interface
+  '3-3': {type:'historical', label:'historical gap'},  // Resolution / Workflow
+  '1-2': {type:'historical', label:'historical gap'},  // Generation / Interface
+  // Out of scope — methods exist in adjacent disciplines, not integrated here
+  '1-4': {type:'outofscope', label:'out of scope'},   // Generation / Organisation
+  '1-3': {type:'outofscope', label:'out of scope'},   // Generation / Workflow
+  '3-5': {type:'outofscope', label:'out of scope'},   // Resolution / Value Model
+  '4-5': {type:'outofscope', label:'out of scope'},   // Optimisation / Value Model
+  '2-3': {type:'outofscope', label:'out of scope'},   // Prioritisation / Workflow
+};
+
+function getVoidType(col, row){ return VOID_MAP[col+'-'+row] || null; }
+
+const CDPA_ZONES=[[3,2],[3,3],[3,4],[3,6],[4,2],[4,4]];
+function isCdpa(col,row){return CDPA_ZONES.some(([c,r])=>c===col&&r===row);}
+
+// ── BUILD LEGEND ─────────────────────────────────────────────────────────────
+const legendEl=document.getElementById('legend');
+GROUPS.forEach(g=>{
+  const el=document.createElement('button');
+  el.type='button';
+  el.className='legend-item';
+  el.dataset.group=g.id;
+  el.setAttribute('aria-pressed','true'); // all active by default
+  const tipHtml = g.tip
+    ? `<div class="legend-tip" role="tooltip"><b>${g.label}</b>${g.tip}</div>`
+    : '';
+  el.innerHTML=`<div class="legend-dot${g.pf?' pf':''}" style="${g.pf?'':'background:'+g.color}" aria-hidden="true"></div><span>${g.label}</span>${tipHtml}`;
+  el.addEventListener('click',()=>toggleGroup(g.id));
+  legendEl.appendChild(el);
+});
+
+const activeGroups=new Set(GROUPS.map(g=>g.id));
+
+// ── BUILD GRID ────────────────────────────────────────────────────────────────
+function buildGrid(){
+  const grid=document.getElementById('map-grid');
+  grid.innerHTML='';
+  ROWS.forEach((rowDef,rowIdx)=>{
+    const isLast=rowIdx===ROWS.length-1;
+    const rl=document.createElement('div');
+    rl.className='row-label'+(rowDef.arch?' arch-row':'')+(isLast?' last-row':'');
+    rl.textContent=rowDef.label;
+    rl.setAttribute('role','rowheader');
+    grid.appendChild(rl);
+    for(let col=0;col<5;col++){
+      const cell=document.createElement('div');
+      cell.className='cell'
+        +(col===4?' last-col':'')
+        +(isLast?' last-row':'')
+        +(rowDef.arch?' arch-row-cell':'')
+        +(isCdpa(col,rowIdx)?' cdpa-zone':'')
+        +(col===2?' prio-col':'');
+      cell.setAttribute('role','gridcell');
+      cell.setAttribute('aria-label', ROWS[rowIdx].label+' × '+['Diagnosis','Generation','Prioritisation','Resolution','Optimisation'][col]);
+      const methods=activeView==='natural'
+        ? METHODS.filter(m=>m.col===col&&m.row===rowIdx)
+        : METHODS.filter(m=>{
+            const rk=RAKURSY[m.name];
+            if(!rk||!rk[activeView]) return false;
+            return rk[activeView].c===col && rk[activeView].r===rowIdx;
+          });
+      methods.forEach(m=>{
+        const chip=document.createElement('button');
+        chip.type='button';
+        chip.className='chip'+(m.pf?' pf-chip':'')+(m.star?' star':'');
+        chip.dataset.name=m.name;
+        chip.dataset.group=m.g;
+        chip.setAttribute('aria-pressed','false');
+        // disable if group not active
+        if(!activeGroups.has(m.g)){
+          chip.setAttribute('aria-disabled','true');
+          chip.tabIndex=-1;
+        }
+        const gc=GROUPS.find(g=>g.id===m.g).color;
+        if(m.pf){
+          chip.style.borderColor=rgba(gc,.42);
+          chip.style.color=lighten(gc,48);
+        } else {
+          chip.style.background=rgba(gc,m.star?.28:.15);
+          chip.style.border=`1px solid ${rgba(gc,m.star?.68:.36)}`;
+          chip.style.color=lighten(gc,m.star?72:52);
+        }
+        if(m.meta){
+          const mark=document.createElement('span');
+          mark.className='meta-marker';
+          mark.setAttribute('aria-hidden','true');
+          mark.textContent='◆';
+          mark.style.color=lighten(gc,30);
+          chip.appendChild(mark);
+          chip.appendChild(document.createTextNode(m.name));
+          chip.setAttribute('aria-label', m.name+' (meta-method)');
+        } else {
+          chip.textContent=m.name;
+        }
+        chip.addEventListener('click',e=>{e.stopPropagation();openPanel(m,chip);});
+        // Rakurs highlight
+        if(activeView!=='natural'){
+          chip.classList.add('rakurs-'+activeView);
+        }
+        cell.appendChild(chip);
+      });
+      if(methods.length===0){
+        const vt=getVoidType(col,rowIdx);
+        if(vt){
+          cell.classList.add('void-'+vt.type);
+          const gl=document.createElement('div');
+          gl.className='gap-label gap-'+vt.type;
+          gl.setAttribute('aria-label', vt.label);
+          const dot=document.createElement('div');
+          dot.className='gap-dot';
+          dot.setAttribute('aria-hidden','true');
+          const nullSym=document.createElement('span');
+          nullSym.setAttribute('aria-hidden','true');
+          nullSym.textContent='∅ ';
+          const txt=document.createElement('span');
+          txt.className='gap-text';
+          txt.textContent=vt.label;
+          gl.appendChild(dot);
+          gl.appendChild(nullSym);
+          gl.appendChild(txt);
+          cell.appendChild(gl);
+        }
+      }
+      grid.appendChild(cell);
+    }
+  });
+}
+
+// ── RAKURS WHY-HERE DATA ──────────────────────────────────────────────────────
+const RAKURS_WHY = {
+  "Design Thinking":                  {entry:"empathy and problem framing as starting point",max:"reframes task flow at the workflow level",ill:"prototypes create closure without shifting root causes",harm:"forces compromise at architectural forks"},
+  "Human-Centered Design (HCD)":      {entry:"the human as primary object of design",max:"strongest impact at the interface contact layer",ill:"produces understanding without resolution",harm:"human-centricity displaces legitimacy of value logic"},
+  "Double Diamond":                   {entry:"process frame for diverge/converge cycles",max:"organises work rhythm across phases",ill:"endless Discovery — the loop never closes",harm:"process becomes authority — blocks solutions that bypass it"},
+  "Jobs To Be Done (JTBD)":           {entry:"motivation and context as entry point",max:"shifts understanding of what value means",ill:"interviews without reformulation of the problem",harm:"reframes architectural fork as a 'job to be done'"},
+  "Outcome-Driven Innovation (ODI)":  {entry:"measuring outcomes as starting point",max:"creates focus on measurable improvements",ill:"tables of metrics without management decisions",harm:"precise metrics of the wrong Value Model make a pivot irreversible"},
+  "Lean UX":                          {entry:"hypothesis/experiment cycle",max:"produces measurable effect at behaviour level",ill:"'we ship fast' — velocity replaces impact",harm:"A/B experiments substitute for necessary architectural decisions"},
+  "Lean (Flow)":                      {entry:"eliminating waste (muda) in the value stream",max:"restructures system around flow — shifts roles and priorities",ill:"flow is optimised but the value it delivers is wrong",harm:"a perfectly tuned system delivers the wrong thing — at high speed"},
+  "Design Sprint":                    {entry:"time-boxed solution framing",max:"produces a tangible prototype for validation",ill:"mockups create false closure",harm:"sprint validation locks commitment to the wrong direction"},
+  "Service Design":                   {entry:"end-to-end service as unit of design",max:"aligns front-stage and back-stage",ill:"service maps become posters, not instruments",harm:"redesigned all touchpoints — but the service itself is not needed"},
+  "Systems Thinking":                 {entry:"loops and dependencies as entry point",max:"shifts understanding of root causes",ill:"infinite diagrams without intervention",harm:"'it\'s systemic' removes individual accountability — no concrete decision is made"},
+  "Wardley Mapping":                  {entry:"value chain plus evolutionary stage",max:"surfaces strategic stakes and irreversibilities",ill:"map produced without decisions attached",harm:"strategy narrative used to justify UX degradation"},
+  "Business Model Canvas (BMC)":      {entry:"business logic as a structured construct",max:"aligns roles, resources, and revenue logic",ill:"'we filled in the canvas' — artefact replaces decision",harm:"processes not restructured to match the model"},
+  "Value Proposition Canvas (VPC)":   {entry:"pains, gains, and jobs as starting point",max:"clarifies what value actually means for the segment",ill:"'we described the value' without validation",harm:"imposes value framing on the wrong roles"},
+  "OKR / North Star":                 {entry:"formalising what success looks like",max:"shifts incentives and focus at organisational level",ill:"'we wrote OKRs' — format replaces alignment",harm:"KPI structure breaks process interdependencies"},
+  "Cynefin Framework":                {entry:"situational classification as entry point",max:"selects the right management mode for the context",ill:"classified the situation — then stopped",harm:"wrong mode applied — destroys workflow coherence"},
+  "TRIZ":                             {entry:"contradiction as the starting point",max:"resolves mutual exclusions — removes the trade-off",ill:"'40 principles' used as brainstorming rather than contradiction analysis",harm:"applied as pressure on people instead of work on structure"},
+  "Conflict-Driven Design / System Breakthrough": {entry:"contradiction already named — work begins from it",max:"often requires changing the value logic itself",ill:"'reformulated the conflict' without intervention",harm:"romanticising the conflict produces friction, not resolution"},
+  "Theory of Constraints (TOC)":      {entry:"flow constraint as entry point",max:"restructures the system around the bottleneck",ill:"improvements applied in the wrong place",harm:"accelerates the system without improving the value it delivers"},
+  "Goal-Directed Design":             {entry:"personas and goals as design entry point",max:"translates goals into UI structure",ill:"personas become artefacts, not analytical tools",harm:"personas lock in a wrong user model and block its revision"},
+  "Ten Types of Innovation":          {entry:"innovation landscape as diagnostic frame",max:"helps identify where and how to innovate",ill:"'classified our innovation' without making bets",harm:"cosmetic 'innovation' applied instead of structural change"},
+  "Shape Up":                         {entry:"delivery frame for scoped work",max:"manages scope and rhythm at workflow level",ill:"'process is clean' without value delivered",harm:"fast delivery creates commitments to users of the wrong product"},
+  "Mental Models (Indi Young)":       {entry:"map of user expectations and mental frameworks",max:"informs IA and navigation structure",ill:"mental model map becomes an end in itself",harm:"internal rules justified by citing the 'model'"},
+  "Kano Model":                       {entry:"feature classification by satisfaction type",max:"influences retention through expectation management",ill:"sorting features creates illusion of strategy",harm:"wrong classification: investing in satisfiers while basics are broken"},
+  "Behavioral Design (Fogg)":         {entry:"behavioural triggers as entry point",max:"maximum impact in habit formation",ill:"'tweaked the buttons' — surface change without behaviour shift",harm:"breaks trust and ethical perception"},
+  "Nudge Design":                     {entry:"choice architecture: shifts defaults and context without prohibition",max:"maximum impact in long-term habits and default decisions",ill:"changed the default — behaviour 'improved' but motivation is untouched",harm:"if perceived as manipulation — destroys trust irreversibly"},
+  "Contextual Design":                {entry:"field study and work models as entry point",max:"surfaces the actual workflow",ill:"data collected without synthesis",harm:"field data overloads design with irrelevant complexity"},
+  "Kaizen":                           {entry:"continuous incremental improvement",max:"builds a culture of improvement at organisational level",ill:"'improving' without direction — iteration without target",harm:"incrementally optimising an architectural fork"},
+  "Poka-Yoke":                        {entry:"error-proofing as design constraint",max:"reduces defects in the process",ill:"'removed errors' without touching the root cause",harm:"hides systemic accountability behind local fixes"},
+  "Ma (間)":                          {entry:"pause and negative space as design principle",max:"influences perception of tempo and meaning",ill:"applied as aesthetic minimalism rather than structural principle",harm:"'silence' masks missing process logic"},
+  "Wabi-Sabi":                        {entry:"value of imperfection and transience",max:"builds trust and human warmth at perception level",ill:"'made it rough' as a stylistic choice",harm:"used to justify low quality where reliability is required"},
+  "Ikigai (生き甲斐)":                {entry:"meaning as intersection of values",max:"addresses legitimacy of purpose",ill:"beautiful diagram instead of decisions",harm:"meaning is not translated into processes or structures"},
+  "Participatory Design (PD)":        {entry:"co-design with stakeholders as starting point",max:"maximum impact in adoption and legitimacy",ill:"'ran a workshop' — participation replaces decision",harm:"participation substitutes for strategy and accountability"},
+  "Activity Theory (UX/HCI)":         {entry:"activity and artefacts as unit of analysis",max:"explains structure of actions and tool use",ill:"modelling without intervention",harm:"theory legitimises an inconvenient UI as 'appropriate to the activity'"},
+  "Genchi Genbutsu (現地現物)":        {entry:"'go and see' — direct observation as entry point",max:"surfaces the reality of the process",ill:"observation without conclusions",harm:"becomes a control mechanism instead of learning"},
+  "5 Whys":                           {entry:"causal chain analysis as entry point",max:"often surfaces incentive structures and accountability",ill:"stops at the convenient cause",harm:"architectural fork 'explained' as a resource problem"},
+  "Inclusive Design":                 {entry:"edge users as diagnostic lens",max:"mature practice makes accessibility an architectural requirement",ill:"checklists without understanding context",harm:"compliance focus displaces understanding of real barriers"},
+  "Speculative / Critical Design":    {entry:"provocation of future possibilities",max:"shifts the frame of the conversation",ill:"'concepts' produced instead of decisions",harm:"demoralises teams without a path to action"},
+  "Value-Sensitive Design (VSD)":     {entry:"values as design requirements",max:"influences policy and systemic decisions",ill:"values stated as declarations without operationalisation",harm:"becomes moralising instead of systems design"},
+  "СМД-методология / ОДИ (Щедровицкий)": {entry:"working with frames and activity structures",max:"maximum impact — restructuring of practice",ill:"'thinking work' produced without decisions",harm:"detaches from the reality of the product"},
+  "Gestalt Principles":               {entry:"perceptual form as entry point",max:"maximum effect on readability and visual coherence",ill:"'aligned elements' — illusion of improvement",harm:"visually cleaner but process logic is worse"},
+  "Scenario-Based Design":            {entry:"task scenarios as design entry point",max:"surfaces sequential dependencies in interaction",ill:"scenarios produced without validation",harm:"scenarios serve the wrong value proposition"},
+  "Transition Design":                {entry:"systemic transitions as design scope",max:"sets the trajectory for long-term change",ill:"'roadmaps of the future' without implementation mechanics",harm:"no mechanism for operationalisation"},
+  "Biomimicry in Design":             {entry:"biological analogy as source of structural principle — not conflict resolution",max:"maximum impact on structural solutions where biological principle defines new architecture",ill:"bio-metaphors used as decoration",harm:"analogy used to justify illegitimate value logic"},
+  "Morphological Analysis":           {entry:"systematic expansion of solution space across parameters",max:"maximum impact when conflict parameters are already diagnosed — covers full solution space",ill:"matrix without selection criteria — options exist, decision does not",harm:"excess of options paralyses decision — team gets stuck in the space instead of choosing"},
+  "Heuristic Evaluation (Nielsen)":   {entry:"expert review of interface surface",max:"fast surface-level improvements",ill:"treating visible symptoms, not root causes",harm:"'heuristics' conflict with trust and user expectations"},
+  "Cognitive Walkthrough":            {entry:"step-by-step interaction verification",max:"catches gaps in sequential logic",ill:"'ran the walkthrough' without making changes",harm:"blames the user instead of the system"},
+  "Three Horizons (Foresight)":       {entry:"development horizons as planning frame",max:"helps select bets across time scales",ill:"'drew the horizons' — frame without decisions",harm:"distant horizon paralyses near-term decisions and accountability"},
+  "CDPA (Conflict-Driven Product Architecture)": {entry:"entry through identifying a structural contradiction, not a symptom",max:"maximum impact when it removes a mutual exclusion or exposes the limit of the Value Model",ill:"'found the conflict' ≠ changed the system; intellectual satisfaction without intervention",harm:"declaring everything a positional problem and ignoring levels 1–2"},
+};
+
+
+// ── PANEL ─────────────────────────────────────────────────────────────────────
+let lastFocusedChip=null;
+const panel=document.getElementById('panel');
+
+function openPanel(m, chipEl){
+  // deactivate previous
+  document.querySelectorAll('.chip[aria-pressed="true"]').forEach(c=>{
+    c.setAttribute('aria-pressed','false');
+  });
+  if(chipEl){
+    chipEl.setAttribute('aria-pressed','true');
+    lastFocusedChip=chipEl;
+  }
+
+  const g=GROUPS.find(x=>x.id===m.g);
+  const gc=g.color;
+
+  document.getElementById('p-group').textContent=g.label;
+  document.getElementById('p-group').style.color=lighten(gc,40);
+  document.getElementById('p-name').textContent=m.name;
+
+  // chips
+  const chipsEl=document.getElementById('p-chips');
+  chipsEl.innerHTML='';
+  (m.tags||[]).forEach(t=>{
+    const s=document.createElement('span');
+    s.className='panel-chip';
+    s.textContent=t;
+    chipsEl.appendChild(s);
+  });
+  if(m.cdpa){
+    const s=document.createElement('span');
+    s.className='panel-chip cdpa';
+    s.textContent='cdpa zone';
+    chipsEl.appendChild(s);
+  }
+  if(m.pf){
+    const s=document.createElement('span');
+    s.className='panel-chip pf';
+    s.textContent='process framework';
+    chipsEl.appendChild(s);
+  }
+  if(m.meta){
+    const s=document.createElement('span');
+    s.className='panel-chip meta';
+    s.textContent='◆ meta-method';
+    chipsEl.appendChild(s);
+  }
+
+  // body
+  const body=document.getElementById('p-body');
+  body.innerHTML='';
+
+  // Why here block — show only when a rakurs view is active
+  const whyData = RAKURS_WHY[m.name];
+  if(activeView !== 'natural' && whyData && whyData[activeView]){
+    const viewLabels = {entry:'Entry point',max:'Maximum impact',ill:'Illusion zone',harm:'Harm zone'};
+    const viewColors = {entry:'rgba(100,220,130,.7)',max:'rgba(80,160,255,.7)',ill:'rgba(255,200,50,.7)',harm:'rgba(230,80,70,.7)'};
+    const whySec = document.createElement('div');
+    whySec.className = 'panel-section';
+    whySec.style.marginBottom = '20px';
+    const whyLbl = document.createElement('div');
+    whyLbl.className = 'panel-section-label';
+    whyLbl.textContent = 'Why here · ' + viewLabels[activeView];
+    const whyCnt = document.createElement('div');
+    whyCnt.className = 'panel-section-content highlight';
+    whyCnt.style.borderLeftColor = viewColors[activeView];
+    whyCnt.style.fontSize = '12px';
+    whyCnt.textContent = whyData[activeView];
+    whySec.appendChild(whyLbl);
+    whySec.appendChild(whyCnt);
+    body.appendChild(whySec);
+    // divider
+    const div = document.createElement('div');
+    div.style.cssText = 'height:1px;background:rgba(255,255,255,.06);margin-bottom:16px;';
+    body.appendChild(div);
+  }
+
+  const sections=[
+    {label:'Description',    content:m.desc,       highlight:false},
+    {label:'Mechanism',      content:m.mechanism,  highlight:true},
+    {label:'When to use',    content:m.when},
+    {label:'When NOT to use',content:m.whenNot},
+    {label:'Uncertainty type',content:m.uncertainty},
+    {label:'Output',         content:m.output},
+    {label:'Limitations',    content:m.limits},
+  ];
+
+  sections.forEach(s=>{
+    if(!s.content) return;
+    const sec=document.createElement('div');
+    sec.className='panel-section';
+    const lbl=document.createElement('div');
+    lbl.className='panel-section-label';
+    lbl.textContent=s.label;
+    const cnt=document.createElement('div');
+    cnt.className='panel-section-content'+(s.highlight?' highlight':'');
+    if(s.highlight) cnt.style.borderLeftColor=lighten(gc,20);
+    cnt.textContent=s.content;
+    sec.appendChild(lbl);
+    sec.appendChild(cnt);
+    body.appendChild(sec);
+  });
+
+  panel.classList.add('open');
+  panel.setAttribute('aria-hidden','false');
+
+  // Move focus to close button
+  requestAnimationFrame(()=>{
+    document.getElementById('panel-close').focus();
+  });
+}
+
+function closePanel(){
+  panel.classList.remove('open');
+  panel.setAttribute('aria-hidden','true');
+  document.querySelectorAll('.chip[aria-pressed="true"]').forEach(c=>{
+    c.setAttribute('aria-pressed','false');
+  });
+  // Return focus to the chip that opened the panel
+  if(lastFocusedChip){
+    lastFocusedChip.focus();
+    lastFocusedChip=null;
+  }
+}
+
+document.getElementById('panel-close').addEventListener('click',closePanel);
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closePanel();
+});
+document.getElementById('map-grid').addEventListener('click',e=>{
+  if(!e.target.closest('.chip')) closePanel();
+});
+
+// ── FILTERS ───────────────────────────────────────────────────────────────────
+let activeFilter = 'all'; // track current applicability filter
+
+function toggleGroup(gid){
+  if(activeGroups.has(gid)) activeGroups.delete(gid);
+  else activeGroups.add(gid);
+  // update legend button aria-pressed
+  document.querySelectorAll('.legend-item').forEach(el=>{
+    const id=parseInt(el.dataset.group);
+    el.setAttribute('aria-pressed', activeGroups.has(id) ? 'true' : 'false');
+  });
+  applyDim(null); // re-apply current filter
+}
+
+function applyDim(fn){
+  document.querySelectorAll('.chip').forEach(chip=>{
+    const name=chip.dataset.name;
+    const m=METHODS.find(x=>x.name===name);
+    let ok;
+    if(fn){
+      ok=fn(m);
+    } else {
+      // Apply both group filter AND active applicability filter
+      const groupOk=activeGroups.has(m.g);
+      let digitalOk=true;
+      if(activeFilter==='native')    digitalOk=m.digital==='native';
+      if(activeFilter==='adaptable') digitalOk=m.digital==='adaptable';
+      ok=groupOk&&digitalOk;
+    }
+    if(ok){
+      chip.removeAttribute('aria-disabled');
+      chip.tabIndex=0;
+    } else {
+      chip.setAttribute('aria-disabled','true');
+      chip.tabIndex=-1;
+    }
+  });
+}
+
+document.querySelectorAll('.filter-btn:not(.view-btn)').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn:not(.view-btn)').forEach(b=>b.setAttribute('aria-pressed','false'));
+    btn.setAttribute('aria-pressed','true');
+    activeFilter=btn.dataset.filter;
+    applyDim(null);
+  });
+});
+
+// ── VIEW (RAKURS) TOGGLE ──────────────────────────────────────────────────────
+let activeView = 'natural';
+const VIEW_HINTS = {
+  natural: '',
+  entry:   'Where each method is a natural starting point',
+  max:     'Where each method has maximum impact',
+  ill:     'Where methods create a false sense of progress',
+  harm:    'Where methods cause structural damage when misapplied',
+};
+
+document.querySelectorAll('.view-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.view-btn').forEach(b=>b.setAttribute('aria-pressed','false'));
+    btn.setAttribute('aria-pressed','true');
+    activeView = btn.dataset.view;
+    document.getElementById('view-hint').textContent = VIEW_HINTS[activeView];
+    buildGrid();
+    applyDim(null);
+  });
+});
+
+// ── UTILS ──────────────────────────────────────────────────────────────────────
+function rgba(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return `rgba(${r},${g},${b},${a})`;}
+function lighten(hex,a){return `rgb(${Math.min(255,parseInt(hex.slice(1,3),16)+a)},${Math.min(255,parseInt(hex.slice(3,5),16)+a)},${Math.min(255,parseInt(hex.slice(5,7),16)+a)})`;}
+
+buildGrid();
+
+// ── NARRATIVE MODE ─────────────────────────────────────────────────────────
+const _mode = new URLSearchParams(window.location.search).get('mode');
+if(_mode === 'narrative'){
+  document.body.classList.add('narrative');
+  document.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', e=>{ e.stopImmediatePropagation(); }, true);
+  });
+}
+</script>
+</body>
+</html>

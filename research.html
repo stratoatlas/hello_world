@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research — StratoAtlas</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#080b10;
+  --bg2:#0d1117;
+  --bg3:#131820;
+  --text:#e2e6ef;
+  --text2:#7a8699;
+  --text3:#8090a0;
+  --accent:#c0392b;
+  --accent-l:#e07060;
+  --line:rgba(255,255,255,.07);
+  --line2:rgba(255,255,255,.04);
+  --container:1200px;
+  --gap:24px;
+}
+
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Geologica',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:linear-gradient(to bottom,rgba(8,11,16,.97) 60%,transparent);
+}
+.nav-inner{
+  max-width:var(--container);margin:0 auto;
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
+  letter-spacing:.5px;color:#fff;text-decoration:none;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.current{color:var(--text);}
+.nav-lang{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;
+  border:1px solid var(--line);padding:4px 10px;border-radius:2px;transition:all .2s;
+}
+.nav-lang:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
+
+/* ── LAYOUT ── */
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 48px;}
+.section{padding:96px 0;}
+.section.full-bleed{background:var(--bg2);}
+
+/* column helpers */
+.col-7{max-width:calc(7/12 * (var(--container) - 96px));}
+.col-8{max-width:calc(8/12 * (var(--container) - 96px));}
+
+/* ── PAGE HEADER ── */
+#pageheader{
+  padding-top:160px;padding-bottom:80px;
+  border-bottom:1px solid var(--line);
+}
+.page-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:32px;
+}
+.page-title{
+  font-size:clamp(42px,6vw,72px);font-weight:800;
+  letter-spacing:-2px;color:#fff;line-height:1;
+  margin-bottom:32px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.page-intro{
+  font-size:18px;font-weight:300;line-height:1.9;
+  color:var(--text2);max-width:640px;margin-bottom:24px;
+}
+.page-key{
+  font-size:17px;font-weight:400;
+  color:var(--text);
+  font-style:italic;
+}
+
+/* ── SECTION LABELS ── */
+.sec-num{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:16px;
+}
+.sec-title{
+  font-size:clamp(26px,3vw,38px);font-weight:700;
+  letter-spacing:-1px;color:#fff;
+  margin-bottom:24px;line-height:1.15;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.sec-intro{
+  font-size:16px;font-weight:300;line-height:1.85;
+  color:var(--text2);max-width:600px;margin-bottom:48px;
+}
+
+/* ── INVESTIGATION AREAS ── */
+.inv-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:2px;
+}
+.inv-card{
+  background:var(--bg3);
+  padding:32px 28px 36px;
+  border-top:2px solid var(--line);
+  transition:border-color .2s;
+}
+.inv-card:hover{border-color:rgba(255,255,255,.15);}
+.inv-name{
+  font-size:17px;font-weight:700;
+  color:#fff;margin-bottom:12px;letter-spacing:-.2px;
+}
+.inv-desc{
+  font-size:14px;font-weight:300;
+  line-height:1.75;color:var(--text2);
+}
+
+/* ── OPEN QUESTIONS ── */
+.oq-list{
+  display:flex;flex-direction:column;gap:0;
+}
+.oq-item{
+  display:flex;align-items:baseline;gap:20px;
+  padding:24px 0;
+  border-bottom:1px solid var(--line);
+}
+.oq-item:first-child{border-top:1px solid var(--line);}
+.oq-arrow{
+  color:var(--accent);font-size:14px;
+  flex-shrink:0;font-family:'DM Mono',monospace;
+  margin-top:2px;
+}
+.oq-text{
+  font-size:clamp(16px,2vw,20px);
+  font-weight:300;line-height:1.6;
+  color:var(--text2);
+}
+.oq-text.last{color:var(--text);font-style:italic;}
+
+/* ── SIGNALS ── */
+.signals-intro{
+  font-size:16px;font-weight:300;line-height:1.85;
+  color:var(--text2);max-width:600px;margin-bottom:48px;
+}
+.signals-list{
+  display:flex;flex-direction:column;gap:2px;
+  max-width:760px;
+}
+.signal-item{
+  display:flex;align-items:flex-start;gap:20px;
+  padding:20px 24px;
+  background:var(--bg3);
+}
+.signal-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--accent);flex-shrink:0;margin-top:8px;
+}
+.signal-text{
+  font-size:16px;font-weight:300;
+  line-height:1.7;color:var(--text2);
+}
+.signal-text strong{color:var(--text);font-weight:400;}
+
+/* ── CASE LIBRARY ── */
+.library-status{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--text3);
+  margin-bottom:48px;
+}
+.status-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#27ae60;
+  box-shadow:0 0 8px rgba(39,174,96,.5);
+  animation:pulse 2s ease infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:1;}
+  50%{opacity:.4;}
+}
+.library-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+}
+.lib-card{
+  background:var(--bg3);
+  padding:28px 24px 32px;
+  position:relative;
+}
+.lib-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}
+.lib-card.observed::before{background:#3498db;}
+.lib-card.hypothesis::before{background:#e67e22;}
+.lib-card.missing::before{background:var(--accent);}
+
+.lib-tag{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.lib-card.observed .lib-tag{color:#3498db;}
+.lib-card.hypothesis .lib-tag{color:#e67e22;}
+.lib-card.missing .lib-tag{color:var(--accent-l);}
+
+.lib-title{
+  font-size:16px;font-weight:600;
+  color:#fff;margin-bottom:12px;
+}
+.lib-body{
+  font-size:13px;font-weight:300;
+  line-height:1.7;color:var(--text2);
+}
+
+/* ── BRING A CASE ── */
+#bringcase{padding:96px 0 120px;}
+.bring-intro{
+  font-size:18px;font-weight:300;line-height:1.9;
+  color:var(--text2);max-width:620px;margin-bottom:56px;
+}
+.bring-intro strong{color:var(--text);font-weight:400;}
+
+.bring-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:var(--gap);
+  max-width:860px;
+  margin-bottom:56px;
+}
+.bring-col-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:24px;
+}
+.bring-items{
+  display:flex;flex-direction:column;gap:0;
+}
+.bring-item{
+  display:flex;align-items:baseline;gap:14px;
+  padding:14px 0;
+  border-bottom:1px solid var(--line2);
+  font-size:15px;font-weight:300;
+  line-height:1.6;color:var(--text2);
+}
+.bring-item:first-child{border-top:1px solid var(--line2);}
+.bring-dash{
+  color:var(--text3);font-family:'DM Mono',monospace;
+  font-size:12px;flex-shrink:0;
+}
+
+.contact-block{
+  border-top:1px solid var(--line);
+  padding-top:48px;
+  max-width:560px;
+}
+.contact-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:24px;
+}
+.contact-email{
+  font-size:clamp(20px,2.5vw,28px);font-weight:400;
+  color:#fff;text-decoration:none;
+  letter-spacing:-.3px;
+  border-bottom:1px solid rgba(255,255,255,.15);
+  padding-bottom:4px;
+  transition:border-color .2s;
+  display:inline-block;margin-bottom:24px;
+}
+.contact-email:hover{border-color:var(--accent);}
+.contact-note{
+  font-size:14px;font-weight:300;
+  line-height:1.7;color:var(--text3);
+  font-family:'DM Mono',monospace;
+  letter-spacing:.3px;
+}
+.contact-note strong{color:var(--text2);font-weight:400;}
+
+/* ── REVEAL ── */
+.reveal{
+  opacity:1;transform:none;
+}
+.reveal-delay{}
+
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">StratoAtlas</a>
+    <ul class="nav-links">
+      <li><a href="map.html">Map</a></li>
+      <li><a href="foundations.html">Foundations</a></li>
+      <li><a href="research.html" class="current">Research</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div id="pageheader">
+  <div class="container">
+    <div class="page-label">Open Research</div>
+    <h1 class="page-title">The investigation<br>is active.</h1>
+    <p class="page-intro">
+      StratoAtlas is not a finished framework.<br>
+      It is an active investigation into where methods stop working,
+      where contradictions become structural,
+      and what lies in the zones the field has not yet learned to work with.
+    </p>
+    <p class="page-key">Some of those questions require live cases.</p>
+  </div>
+</div>
+
+<!-- S1: WHAT IS UNDER INVESTIGATION -->
+<section class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">01</div>
+      <h2 class="sec-title">What is under investigation</h2>
+      <p class="sec-intro">
+        Four areas where the current model is incomplete
+        and where live cases carry the most weight.
+      </p>
+    </div>
+    <div class="inv-grid reveal reveal-delay">
+      <div class="inv-card">
+        <div class="inv-name">Method illusion</div>
+        <p class="inv-desc">Where methods produce artifacts — documents, workshops, insights — without moving the system. The difference between visible activity and actual structural change.</p>
+      </div>
+      <div class="inv-card">
+        <div class="inv-name">Harm zones</div>
+        <p class="inv-desc">Where methods reinforce the problem they were meant to solve. Applied at the wrong system level, correct practice produces incorrect outcomes.</p>
+      </div>
+      <div class="inv-card">
+        <div class="inv-name">Productive contradictions</div>
+        <p class="inv-desc">Which contradictions drive product systems forward — and which dissipate energy. The diagnostic distinction that determines whether a contradiction should be resolved or maintained.</p>
+      </div>
+      <div class="inv-card">
+        <div class="inv-name">Architectural dead ends</div>
+        <p class="inv-desc">Recurring structural patterns in B2B product systems where standard tools stop helping. What these situations have in common and what marks them before they become irreversible.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S2: OPEN QUESTIONS -->
+<section class="section full-bleed">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">02</div>
+      <h2 class="sec-title">Open questions</h2>
+      <p class="sec-intro">
+        These are not rhetorical questions.
+        They are the actual gaps in the current model.
+      </p>
+    </div>
+    <div class="oq-list col-8 reveal reveal-delay">
+      <div class="oq-item">
+        <span class="oq-arrow">→</span>
+        <p class="oq-text">What lives in the empty zones of the map?</p>
+      </div>
+      <div class="oq-item">
+        <span class="oq-arrow">→</span>
+        <p class="oq-text">Where exactly does illusion turn into harm?</p>
+      </div>
+      <div class="oq-item">
+        <span class="oq-arrow">→</span>
+        <p class="oq-text">Which contradictions in product systems are productive rather than destructive?</p>
+      </div>
+      <div class="oq-item">
+        <span class="oq-arrow">→</span>
+        <p class="oq-text">How can a productive contradiction be maintained over time without collapsing into routine?</p>
+      </div>
+      <div class="oq-item">
+        <span class="oq-arrow">→</span>
+        <p class="oq-text">What marks a real architectural fork before it becomes irreversible?</p>
+      </div>
+      <div class="oq-item">
+        <span class="oq-arrow">→</span>
+        <p class="oq-text last">Which live cases can falsify or refine the current model?</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S3: SIGNALS -->
+<section class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">03</div>
+      <h2 class="sec-title">Signals of a relevant case</h2>
+      <p class="signals-intro">
+        Not every stuck situation belongs here.
+        These signals suggest your case may be structurally relevant
+        to the current investigation.
+      </p>
+    </div>
+    <div class="signals-list reveal reveal-delay">
+      <div class="signal-item">
+        <div class="signal-dot"></div>
+        <p class="signal-text">The team applies <strong>well-known methods correctly</strong> — but the system does not move.</p>
+      </div>
+      <div class="signal-item">
+        <div class="signal-dot"></div>
+        <p class="signal-text">Visible progress accumulates, but <strong>core outcomes remain unchanged.</strong></p>
+      </div>
+      <div class="signal-item">
+        <div class="signal-dot"></div>
+        <p class="signal-text">New features create <strong>additional conflicts</strong> instead of resolving the original ones.</p>
+      </div>
+      <div class="signal-item">
+        <div class="signal-dot"></div>
+        <p class="signal-text">The problem appears to sit <strong>at the architectural level</strong> — but no current method reaches it.</p>
+      </div>
+      <div class="signal-item">
+        <div class="signal-dot"></div>
+        <p class="signal-text">Multiple trade-offs <strong>repeat in different forms</strong> across the product over time.</p>
+      </div>
+      <div class="signal-item">
+        <div class="signal-dot"></div>
+        <p class="signal-text">The team cannot tell whether the contradiction <strong>should be resolved or maintained.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S4: CASE LIBRARY -->
+<section class="section full-bleed">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">04</div>
+      <h2 class="sec-title">Case library</h2>
+      <div class="library-status">
+        <div class="status-dot"></div>
+        In progress
+      </div>
+    </div>
+    <div class="library-grid reveal reveal-delay">
+      <div class="lib-card observed">
+        <div class="lib-tag">Observed patterns</div>
+        <div class="lib-title">Recurring structures</div>
+        <p class="lib-body">
+          Structural patterns already seen across multiple cases:
+          method-level illusion in B2B product teams,
+          harm produced by process optimisation at the wrong system level,
+          architectural forks disguised as feature decisions.
+        </p>
+      </div>
+      <div class="lib-card hypothesis">
+        <div class="lib-tag">Working hypotheses</div>
+        <div class="lib-title">Interpretations under testing</div>
+        <p class="lib-body">
+          The distinction between productive and dissipative contradictions
+          as a diagnostic category. The role of positional assumptions
+          in creating methodological deadlocks that methods cannot reach.
+        </p>
+      </div>
+      <div class="lib-card missing">
+        <div class="lib-tag">Missing evidence</div>
+        <div class="lib-title">What the corpus still lacks</div>
+        <p class="lib-body">
+          Hardware and regulated-industry cases.
+          Long B2B enterprise cycles.
+          Cases where a productive contradiction was successfully maintained.
+          Non-US geographic coverage.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S5: BRING A CASE -->
+<section id="bringcase">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num">05</div>
+      <h2 class="sec-title">Bring a case</h2>
+      <p class="bring-intro">
+        If your team is dealing with a situation that seems structurally stuck,
+        it may already belong to this investigation.<br><br>
+        <strong>You are not contacting a service.
+        You are entering an investigation.</strong>
+      </p>
+    </div>
+
+    <div class="bring-grid reveal reveal-delay">
+      <div>
+        <div class="bring-col-label">What to send</div>
+        <div class="bring-items">
+          <div class="bring-item">
+            <span class="bring-dash">—</span>
+            <span>Short description of the situation</span>
+          </div>
+          <div class="bring-item">
+            <span class="bring-dash">—</span>
+            <span>What methods have already been tried</span>
+          </div>
+          <div class="bring-item">
+            <span class="bring-dash">—</span>
+            <span>What keeps repeating</span>
+          </div>
+          <div class="bring-item">
+            <span class="bring-dash">—</span>
+            <span>What feels unresolved at a structural level</span>
+          </div>
+          <div class="bring-item">
+            <span class="bring-dash">—</span>
+            <span>Whether the case can be discussed openly or anonymously</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="bring-col-label">What to expect</div>
+        <div class="bring-items">
+          <div class="bring-item">
+            <span class="bring-dash">—</span>
+            <span>If the case fits the current research focus — a response with next steps</span>
+          </div>
+          <div class="bring-item">
+            <span class="bring-dash">—</span>
+            <span>Mapping of the situation against the current model</span>
+          </div>
+          <div class="bring-item">
+            <span class="bring-dash">—</span>
+            <span>If the fit holds — a structured conversation</span>
+          </div>
+          <div class="bring-item">
+            <span class="bring-dash">—</span>
+            <span>Research dialogue, not a consulting engagement</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-block reveal">
+      <div class="contact-label">Contact</div>
+      <a href="/cdn-cgi/l/email-protection#6b190e180e0a1908032b181f190a1f040a1f070a1845080406" class="contact-email"><span class="__cf_email__" data-cfemail="ff8d9a8c9a9e8d9c97bf8c8b8d9e8b909e8b939e8cd19c9092">[email&#160;protected]</span></a>
+      <p class="contact-note">
+        <strong>Anonymous cases are welcome.</strong><br>
+        All cases are treated as research material, not business leads.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionOb
