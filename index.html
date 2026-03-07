@@ -300,7 +300,10 @@ nav{
 .map-frame-wrap{
   width:100%;height:580px;
   position:relative;overflow:hidden;
+  padding:0 48px;
+  box-sizing:border-box;
 }
+.map-frame-wrap > *{border-radius:4px;overflow:hidden;}
 .map-frame-wrap iframe{
   width:100%;height:100%;border:none;
   /* pointer-events enabled for hover — narrative mode hides controls via URL param */
@@ -672,7 +675,7 @@ nav{
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><img src="assets/logo.svg" alt="StratoAtlas" height="28" onerror="this.style.display='none';this.nextSibling.style.display='inline'"><span style="display:none">StratoAtlas</span></a>
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:10px;"><img src="assets/logo.svg" alt="" height="28" onerror="this.style.display='none'"><span>StratoAtlas</span></a>
     <ul class="nav-links">
       <li><a href="map.html">Map</a></li>
       <li><a href="foundations.html">Foundations</a></li>
@@ -1071,5 +1074,21 @@ function copyEmail(btn){
     setTimeout(()=>tip.classList.remove('show'), 1800);
   });
 }</script>
+
+<footer class="site-footer">
+  <div class="footer-left">
+    <a href="index.html">StratoAtlas</a>
+    &nbsp;·&nbsp;
+    stratoatlas.com
+  </div>
+  <nav class="footer-social">
+    <a href="https://x.com/stratoatlas" target="_blank" rel="noopener">X / Twitter</a>
+    <a href="https://linkedin.com/company/stratoatlas" target="_blank" rel="noopener">LinkedIn</a>
+    <div class="footer-copy-wrap">
+      <button class="footer-email-btn" onclick="copyEmail(this)">research[at]stratoatlas.com</button>
+      <div class="footer-copied">Copied</div>
+    </div>
+  </nav>
+</footer>
 </body>
 </html>
