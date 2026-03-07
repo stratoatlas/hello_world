@@ -306,6 +306,47 @@ nav{
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
+
+  /* ── FOOTER ── */
+  .site-footer{
+    border-top:1px solid var(--line);
+    padding:40px 48px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:32px;flex-wrap:wrap;
+    background:var(--bg);
+  }
+  .footer-left{
+    font-family:'DM Mono',monospace;font-size:11px;
+    color:var(--text3);letter-spacing:.5px;
+  }
+  .footer-left a{color:var(--text3);text-decoration:none;}
+  .footer-left a:hover{color:var(--text);}
+  .footer-social{display:flex;gap:24px;align-items:center;}
+  .footer-social a{
+    font-family:'DM Mono',monospace;font-size:11px;
+    letter-spacing:1px;text-transform:uppercase;
+    color:var(--text3);text-decoration:none;
+    transition:color .2s;
+  }
+  .footer-social a:hover{color:var(--text);}
+  .footer-copy-wrap{position:relative;}
+  .footer-email-btn{
+    font-family:'DM Mono',monospace;font-size:11px;
+    letter-spacing:.5px;color:var(--text3);
+    background:none;border:none;cursor:pointer;padding:0;
+    transition:color .2s;
+  }
+  .footer-email-btn:hover{color:var(--text);}
+  .footer-copied{
+    position:absolute;bottom:calc(100% + 6px);left:50%;
+    transform:translateX(-50%);
+    font-family:'DM Mono',monospace;font-size:10px;
+    background:var(--bg3);color:var(--text);
+    padding:4px 10px;border-radius:2px;
+    white-space:nowrap;pointer-events:none;
+    opacity:0;transition:opacity .2s;
+  }
+  .footer-copied.show{opacity:1;}
 </style>
 </head>
 <body>
@@ -313,7 +354,7 @@ nav{
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">StratoAtlas</a>
+    <a href="index.html" class="nav-logo"><img src="assets/logo.svg" alt="StratoAtlas" height="28" onerror="this.style.display='none';this.nextSibling.style.display='inline'"><span style="display:none">StratoAtlas</span></a>
     <ul class="nav-links">
       <li><a href="map.html">Map</a></li>
       <li><a href="foundations.html">Foundations</a></li>
@@ -561,7 +602,10 @@ nav{
 
     <div class="contact-block reveal">
       <div class="contact-label">Contact</div>
-      <a href="/cdn-cgi/l/email-protection#6b190e180e0a1908032b181f190a1f040a1f070a1845080406" class="contact-email"><span class="__cf_email__" data-cfemail="ff8d9a8c9a9e8d9c97bf8c8b8d9e8b909e8b939e8cd19c9092">[email&#160;protected]</span></a>
+      <div class="footer-copy-wrap" style="margin-bottom:16px;">
+        <button class="contact-email footer-email-btn" onclick="copyEmail(this)">research[at]stratoatlas.com</button>
+        <div class="footer-copied">Copied</div>
+      </div>
       <p class="contact-note">
         <strong>Anonymous cases are welcome.</strong><br>
         All cases are treated as research material, not business leads.
@@ -571,5 +615,36 @@ nav{
 </section>
 
 
+
+<footer class="site-footer">
+  <div class="footer-left">
+    <a href="index.html">StratoAtlas</a>
+    &nbsp;·&nbsp;
+    stratoatlas.com
+  </div>
+  <nav class="footer-social">
+    <a href="https://x.com/stratoatlas" target="_blank" rel="noopener">X / Twitter</a>
+    <a href="https://linkedin.com/company/stratoatlas" target="_blank" rel="noopener">LinkedIn</a>
+    <div class="footer-copy-wrap">
+      <button class="footer-email-btn" onclick="copyEmail(this)">research[at]stratoatlas.com</button>
+      <div class="footer-copied">Copied</div>
+    </div>
+  </nav>
+</footer>
+
+<script>
+function copyEmail(btn){
+  navigator.clipboard.writeText('research@stratoatlas.com').then(()=>{
+    const tip = btn.nextElementSibling;
+    tip.classList.add('show');
+    setTimeout(()=>tip.classList.remove('show'), 1800);
+  });
+}
 const reveals = document.querySelectorAll('.reveal');
-const io = new IntersectionOb
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.1});
+reveals.forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
