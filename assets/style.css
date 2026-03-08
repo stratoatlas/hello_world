@@ -405,10 +405,15 @@ nav {
   background: var(--bg2);
   padding: 44px 36px 40px;
   text-decoration: none; display: flex; flex-direction: column;
-  transition: background var(--t), border-color var(--t);
+  transition: background var(--t), border-color var(--t), border-top-color var(--t);
   border: 1px solid transparent;
+  border-top: 2px solid rgba(192,57,43,.45);
 }
-.entry-card:hover { background: var(--bg3); border-color: var(--line); }
+.entry-card:hover {
+  background: var(--bg3);
+  border-color: var(--line);
+  border-top-color: var(--accent-l);
+}
 .entry-tag {
   font-family: 'DM Mono', monospace;
   font-size: 10px; letter-spacing: 2px; text-transform: uppercase;

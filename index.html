@@ -150,6 +150,12 @@
   color:var(--text2);font-weight:300;
   font-size:clamp(17px,2vw,22px);
 }
+.nf-body{
+  font-size:18px;font-weight:300;
+  line-height:2.0;color:var(--text2);
+  margin-bottom:48px;
+}
+.nf-body strong{color:var(--text);font-weight:500;}
 
 #mapintro{min-height:50vh;}
 .built{
@@ -277,8 +283,12 @@
 .outcome-title{
   font-weight:700;
   letter-spacing:-.3px;
-  margin-bottom:16px;
+  margin-bottom:20px;
   line-height:1.3;
+}
+.outcome-body{
+  font-size:15px;font-weight:300;
+  line-height:1.9;color:var(--text2);
 }
 
 #discovery2{min-height:70vh;}
@@ -293,6 +303,11 @@
   color:#fff;line-height:1.15;
   margin-bottom:40px;
   font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.void-body{
+  font-size:17px;font-weight:300;
+  line-height:2.0;color:var(--text2);
+  margin-bottom:40px;
 }
 .void-key{
   font-size:20px;font-weight:500;
@@ -464,10 +479,23 @@
   }
   .signal-card{
     background:var(--bg2);padding:28px 32px 32px;
-    text-decoration:none;display:block;
+    text-decoration:none;display:flex;
+    flex-direction:column;
     transition:background .2s;min-height:140px;
+    border-left:2px solid transparent;
   }
-  .signal-card:hover{background:var(--bg3);}
+  .signal-card:hover{
+    background:var(--bg3);
+    border-left-color:var(--accent);
+  }
+  .signal-read{
+    margin-top:auto;padding-top:20px;
+    font-family:'DM Mono',monospace;font-size:10px;
+    letter-spacing:1px;text-transform:uppercase;
+    color:var(--accent-l);opacity:0;
+    transition:opacity .2s;
+  }
+  .signal-card:hover .signal-read{opacity:1;}
   .signal-type{
     font-family:'DM Mono',monospace;font-size:10px;
     letter-spacing:2px;text-transform:uppercase;
@@ -484,6 +512,7 @@
   .signal-empty{
     background:var(--bg2);padding:28px 32px;
     min-height:140px;display:flex;align-items:center;
+    opacity:.35;cursor:default;
   }
   .signal-empty-text{
     font-family:'DM Mono',monospace;font-size:11px;
@@ -606,7 +635,9 @@
         <div class="nf-we">We looked.</div>
         <p class="nf-body">
           The maps of individual methods exist.<br>
-          Each describes its own boundaries — <strong>from the inside.</strong><br><br>
+          Each describes its own boundaries — <strong>from the inside.</strong>
+        </p>
+        <p class="nf-body" style="margin-top:24px;">
           Cynefin classifies situations. Wardley maps value chains.
           Every framework knows where it stops working.
           None of them shows what works where the others stop.
@@ -714,7 +745,9 @@
         <h2 class="void-headline">The map revealed<br>empty zones.</h2>
         <p class="void-body">
           Not missing entries in a catalog.<br>
-          Areas the field has not yet learned to work with.<br><br>
+          Areas the field has not yet learned to work with.
+        </p>
+        <p class="void-body" style="margin-top:0;margin-bottom:40px;">
           What lies there is still unknown.
         </p>
         <div class="void-key">
@@ -965,6 +998,7 @@ function copyEmail(btn){
         <div class="signal-type">${typeLabel[item.type] || item.type} ${item.num}</div>
         <div class="signal-title">${item.title}</div>
         <div class="signal-date">${item.date}</div>
+        <div class="signal-read">Read →</div>
       `;
       grid.appendChild(card);
     });
