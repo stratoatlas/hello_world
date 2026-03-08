@@ -82,7 +82,7 @@
 }
 .person-bio strong{color:var(--text);font-weight:400;}
 
-#contact{padding:72px 0 96px;}
+#contact{padding:64px 0 80px;border-top:1px solid var(--line);}
 .contact-label{
   font-family:'DM Mono',monospace;font-size:11px;
   letter-spacing:2px;text-transform:uppercase;
@@ -111,7 +111,7 @@
 
   
   .timeline-section{
-    padding:80px 0;border-top:1px solid var(--line);
+    padding:96px 0 80px;border-top:1px solid var(--line);
   }
   .tl-label{
     font-family:'DM Mono',monospace;font-size:11px;
@@ -193,20 +193,27 @@
   background:rgba(255,255,255,.04);
 }
 
+.section-bridge{
+  background:var(--bg2);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:56px 0;
+  margin-top:0;
+}
 .bridge-inner{
   display:flex;align-items:flex-start;gap:32px;
 }
 .bridge-line{
-  width:2px;background:var(--accent);flex-shrink:0;align-self:stretch;
+  width:2px;min-height:60px;background:var(--accent);flex-shrink:0;
 }
 .bridge-label{
   font-family:'DM Mono',monospace;font-size:10px;
   letter-spacing:2px;text-transform:uppercase;
-  color:var(--accent);margin-bottom:10px;
+  color:var(--accent);margin-bottom:12px;
 }
 .bridge-text{
-  font-size:14px;font-weight:300;
-  color:var(--text2);line-height:1.8;
+  font-size:15px;font-weight:300;
+  color:var(--text2);line-height:1.85;
 }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -375,7 +382,7 @@
         they are the research program.
       </p>
 
-      <div class="person-block">
+      <div class="person-block" style="margin-bottom:16px;">
         <div class="person-name">Roman Kir</div>
         <div class="person-role">Product architect · Researcher</div>
         <p class="person-bio">
@@ -386,6 +393,32 @@
           drawing from systems thinking, TRIZ, and cybernetics.
           StratoAtlas is the visible part of that investigation.
         </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="container">
+    <div class="essay">
+      <div class="contact-label">Presence</div>
+      <div class="contact-links">
+        <a href="https://linkedin.com/in/romankir" class="contact-link" target="_blank" rel="noopener">
+          <span class="contact-link-type">LinkedIn</span>
+          <span>Roman Kir</span>
+        </a>
+        <a href="https://romankir.com" class="contact-link" target="_blank" rel="noopener">
+          <span class="contact-link-type">Web</span>
+          <span>romankir.com</span>
+        </a>
+        <div class="footer-copy-wrap">
+          <button onclick="copyEmail(this)" class="contact-link" style="display:flex;align-items:center;gap:16px;background:none;border:none;cursor:pointer;padding:0;width:100%;text-align:left;color:var(--text2);font-family:'Geologica',sans-serif;font-size:17px;font-weight:300;">
+            <span class="contact-link-type">Email</span>
+            <span>research[at]stratoatlas.com</span>
+          </button>
+          <div class="footer-copied">Copied</div>
+        </div>
       </div>
     </div>
   </div>
@@ -502,31 +535,6 @@
   </div>
 </div>
 
-<!-- CONTACT -->
-<div id="contact">
-  <div class="container">
-    <div class="essay">
-      <div class="contact-label">Presence</div>
-      <div class="contact-links">
-        <a href="https://linkedin.com/in/romankir" class="contact-link" target="_blank" rel="noopener">
-          <span class="contact-link-type">LinkedIn</span>
-          <span>Roman Kir</span>
-        </a>
-        <a href="https://romankir.com" class="contact-link" target="_blank" rel="noopener">
-          <span class="contact-link-type">Web</span>
-          <span>romankir.com</span>
-        </a>
-        <div class="footer-copy-wrap">
-          <button onclick="copyEmail(this)" class="contact-link" style="display:flex;align-items:center;gap:16px;background:none;border:none;cursor:pointer;padding:0;width:100%;text-align:left;color:var(--text2);font-family:'Geologica',sans-serif;font-size:17px;font-weight:300;">
-            <span class="contact-link-type">Email</span>
-            <span>research[at]stratoatlas.com</span>
-          </button>
-          <div class="footer-copied">Copied</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 <script>
