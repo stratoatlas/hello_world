@@ -183,14 +183,15 @@
   letter-spacing:.5px;color:var(--text2);
   text-decoration:none;
   padding:6px 14px;
-  border:1px solid rgba(255,255,255,.12);
+  border:1px solid rgba(192,57,43,.25);
   border-radius:2px;
+  background:rgba(192,57,43,.04);
   transition:color .2s,border-color .2s,background .2s;
 }
 .toc-links a:hover{
   color:var(--text);
-  border-color:rgba(255,255,255,.3);
-  background:rgba(255,255,255,.04);
+  border-color:rgba(192,57,43,.55);
+  background:rgba(192,57,43,.09);
 }
 
 .section-bridge{
@@ -215,6 +216,17 @@
   font-size:15px;font-weight:300;
   color:var(--text2);line-height:1.85;
 }
+
+.essay{max-width:640px;}
+
+.essay-body{
+  font-size:17px;font-weight:300;
+  line-height:2.0;color:var(--text2);
+  margin-bottom:0;
+}
+.essay-body + .essay-body{margin-top:28px;}
+.essay-body strong{color:var(--text);font-weight:400;}
+.essay-body em{font-style:italic;color:var(--text);}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -398,50 +410,6 @@
   </div>
 </div>
 
-<!-- CONTACT -->
-<div id="contact">
-  <div class="container">
-    <div class="essay">
-      <div class="contact-label">Presence</div>
-      <div class="contact-links">
-        <a href="https://linkedin.com/in/romankir" class="contact-link" target="_blank" rel="noopener">
-          <span class="contact-link-type">LinkedIn</span>
-          <span>Roman Kir</span>
-        </a>
-        <a href="https://romankir.com" class="contact-link" target="_blank" rel="noopener">
-          <span class="contact-link-type">Web</span>
-          <span>romankir.com</span>
-        </a>
-        <div class="footer-copy-wrap">
-          <button onclick="copyEmail(this)" class="contact-link" style="display:flex;align-items:center;gap:16px;background:none;border:none;cursor:pointer;padding:0;width:100%;text-align:left;color:var(--text2);font-family:'Geologica',sans-serif;font-size:17px;font-weight:300;">
-            <span class="contact-link-type">Email</span>
-            <span>research[at]stratoatlas.com</span>
-          </button>
-          <div class="footer-copied">Copied</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- BRIDGE: essay → documentary record -->
-<div class="section-bridge">
-  <div class="container">
-    <div class="bridge-inner">
-      <div class="bridge-line"></div>
-      <div>
-        <div class="bridge-label">What follows</div>
-        <p class="bridge-text">
-          The sections above are essay — the origin of the thinking, the path, the people involved.<br>
-          The sections below are documentary records: when ideas appeared, what changed in the map and site.<br>
-          Different register, same project.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- INTELLECTUAL CHRONOLOGY -->
 <div class="timeline-section" id="chronology">
   <div class="container">
@@ -535,6 +503,50 @@
   </div>
 </div>
 
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="container">
+    <div class="essay">
+      <div class="contact-label">Presence</div>
+      <div class="contact-links">
+        <a href="https://linkedin.com/in/romankir" class="contact-link" target="_blank" rel="noopener">
+          <span class="contact-link-type">LinkedIn</span>
+          <span>Roman Kir</span>
+        </a>
+        <a href="https://romankir.com" class="contact-link" target="_blank" rel="noopener">
+          <span class="contact-link-type">Web</span>
+          <span>romankir.com</span>
+        </a>
+        <div class="footer-copy-wrap">
+          <button onclick="copyEmail(this)" class="contact-link" style="display:flex;align-items:center;gap:16px;background:none;border:none;cursor:pointer;padding:0;width:100%;text-align:left;color:var(--text2);font-family:'Geologica',sans-serif;font-size:17px;font-weight:300;">
+            <span class="contact-link-type">Email</span>
+            <span>research[at]stratoatlas.com</span>
+          </button>
+          <div class="footer-copied">Copied</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- BRIDGE: essay → documentary record -->
+<div class="section-bridge">
+  <div class="container">
+    <div class="bridge-inner">
+      <div class="bridge-line"></div>
+      <div>
+        <div class="bridge-label">What follows</div>
+        <p class="bridge-text">
+          The sections above are essay — the origin of the thinking, the path, the people involved.<br>
+          The sections below are documentary records: when ideas appeared, what changed in the map and site.<br>
+          Different register, same project.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <script>
