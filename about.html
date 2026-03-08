@@ -324,38 +324,47 @@ nav{
 .toc-label{
   font-family:'DM Mono',monospace;font-size:10px;
   letter-spacing:2px;text-transform:uppercase;
-  color:var(--text3);margin-bottom:16px;
+  color:var(--text3);margin-bottom:14px;
 }
 .toc-links{
-  display:flex;flex-wrap:wrap;gap:8px 24px;
+  display:flex;flex-wrap:wrap;gap:8px;
 }
 .toc-links a{
   font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:.5px;color:var(--text3);
+  letter-spacing:.5px;color:var(--text2);
   text-decoration:none;
-  padding-bottom:2px;
-  border-bottom:1px solid transparent;
-  transition:color .2s,border-color .2s;
+  padding:6px 14px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:2px;
+  transition:color .2s,border-color .2s,background .2s;
 }
 .toc-links a:hover{
   color:var(--text);
-  border-color:rgba(255,255,255,.2);
+  border-color:rgba(255,255,255,.3);
+  background:rgba(255,255,255,.04);
 }
 
 /* ── SECTION BRIDGE ── */
 .section-bridge{
-  padding:56px 0 0;
+  background:var(--bg2);
   border-top:1px solid var(--line);
-  margin-top:0;
+  border-bottom:1px solid var(--line);
+  padding:40px 0;
+}
+.bridge-inner{
+  display:flex;align-items:flex-start;gap:32px;
+}
+.bridge-line{
+  width:2px;background:var(--accent);flex-shrink:0;align-self:stretch;
 }
 .bridge-label{
   font-family:'DM Mono',monospace;font-size:10px;
   letter-spacing:2px;text-transform:uppercase;
-  color:var(--text3);margin-bottom:12px;
+  color:var(--accent);margin-bottom:10px;
 }
 .bridge-text{
-  font-size:15px;font-weight:300;
-  color:var(--text3);line-height:1.7;
+  font-size:14px;font-weight:300;
+  color:var(--text2);line-height:1.8;
 }
 </style>
 </head>
@@ -540,13 +549,16 @@ nav{
 <!-- BRIDGE: essay → documentary record -->
 <div class="section-bridge">
   <div class="container">
-    <div class="essay" style="max-width:640px;">
-      <div class="bridge-label">What follows</div>
-      <p class="bridge-text">
-        The sections below are documentary records, not essay.<br>
-        Intellectual Chronology — when the key ideas appeared.<br>
-        Changelog — what changed in the site and map.
-      </p>
+    <div class="bridge-inner">
+      <div class="bridge-line"></div>
+      <div>
+        <div class="bridge-label">What follows</div>
+        <p class="bridge-text">
+          The sections above are essay — the origin of the thinking, the path, the people involved.<br>
+          The sections below are documentary records: when ideas appeared, what changed in the map and site.<br>
+          Different register, same project.
+        </p>
+      </div>
     </div>
   </div>
 </div>
