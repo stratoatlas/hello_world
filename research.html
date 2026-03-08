@@ -17,112 +17,12 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-
-:root{
-  --bg:#080b10;
-  --bg2:#0d1117;
-  --bg3:#131820;
-  --text:#e2e6ef;
-  --text2:#7a8699;
-  --text3:#8090a0;
-  --accent:#c0392b;
-  --accent-l:#e07060;
-  --line:rgba(255,255,255,.07);
-  --line2:rgba(255,255,255,.04);
-  --container:1200px;
-  --gap:24px;
-}
-
-html{scroll-behavior:smooth;}
-body{
-  font-family:'Geologica',sans-serif;
-  background:var(--bg);color:var(--text);
-  min-height:100vh;overflow-x:hidden;
-}
-
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:linear-gradient(to bottom,rgba(8,11,16,.97) 60%,transparent);
-}
-.nav-inner{
-  max-width:var(--container);margin:0 auto;
-  padding:20px 48px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.nav-logo{
-  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
-  letter-spacing:.5px;color:#fff;text-decoration:none;
-  font-variation-settings:'CRSV' 0,'SHRP' 0;
-}
-.nav-links{display:flex;gap:32px;list-style:none;}
-.nav-links a{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:.8px;text-transform:uppercase;
-  color:var(--text3);text-decoration:none;transition:color .2s;
-}
-.nav-links a:hover,.nav-links a.current{color:var(--text);}
-.nav-lang{
-  font-family:'DM Mono',monospace;font-size:11px;
-  color:var(--text3);text-decoration:none;
-  border:1px solid var(--line);padding:4px 10px;border-radius:2px;transition:all .2s;
-}
-.nav-lang:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
-
-/* ── LAYOUT ── */
-.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 48px;}
-.section{padding:96px 0;}
-.section.full-bleed{background:var(--bg2);}
-
-/* column helpers */
-.col-7{max-width:calc(7/12 * (var(--container) - 96px));}
-.col-8{max-width:calc(8/12 * (var(--container) - 96px));}
-
-/* ── PAGE HEADER ── */
-#pageheader{
-  padding-top:160px;padding-bottom:80px;
-  border-bottom:1px solid var(--line);
-}
-.page-label{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:2px;text-transform:uppercase;
-  color:var(--accent);margin-bottom:32px;
-}
-.page-title{
-  font-size:clamp(42px,6vw,72px);font-weight:800;
-  letter-spacing:-2px;color:#fff;line-height:1;
-  margin-bottom:32px;
-  font-variation-settings:'CRSV' 0,'SHRP' 0;
-}
-.page-intro{
-  font-size:18px;font-weight:300;line-height:1.9;
-  color:var(--text2);max-width:640px;margin-bottom:24px;
-}
 .page-key{
   font-size:17px;font-weight:400;
   color:var(--text);
   font-style:italic;
 }
 
-/* ── SECTION LABELS ── */
-.sec-num{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:2px;text-transform:uppercase;
-  color:var(--text3);margin-bottom:16px;
-}
-.sec-title{
-  font-size:clamp(26px,3vw,38px);font-weight:700;
-  letter-spacing:-1px;color:#fff;
-  margin-bottom:24px;line-height:1.15;
-  font-variation-settings:'CRSV' 0,'SHRP' 0;
-}
-.sec-intro{
-  font-size:16px;font-weight:300;line-height:1.85;
-  color:var(--text2);max-width:600px;margin-bottom:48px;
-}
-
-/* ── INVESTIGATION AREAS ── */
 .inv-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -144,7 +44,6 @@ nav{
   line-height:1.75;color:var(--text2);
 }
 
-/* ── OPEN QUESTIONS ── */
 .oq-list{
   display:flex;flex-direction:column;gap:0;
 }
@@ -166,7 +65,6 @@ nav{
 }
 .oq-text.last{color:var(--text);font-style:italic;}
 
-/* ── SIGNALS ── */
 .signals-intro{
   font-size:16px;font-weight:300;line-height:1.85;
   color:var(--text2);max-width:600px;margin-bottom:48px;
@@ -190,7 +88,6 @@ nav{
 }
 .signal-text strong{color:var(--text);font-weight:400;}
 
-/* ── CASE LIBRARY ── */
 .library-status{
   display:inline-flex;align-items:center;gap:10px;
   font-family:'DM Mono',monospace;font-size:11px;
@@ -238,12 +135,7 @@ nav{
   font-size:16px;font-weight:600;
   color:#fff;margin-bottom:12px;
 }
-.lib-body{
-  font-size:13px;font-weight:300;
-  line-height:1.7;color:var(--text2);
-}
 
-/* ── BRING A CASE ── */
 #bringcase{padding:96px 0 120px;}
 .bring-intro{
   font-size:18px;font-weight:300;line-height:1.9;
@@ -326,81 +218,9 @@ nav{
 }
 .contact-note strong{color:var(--text2);font-weight:400;}
 
-/* ── REVEAL ── */
-.reveal{
-  opacity:1;transform:none;
-}
-.reveal-delay{}
+  
 
-::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
-
-  /* ── FOOTER ── */
-  .site-footer{
-    border-top:1px solid var(--line);
-    background:var(--bg);
-    margin-top:auto;
-  }
-  .footer-inner{
-    max-width:var(--container);margin:0 auto;
-    padding:28px 48px;
-    display:flex;align-items:center;justify-content:space-between;
-    gap:24px;flex-wrap:wrap;
-  }
-  .footer-left{
-    display:flex;flex-direction:column;gap:4px;
-  }
-  .footer-brand{
-    font-family:'Geologica',sans-serif;font-size:13px;font-weight:700;
-    color:var(--text);letter-spacing:.3px;
-  }
-  .footer-copy{
-    font-family:'DM Mono',monospace;font-size:10px;
-    color:var(--text3);letter-spacing:.3px;
-  }
-  .footer-right{
-    display:flex;align-items:center;gap:20px;
-  }
-  .footer-icon-link{
-    display:flex;align-items:center;gap:7px;
-    font-family:'DM Mono',monospace;font-size:11px;
-    letter-spacing:.5px;
-    color:var(--text3);text-decoration:none;
-    transition:color .2s;
-  }
-  .footer-icon-link:hover{color:var(--text);}
-  .footer-icon-link svg{
-    width:14px;height:14px;
-    fill:currentColor;flex-shrink:0;
-  }
-  .footer-divider{
-    width:1px;height:16px;
-    background:var(--line);
-  }
-  .footer-copy-wrap{position:relative;}
-  .footer-email-btn{
-    display:flex;align-items:center;gap:7px;
-    font-family:'DM Mono',monospace;font-size:11px;
-    letter-spacing:.5px;color:var(--text3);
-    background:none;border:none;cursor:pointer;padding:0;
-    transition:color .2s;
-  }
-  .footer-email-btn:hover{color:var(--text);}
-  .footer-email-btn svg{width:14px;height:14px;fill:currentColor;flex-shrink:0;}
-  .footer-copied{
-    position:absolute;bottom:calc(100% + 6px);left:50%;
-    transform:translateX(-50%);
-    font-family:'DM Mono',monospace;font-size:10px;
-    background:var(--bg3);color:var(--text);
-    padding:4px 10px;border-radius:2px;
-    white-space:nowrap;pointer-events:none;
-    opacity:0;transition:opacity .2s;
-    border:1px solid var(--line);
-  }
-  .footer-copied.show{opacity:1;}
-
-  /* ── CASES & PATTERNS LOG ── */
+  
   .log-section{
     border-top:1px solid var(--line);
     padding-top:64px;margin-bottom:64px;
@@ -438,7 +258,6 @@ nav{
   .log-type-badge.live{color:#9e9a5a;border-color:rgba(158,154,90,.25);}
   .log-type-badge.pending{color:var(--text3);}
 
-/* ── RESEARCH TOC ── */
 .research-toc{
   padding:32px 0 0;
 }
@@ -469,6 +288,10 @@ nav{
   border-color:rgba(192,57,43,.4);
 }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;700;800&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 

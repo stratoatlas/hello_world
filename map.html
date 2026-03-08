@@ -17,64 +17,10 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-
-:root{
-  --bg:#080b10;
-  --bg2:#0d1117;
-  --bg3:#131820;
-  --text:#e2e6ef;
-  --text2:#7a8699;
-  --text3:#8090a0;
-  --accent:#c0392b;
-  --accent-l:#e07060;
-  --line:rgba(255,255,255,.07);
-  --line2:rgba(255,255,255,.04);
-  --container:1200px;
-}
-
-html{scroll-behavior:smooth;}
-body{
-  font-family:'Geologica',sans-serif;
-  background:var(--bg);color:var(--text);
-  min-height:100vh;overflow-x:hidden;
-}
-
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:rgba(8,11,16,.97);
-  border-bottom:1px solid var(--line);
-}
-.nav-inner{
-  max-width:var(--container);margin:0 auto;
-  padding:16px 48px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.nav-logo{
-  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
-  letter-spacing:.5px;color:#fff;text-decoration:none;
-  font-variation-settings:'CRSV' 0,'SHRP' 0;
-}
-.nav-links{display:flex;gap:32px;list-style:none;}
-.nav-links a{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:.8px;text-transform:uppercase;
-  color:var(--text3);text-decoration:none;transition:color .2s;
-}
-.nav-links a:hover,.nav-links a.current{color:var(--text);}
-.nav-lang{
-  font-family:'DM Mono',monospace;font-size:11px;
-  color:var(--text3);text-decoration:none;
-  border:1px solid var(--line);padding:4px 10px;border-radius:2px;transition:all .2s;
-}
-.nav-lang:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
-
-/* ── HEADER ── */
 #header{
   padding:80px 48px 48px;
   max-width:var(--container);margin:0 auto;
-  margin-top:57px; /* nav height */
+  margin-top:57px; 
   display:grid;
   grid-template-columns:1fr auto;
   gap:48px;
@@ -117,7 +63,6 @@ nav{
   color:var(--text3);margin-top:4px;
 }
 
-/* ── MAP EMBED ── */
 #map-embed{
   width:100%;
   height:calc(100vh - 57px);
@@ -147,13 +92,11 @@ nav{
   transition:opacity .5s;
 }
 
-/* ── BELOW MAP ── */
 .below-map{
   max-width:var(--container);margin:0 auto;
   padding:0 48px;
 }
 
-/* ── AXES ── */
 #axes{
   padding:72px 0;
   border-bottom:1px solid var(--line);
@@ -193,7 +136,6 @@ nav{
 }
 .axis-scale span:first-child{color:var(--accent-l);}
 
-/* ── PERSPECTIVES ── */
 #perspectives{
   padding:72px 0;
   border-bottom:1px solid var(--line);
@@ -246,7 +188,6 @@ nav{
   line-height:1.7;color:var(--text2);
 }
 
-/* ── EMPTY ZONES ── */
 #voids{
   padding:56px 0;
   border-bottom:1px solid var(--line);
@@ -277,7 +218,6 @@ nav{
   white-space:nowrap;flex-shrink:0;
 }
 
-/* ── CTA ── */
 #cta{
   padding:72px 0 96px;
   display:flex;align-items:center;justify-content:space-between;
@@ -304,74 +244,12 @@ nav{
   background:rgba(255,255,255,.03);
 }
 
-::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);}
-
-  /* ── FOOTER ── */
-  .site-footer{
-    border-top:1px solid var(--line);
-    background:var(--bg);
-    margin-top:auto;
-  }
-  .footer-inner{
-    max-width:var(--container);margin:0 auto;
-    padding:28px 48px;
-    display:flex;align-items:center;justify-content:space-between;
-    gap:24px;flex-wrap:wrap;
-  }
-  .footer-left{
-    display:flex;flex-direction:column;gap:4px;
-  }
-  .footer-brand{
-    font-family:'Geologica',sans-serif;font-size:13px;font-weight:700;
-    color:var(--text);letter-spacing:.3px;
-  }
-  .footer-copy{
-    font-family:'DM Mono',monospace;font-size:10px;
-    color:var(--text3);letter-spacing:.3px;
-  }
-  .footer-right{
-    display:flex;align-items:center;gap:20px;
-  }
-  .footer-icon-link{
-    display:flex;align-items:center;gap:7px;
-    font-family:'DM Mono',monospace;font-size:11px;
-    letter-spacing:.5px;
-    color:var(--text3);text-decoration:none;
-    transition:color .2s;
-  }
-  .footer-icon-link:hover{color:var(--text);}
-  .footer-icon-link svg{
-    width:14px;height:14px;
-    fill:currentColor;flex-shrink:0;
-  }
-  .footer-divider{
-    width:1px;height:16px;
-    background:var(--line);
-  }
-  .footer-copy-wrap{position:relative;}
-  .footer-email-btn{
-    display:flex;align-items:center;gap:7px;
-    font-family:'DM Mono',monospace;font-size:11px;
-    letter-spacing:.5px;color:var(--text3);
-    background:none;border:none;cursor:pointer;padding:0;
-    transition:color .2s;
-  }
-  .footer-email-btn:hover{color:var(--text);}
-  .footer-email-btn svg{width:14px;height:14px;fill:currentColor;flex-shrink:0;}
-  .footer-copied{
-    position:absolute;bottom:calc(100% + 6px);left:50%;
-    transform:translateX(-50%);
-    font-family:'DM Mono',monospace;font-size:10px;
-    background:var(--bg3);color:var(--text);
-    padding:4px 10px;border-radius:2px;
-    white-space:nowrap;pointer-events:none;
-    opacity:0;transition:opacity .2s;
-    border:1px solid var(--line);
-  }
-  .footer-copied.show{opacity:1;}
+  
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;700;800&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
