@@ -316,6 +316,47 @@ nav{
   .cl-text{
     font-size:14px;font-weight:300;color:var(--text2);line-height:1.5;
   }
+
+/* ── TOC ── */
+.about-toc{
+  padding:40px 0 0;
+}
+.toc-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:16px;
+}
+.toc-links{
+  display:flex;flex-wrap:wrap;gap:8px 24px;
+}
+.toc-links a{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.5px;color:var(--text3);
+  text-decoration:none;
+  padding-bottom:2px;
+  border-bottom:1px solid transparent;
+  transition:color .2s,border-color .2s;
+}
+.toc-links a:hover{
+  color:var(--text);
+  border-color:rgba(255,255,255,.2);
+}
+
+/* ── SECTION BRIDGE ── */
+.section-bridge{
+  padding:56px 0 0;
+  border-top:1px solid var(--line);
+  margin-top:0;
+}
+.bridge-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:12px;
+}
+.bridge-text{
+  font-size:15px;font-weight:300;
+  color:var(--text3);line-height:1.7;
+}
 </style>
 </head>
 <body>
@@ -341,8 +382,25 @@ nav{
   </div>
 </div>
 
+
+<!-- TOC -->
+<div class="about-toc">
+  <div class="container">
+    <div class="toc-label">On this page</div>
+    <div class="toc-links">
+      <a href="#origin">Origin</a>
+      <a href="#path">Path</a>
+      <a href="#collaboration">Collaboration</a>
+      <a href="#position">Current position</a>
+      <a href="#chronology">Chronology</a>
+      <a href="#changelog">Changelog</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</div>
+
 <!-- S1: ORIGIN -->
-<div class="essay-section">
+<div class="essay-section" id="origin">
   <div class="container">
     <div class="essay">
       <div class="sec-marker">Origin</div>
@@ -370,7 +428,7 @@ nav{
 </div>
 
 <!-- S2: PATH -->
-<div class="essay-section">
+<div class="essay-section" id="path">
   <div class="container">
     <div class="essay">
       <div class="sec-marker">The path that led here</div>
@@ -407,7 +465,7 @@ nav{
 </div>
 
 <!-- S3: COLLABORATION -->
-<div class="essay-section">
+<div class="essay-section" id="collaboration">
   <div class="container">
     <div class="essay">
       <div class="sec-marker">The collaboration</div>
@@ -435,7 +493,7 @@ nav{
 </div>
 
 <!-- S4: CURRENT POSITION -->
-<div class="essay-section">
+<div class="essay-section" id="position">
   <div class="container">
     <div class="essay">
       <div class="sec-marker">Current position</div>
@@ -479,6 +537,19 @@ nav{
 </div>
 
 
+<!-- BRIDGE: essay → documentary record -->
+<div class="section-bridge">
+  <div class="container">
+    <div class="essay" style="max-width:640px;">
+      <div class="bridge-label">What follows</div>
+      <p class="bridge-text">
+        The sections below are documentary records, not essay.<br>
+        Intellectual Chronology — when the key ideas appeared.<br>
+        Changelog — what changed in the site and map.
+      </p>
+    </div>
+  </div>
+</div>
 
 <!-- INTELLECTUAL CHRONOLOGY -->
 <div class="timeline-section" id="chronology">
