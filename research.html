@@ -389,6 +389,43 @@ nav{
     border:1px solid var(--line);
   }
   .footer-copied.show{opacity:1;}
+
+  /* ── CASES & PATTERNS LOG ── */
+  .log-section{
+    border-top:1px solid var(--line);
+    padding-top:64px;margin-bottom:64px;
+  }
+  .log-section-header{
+    display:flex;align-items:baseline;gap:24px;margin-bottom:32px;
+  }
+  .log-section-num{
+    font-family:'DM Mono',monospace;font-size:28px;font-weight:500;
+    color:var(--bg3);letter-spacing:-.02em;
+  }
+  .log-section-title{
+    font-size:22px;font-weight:700;color:#fff;letter-spacing:-.02em;
+  }
+  .log-section-desc{
+    font-size:14px;font-weight:300;color:var(--text2);
+    line-height:1.7;max-width:560px;margin-bottom:32px;
+  }
+  .log-empty{
+    padding:24px 0;
+    font-family:'DM Mono',monospace;font-size:11px;
+    color:var(--text3);letter-spacing:.5px;
+    border-top:1px solid var(--line2);
+  }
+  .log-type-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:'DM Mono',monospace;font-size:10px;
+    letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--text3);
+    border:1px solid rgba(255,255,255,.1);
+    padding:3px 8px;border-radius:2px;margin-bottom:10px;
+  }
+  .log-type-badge.retro{color:#7a9e7a;border-color:rgba(122,158,122,.25);}
+  .log-type-badge.live{color:#9e9a5a;border-color:rgba(158,154,90,.25);}
+  .log-type-badge.pending{color:var(--text3);}
 </style>
 </head>
 <body>
@@ -420,6 +457,76 @@ nav{
     <p class="page-key">Some of those questions require live cases.</p>
   </div>
 </div>
+
+<!-- RESEARCH LOG -->
+<section class="section" style="padding-bottom:0;">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-num" style="color:var(--accent);">Log</div>
+      <h2 class="sec-title">Research log</h2>
+      <p class="sec-intro" style="margin-bottom:40px;">Published observations from the investigation. Each note follows the same structure: what was seen, why it matters, what follows from it.</p>
+    </div>
+    <div class="reveal reveal-delay" style="border-top:1px solid var(--line);padding-top:0;">
+      <a href="research/observation-001.html" style="display:block;text-decoration:none;padding:32px 0;border-bottom:1px solid var(--line2);" class="log-entry">
+        <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:10px;">
+          <span style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">Observation 001</span>
+          <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);">March 2026</span>
+        </div>
+        <div style="font-size:20px;font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:10px;font-variation-settings:'CRSV' 0,'SHRP' 0;">The asymmetry of the methodology landscape</div>
+        <p style="font-size:14px;font-weight:300;color:var(--text2);line-height:1.7;max-width:560px;margin-bottom:16px;">Most design and product methodologies cluster in the upper layers of the system. Once placed on a single map, the structural asymmetry becomes impossible to ignore.</p>
+        <span style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.12);padding:7px 14px;border-radius:2px;">Read →</span>
+      </a>
+    </div>
+    <div class="reveal" style="padding:20px 0 64px;">
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:.5px;">Next note in preparation</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- CASES SECTION -->
+<section class="section" id="cases" style="padding-bottom:0;">
+  <div class="container">
+    <div class="reveal log-section">
+      <div class="log-section-header">
+        <span class="log-section-num">Cases</span>
+      </div>
+      <p class="log-section-desc">
+        Contextual evidence. Specific situations analysed through the CDPA coordinate system.<br>
+        <strong>Retrospective</strong> — public post-mortems, outcome known.&nbsp;&nbsp;
+        <strong>Live</strong> — direct participation, anonymised by agreement.
+      </p>
+      <div class="log-empty">No cases published yet — first case in preparation</div>
+    </div>
+  </div>
+</section>
+
+<!-- PATTERNS SECTION -->
+<section class="section" id="patterns" style="padding-bottom:0;">
+  <div class="container">
+    <div class="reveal log-section">
+      <div class="log-section-header">
+        <span class="log-section-num">Patterns</span>
+      </div>
+      <p class="log-section-desc">
+        Generalisations that emerge when multiple observations and cases point to the same structure.
+        A pattern is a falsifiable claim — not a conclusion.
+      </p>
+      <!-- Pattern 001 placeholder -->
+      <a href="research/pattern-001.html" style="display:block;text-decoration:none;padding:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line2);">
+        <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:10px;">
+          <span style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);">Pattern 001</span>
+          <span class="log-type-badge pending">In preparation</span>
+        </div>
+        <div style="font-size:18px;font-weight:700;color:var(--text2);letter-spacing:-.02em;margin-bottom:8px;">Surface clustering of design methods</div>
+        <p style="font-size:14px;font-weight:300;color:var(--text3);line-height:1.6;max-width:500px;">Emerges from Observation 001 + forthcoming case analysis.</p>
+      </a>
+      <div style="padding:16px 0;">
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:.5px;">More patterns will appear as observations and cases accumulate</span>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- S1: WHAT IS UNDER INVESTIGATION -->
 <section class="section">

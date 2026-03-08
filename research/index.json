@@ -1,0 +1,15 @@
+[
+  {
+    "type": "observation",
+    "num": "001",
+    "title": "The asymmetry of the methodology landscape",
+    "desc": "Most design and product methodologies cluster in the upper layers of the system. Once placed on a single map, the structural asymmetry becomes impossible to ignore.",
+    "date": "March 2026",
+    "url": "research/observation-001.html",
+    "tags": {
+      "map_zone": "architecture×resolution",
+      "cdpa": "illusion",
+      "ctx": ""
+    }
+  }
+]

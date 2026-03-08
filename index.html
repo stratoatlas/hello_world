@@ -710,6 +710,50 @@ nav{
     border:1px solid var(--line);
   }
   .footer-copied.show{opacity:1;}
+
+  /* ── LIVE SIGNALS ── */
+  #live-signals{
+    padding:64px 0 0;
+  }
+  .signals-label{
+    font-family:'DM Mono',monospace;font-size:11px;
+    letter-spacing:2px;text-transform:uppercase;
+    color:var(--text3);margin-bottom:32px;
+    display:flex;align-items:center;gap:16px;
+  }
+  .signals-label::after{
+    content:'';flex:1;height:1px;background:var(--line);
+  }
+  .signals-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  }
+  .signal-card{
+    background:var(--bg2);padding:28px 32px 32px;
+    text-decoration:none;display:block;
+    transition:background .2s;min-height:140px;
+  }
+  .signal-card:hover{background:var(--bg3);}
+  .signal-type{
+    font-family:'DM Mono',monospace;font-size:10px;
+    letter-spacing:2px;text-transform:uppercase;
+    color:var(--accent);margin-bottom:10px;
+  }
+  .signal-title{
+    font-size:15px;font-weight:600;color:#fff;
+    letter-spacing:-.02em;line-height:1.4;margin-bottom:8px;
+  }
+  .signal-date{
+    font-family:'DM Mono',monospace;font-size:10px;
+    color:var(--text3);
+  }
+  .signal-empty{
+    background:var(--bg2);padding:28px 32px;
+    min-height:140px;display:flex;align-items:center;
+  }
+  .signal-empty-text{
+    font-family:'DM Mono',monospace;font-size:11px;
+    color:var(--text3);letter-spacing:.5px;
+  }
 </style>
 </head>
 <body>
@@ -1066,6 +1110,17 @@ nav{
   </div>
 </section>
 
+
+<!-- LIVE SIGNALS -->
+<div id="live-signals" class="full-bleed section" style="background:var(--bg);padding-bottom:64px;">
+  <div class="container">
+    <div class="signals-label">From the research</div>
+    <div class="signals-grid" id="signals-grid">
+      <!-- populated by JS from research/index.json -->
+    </div>
+  </div>
+</div>
+
 <!-- S14: ENTRY POINTS -->
 <div class="full-bleed section" id="entry" style="background:var(--bg3);">
   <div class="container">
@@ -1145,5 +1200,48 @@ function copyEmail(btn){
     </div>
   </div>
 </footer>
+<script>
+// ── LIVE SIGNALS from research/index.json ──
+(async function(){
+  try {
+    const res = await fetch('research/index.json');
+    const items = await res.json();
+    const grid = document.getElementById('signals-grid');
+    if(!grid) return;
+
+    const typeLabel = {
+      'observation': 'Observation',
+      'case-retro':  'Case · Retrospective',
+      'case-live':   'Case · Live',
+      'pattern':     'Pattern'
+    };
+
+    // Show last 3 items (most recent first)
+    const recent = [...items].reverse().slice(0, 3);
+
+    recent.forEach(item => {
+      const card = document.createElement('a');
+      card.href = item.url;
+      card.className = 'signal-card';
+      card.innerHTML = `
+        <div class="signal-type">${typeLabel[item.type] || item.type} ${item.num}</div>
+        <div class="signal-title">${item.title}</div>
+        <div class="signal-date">${item.date}</div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Fill empty slots up to 3
+    for(let i = recent.length; i < 3; i++){
+      const empty = document.createElement('div');
+      empty.className = 'signal-empty';
+      empty.innerHTML = '<span class="signal-empty-text">Next material in preparation</span>';
+      grid.appendChild(empty);
+    }
+  } catch(e) {
+    // fail silently — static fallback
+  }
+})();
+</script>
 </body>
 </html>
