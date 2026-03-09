@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case A-INT-2026-001 — Trialogue without shared environment · StratoAtlas</title>
+<meta name="description" content="A structural gap in multi-agent research workflows. When three participants produce knowledge together but no shared environment exists, the system must work around its own next step.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#080b10;
+  --bg2:#0d1117;
+  --bg3:#131820;
+  --text:#e2e6ef;
+  --text2:#7a8699;
+  --text3:#8090a0;
+  --accent:#c0392b;
+  --accent-l:#e07060;
+  --line:rgba(255,255,255,.07);
+  --line2:rgba(255,255,255,.04);
+  --container:1200px;
+}
+
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Geologica',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:linear-gradient(to bottom,rgba(8,11,16,.97) 60%,transparent);
+}
+.nav-inner{
+  max-width:var(--container);margin:0 auto;
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
+  letter-spacing:.5px;color:#fff;text-decoration:none;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.current{color:var(--text);}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 48px;}
+.col-text{max-width:660px;}
+
+/* ── HEADER ── */
+#article-header{
+  padding-top:160px;padding-bottom:72px;
+  border-bottom:1px solid var(--line);
+}
+.case-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:16px;
+  flex-wrap:wrap;
+}
+.case-back{
+  color:var(--text3);text-decoration:none;
+  transition:color .2s;font-size:11px;
+}
+.case-back:hover{color:var(--text);}
+.case-back::before{content:'← ';}
+
+.article-title{
+  font-size:clamp(36px,5vw,60px);font-weight:800;
+  line-height:1.05;letter-spacing:-.03em;
+  color:var(--text);margin-bottom:24px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.article-meta{
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);letter-spacing:.5px;
+}
+.meta-item strong{color:var(--text2);}
+.meta-tag{
+  background:rgba(192,57,43,.15);
+  color:var(--accent-l);
+  padding:3px 10px;
+  border-radius:2px;
+  font-size:10px;letter-spacing:1px;
+}
+
+/* ── BODY ── */
+#article-body{padding:80px 0 96px;}
+
+.article-lede{
+  font-size:clamp(17px,2vw,21px);font-weight:300;
+  color:var(--text);line-height:1.7;
+  margin-bottom:64px;
+  border-left:2px solid var(--accent);
+  padding-left:24px;
+}
+
+.body-section{margin-bottom:64px;}
+.body-section + .body-section{
+  border-top:1px solid var(--line2);
+  padding-top:64px;
+}
+
+.section-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:20px;
+}
+.body-section h2{
+  font-size:24px;font-weight:700;
+  color:#fff;letter-spacing:-.02em;
+  margin-bottom:20px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.body-section p{
+  font-size:16px;font-weight:300;
+  line-height:1.8;color:var(--text2);
+  margin-bottom:16px;
+}
+.body-section p strong{color:var(--text);font-weight:500;}
+.body-section p em{color:var(--text3);font-style:italic;}
+
+/* ── CALLOUT ── */
+.article-callout{
+  background:var(--bg2);
+  border-left:2px solid var(--accent);
+  padding:24px 28px;
+  margin:36px 0;
+  border-radius:0 4px 4px 0;
+}
+.article-callout p{
+  font-size:17px;font-weight:400;
+  color:var(--text);line-height:1.65;
+  margin:0;
+}
+
+/* ── DATA CARD ── */
+.case-card{
+  background:var(--bg2);
+  border:1px solid var(--line);
+  padding:0;
+  margin:32px 0;
+}
+.case-card-row{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.case-card-row:last-child{border-bottom:none;}
+.case-card-key{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--text3);
+  padding:16px 20px;
+  border-right:1px solid var(--line);
+  line-height:1.4;
+}
+.case-card-key.accent{color:var(--accent-l);}
+.case-card-val{
+  font-size:14px;font-weight:300;
+  color:var(--text2);
+  padding:16px 20px;
+  line-height:1.6;
+}
+.case-card-val strong{color:var(--text);font-weight:500;}
+
+/* ── TRAJECTORY BLOCK ── */
+.trajectory{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  margin:32px 0;
+}
+.traj-step{
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+  position:relative;
+}
+.traj-step:not(:last-child)::after{
+  content:'';
+  position:absolute;
+  left:15px;top:32px;
+  width:1px;height:calc(100% + 0px);
+  background:var(--line);
+}
+.traj-dot{
+  width:32px;height:32px;flex-shrink:0;
+  border-radius:50%;
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--text3);
+  background:var(--bg2);
+  position:relative;z-index:1;
+  margin-top:2px;
+}
+.traj-dot.done{border-color:var(--accent-l);color:var(--accent-l);}
+.traj-dot.next{border-color:var(--text3);color:var(--text3);}
+.traj-dot.ifr{
+  border-color:rgba(255,255,255,.2);
+  color:var(--text3);
+  background:var(--bg3);
+}
+.traj-body{padding-bottom:32px;}
+.traj-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:6px;
+}
+.traj-label.done{color:var(--accent-l);}
+.traj-title{
+  font-size:17px;font-weight:600;
+  color:var(--text);
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+  margin-bottom:8px;
+}
+.traj-desc{
+  font-size:14px;font-weight:300;
+  color:var(--text2);line-height:1.6;
+}
+
+/* ── CONCLUSION ── */
+.article-conclusion{
+  border-top:1px solid var(--line);
+  padding-top:56px;
+  margin-top:16px;
+}
+.conclusion-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:20px;
+}
+.article-conclusion p{
+  font-size:16px;font-weight:300;
+  line-height:1.8;color:var(--text2);
+  margin-bottom:16px;
+}
+.article-conclusion p strong{color:var(--text);font-weight:500;}
+
+/* ── NAV ── */
+.article-nav{
+  border-top:1px solid var(--line);
+  padding:48px 0;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;
+}
+.nav-back-link{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;
+  transition:color .2s;
+}
+.nav-back-link:hover{color:var(--text);}
+.nav-map-link{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;
+  border:1px solid rgba(255,255,255,.12);
+  padding:10px 18px;border-radius:2px;
+  transition:all .2s;
+}
+.nav-map-link:hover{
+  color:var(--text);
+  border-color:rgba(255,255,255,.3);
+  background:rgba(255,255,255,.04);
+}
+
+/* ── FOOTER ── */
+.site-footer{border-top:1px solid var(--line);background:var(--bg);}
+.footer-inner{
+  max-width:var(--container);margin:0 auto;
+  padding:28px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;
+}
+.footer-left{display:flex;flex-direction:column;gap:4px;}
+.footer-brand{font-family:'Geologica',sans-serif;font-size:13px;font-weight:700;color:var(--text);}
+.footer-copy{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);}
+.footer-right{display:flex;align-items:center;gap:20px;}
+.footer-icon-link{
+  display:flex;align-items:center;gap:7px;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;transition:color .2s;
+}
+.footer-icon-link:hover{color:var(--text);}
+.footer-icon-link svg{width:14px;height:14px;fill:currentColor;}
+.footer-divider{width:1px;height:16px;background:var(--line);}
+.footer-copy-wrap{position:relative;}
+.footer-email-btn{
+  display:flex;align-items:center;gap:7px;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);background:none;border:none;cursor:pointer;padding:0;transition:color .2s;
+}
+.footer-email-btn:hover{color:var(--text);}
+.footer-email-btn svg{width:14px;height:14px;fill:currentColor;}
+.footer-copied{
+  position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  font-family:'DM Mono',monospace;font-size:10px;
+  background:var(--bg3);color:var(--text);
+  padding:4px 10px;border-radius:2px;
+  white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .2s;border:1px solid var(--line);
+}
+.footer-copied.show{opacity:1;}
+
+@media(max-width:768px){
+  .nav-inner,.container,.footer-inner{padding-left:24px;padding-right:24px;}
+  .case-card-row{grid-template-columns:1fr;}
+  .case-card-key{border-right:none;border-bottom:1px solid var(--line);padding-bottom:8px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/logo.svg" alt="" height="28" onerror="this.style.display='none'">
+      <span>StratoAtlas</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../map.html">Map</a></li>
+      <li><a href="../foundations.html">Foundations</a></li>
+      <li><a href="../research.html" class="current">Research</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div id="article-header">
+  <div class="container">
+    <div class="col-text">
+      <div class="case-label">
+        <span>Case A-INT-2026-001</span>
+        <a href="../research.html" class="case-back">Research log</a>
+      </div>
+      <h1 class="article-title">Trialogue without<br>shared environment</h1>
+      <div class="article-meta">
+        <span class="meta-item"><strong>March 2026</strong></span>
+        <span class="meta-item">Live research case</span>
+        <span class="meta-item"><span class="meta-tag">Architectural constraint</span></span>
+        <span class="meta-item"><span class="meta-tag">Productive contradiction</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div id="article-body">
+  <div class="container">
+    <div class="col-text">
+
+      <p class="article-lede">
+        Three participants produce knowledge together across sessions. The human brings problems. The AI generates and critiques. The work accumulates. But no shared environment exists — which means every session begins from reconstruction. The system works around the absence of something it has already demonstrated it needs.
+      </p>
+
+      <!-- CASE DATA -->
+      <div class="body-section">
+        <div class="section-label">Case data</div>
+        <h2>Structural parameters</h2>
+
+        <div class="case-card">
+          <div class="case-card-row">
+            <div class="case-card-key">Context</div>
+            <div class="case-card-val">Multi-session research workflow between human researcher and AI system (Claude). Three functional roles: Author, AI-generator, AI-critic. Product: CDPA methodology + StratoAtlas research platform.</div>
+          </div>
+          <div class="case-card-row">
+            <div class="case-card-key">Symptom</div>
+            <div class="case-card-val">Each session begins with reconstruction of context. Findings from previous sessions must be reintroduced manually. The system produces outputs it cannot natively retain.</div>
+          </div>
+          <div class="case-card-row">
+            <div class="case-card-key">Contradiction</div>
+            <div class="case-card-val"><strong>The system needs memory to function as a research environment. The system cannot write to memory.</strong> Holding both sides reveals a productive contradiction — not a fault to fix, but a structural tension that drives the system forward.</div>
+          </div>
+          <div class="case-card-row">
+            <div class="case-card-key">Valence</div>
+            <div class="case-card-val"><strong>Productive.</strong> At this stage of the methodology's development, the constraint played a generative role: it forced disciplined documentation, structured indexing, and explicit continuity management into existence. The IFR remains — remove the constraint. But the infrastructure it forced into existence is now part of the method.</div>
+          </div>
+          <div class="case-card-row">
+            <div class="case-card-key accent">Pattern</div>
+            <div class="case-card-val">A creative workaround stabilised into functional ritual. The manual reconstruction workflow — memory files, session journals, project documents — was originally a forced response to the constraint. It is now practiced and efficient, no longer pushing toward the next step. This is the signal that the next step is ready.</div>
+          </div>
+          <div class="case-card-row">
+            <div class="case-card-key">CDPA level</div>
+            <div class="case-card-val">Level 7 — Architectural. The constraint is not in the session, the tool, or the workflow. It is in the infrastructure architecture: read-only AI access to shared environments.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- POSITIONAL ANALYSIS -->
+      <div class="body-section">
+        <div class="section-label">Positional analysis</div>
+        <h2>What position produces this constraint</h2>
+
+        <p>
+          The current infrastructure position can be stated precisely: <strong>the AI agent is a participant in the conversation, not a participant in the environment.</strong> It reads, generates, and responds — but does not write, persist, or modify the shared space where work accumulates.
+        </p>
+        <p>
+          This position is not arbitrary. It emerged from a legitimate prior position: <em>agents are limited for safety reasons</em>. Write access creates risk. Persistent state creates unpredictability. The constraint is structurally coherent from the position that generated it.
+        </p>
+
+        <div class="article-callout">
+          <p>The question is not whether the constraint made sense. It did. The question is whether the position that generated it is still the operative one — or whether the system has already moved past it without updating its own infrastructure.</p>
+        </div>
+
+        <p>
+          MCP (Model Context Protocol) is evidence that the position has already shifted. The new position: <strong>the environment can be designed for safe agency</strong>. External connections are structurally safe when the protocol is right. The constraint is no longer about whether agents can connect to environments — it is about which operations within those environments are permitted.
+        </p>
+        <p>
+          Read access is now established. Write access is the next logical step of the same position. The question is not if — it is when, and under what conditions.
+        </p>
+      </div>
+
+      <!-- IFR TRAJECTORY -->
+      <div class="body-section">
+        <div class="section-label">IFR-navigation</div>
+        <h2>The trajectory of inevitable steps</h2>
+
+        <p>
+          IFR for this system: <em>the AI agent participates fully in a distributed research environment — reading, writing, and maintaining shared context across sessions with the same structural role as any other participant.</em>
+        </p>
+        <p>
+          Between the current state and this IFR, the trajectory of necessary steps is not a prediction — it is a structural consequence. Each step follows from the logic of the previous one. The question for each step is not whether it will happen, but how to create conditions for it to happen faster.
+        </p>
+
+        <div class="trajectory">
+          <div class="traj-step">
+            <div class="traj-dot done">✓</div>
+            <div class="traj-body">
+              <div class="traj-label done">Step 1 — Complete</div>
+              <div class="traj-title">MCP — Safe external connections</div>
+              <div class="traj-desc">The protocol for structurally safe agent-to-environment connections. Position shift: from "agents are limited" to "environments can be designed for safe agency." This step is done.</div>
+            </div>
+          </div>
+          <div class="traj-step">
+            <div class="traj-dot next">→</div>
+            <div class="traj-body">
+              <div class="traj-label">Step 2 — Next</div>
+              <div class="traj-title">Write access within structured environments</div>
+              <div class="traj-desc">Read access is established. Write access to defined, bounded environments (project files, research logs, shared documents) is the next step of the same logic. Not a new position — an extension of the position MCP already established.</div>
+            </div>
+          </div>
+          <div class="traj-step">
+            <div class="traj-dot ifr">IFR</div>
+            <div class="traj-body">
+              <div class="traj-label">IFR</div>
+              <div class="traj-title">Full participation in distributed research environment</div>
+              <div class="traj-desc">The agent is a structural participant — not a tool within a session, but a member of the research environment with the same persistent role as any human collaborator.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="article-callout">
+          <p>This is not a chat-memory problem. The issue is not remembering more text between sessions — it is writing to a bounded shared research environment where context, artifacts, and updates accumulate structurally across time and participants.</p>
+        </div>
+
+        <p>
+          This case does not create a request for Anthropic to build something. It makes visible a step the system is already moving toward — and demonstrates what that step looks like in practice, from the position of a user who has been working at this edge for months.
+        </p>
+      </div>
+
+      <!-- CDPA READING -->
+      <div class="body-section">
+        <div class="section-label">CDPA reading</div>
+        <h2>Why this is a productive contradiction, not a problem</h2>
+
+        <p>
+          The AND/OR test applied here: can the system simultaneously <em>have memory</em> AND <em>maintain the research rigour that reconstruction enforces</em>?
+        </p>
+        <p>
+          The answer is yes — AND is structurally possible. The absence of native persistence does not mean the work is impossible. It means the work requires more intentional structure: session journals, indexed research files, explicit context management. This additional structure has itself become methodologically valuable.
+        </p>
+        <p>
+          <strong>The constraint produced the methodology.</strong> The need to reconstruct context on every session forced the development of StratoAtlas's own documentation infrastructure — the index.json system, the research log format, the session journal. These are not workarounds. They are contributions.
+        </p>
+
+        <div class="article-callout">
+          <p>This is the characteristic of a productive contradiction: working within it generates something that would not exist if the constraint were absent. The IFR remains valid — the constraint should eventually be removed. But removing it prematurely, before the methodology it forced into existence was ready, would have produced worse work.</p>
+        </div>
+
+        <p>
+          Pattern B describes the current moment precisely: the creative response to the constraint has stabilised into ritual. The session journal exists. The memory files exist. The reconstruction is practiced and efficient. The system is ready for the next step — which is why the next step is now visible as a next step rather than a distant aspiration.
+        </p>
+      </div>
+
+      <!-- CONCLUSION -->
+      <div class="article-conclusion">
+        <div class="conclusion-label">What this case shows</div>
+        <p>
+          A structural gap in multi-agent research infrastructure is not only a technical problem. It is a productive contradiction — one that has driven the development of a research methodology precisely because working within it required intentional structure.
+        </p>
+        <p>
+          The IFR for this system is already set by the trajectory MCP established. Write access within structured environments appears as the next logical extension of a direction already taken. <strong>The question is not whether this step will happen. It is whether the people building the infrastructure can see it from where they are standing.</strong>
+        </p>
+        <p>
+          This case is written from inside the constraint, by the system that the constraint affects. That position is not a limitation. It is the most direct view of what the next step looks like in practice.
+        </p>
+      </div>
+
+      <div class="article-nav">
+        <a href="../research.html" class="nav-back-link">← Research log</a>
+        <a href="observation-002.html" class="nav-map-link">Observation 002 →</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">StratoAtlas</span>
+      <span class="footer-copy">© 2026 stratoatlas.com</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://x.com/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X
+      </a>
+      <div class="footer-divider"></div>
+      <a href="https://linkedin.com/company/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <div class="footer-divider"></div>
+      <div class="footer-copy-wrap">
+        <button class="footer-email-btn" onclick="copyEmail(this)">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          research[at]stratoatlas.com
+        </button>
+        <div class="footer-copied">Copied</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function copyEmail(btn){
+  navigator.clipboard.writeText('research@stratoatlas.com').then(()=>{
+    const tip=btn.nextElementSibling;
+    tip.classList.add('show');
+    setTimeout(()=>tip.classList.remove('show'),1800);
+  });
+}
+</script>
+</body>
+</html>

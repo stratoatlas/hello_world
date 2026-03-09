@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Structural Gap in Multi-Agent Research Workflows — An Open Letter to Anthropic</title>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #e8e8e4;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  background: #fff;
+  margin: 0 auto 8mm;
+  padding: 18mm 20mm 18mm;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.doc-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14mm;
+  padding-bottom: 4mm;
+  border-bottom: 1px solid #e0e0e0;
+}
+.doc-id {
+  font-family: 'DM Mono', monospace;
+  font-size: 7pt;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.doc-site {
+  font-family: 'DM Mono', monospace;
+  font-size: 7pt;
+  color: #999;
+  letter-spacing: .5px;
+}
+
+/* Title block */
+.title-block {
+  margin-bottom: 12mm;
+}
+
+h1 {
+  font-size: 22pt;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+  margin-bottom: 3mm;
+}
+
+.subtitle {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5pt;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Salutation */
+.salutation {
+  font-size: 10pt;
+  color: #444;
+  margin-bottom: 8mm;
+  font-style: italic;
+}
+
+/* Body */
+.body-text {
+  flex: 1;
+}
+
+p {
+  font-size: 10.5pt;
+  line-height: 1.7;
+  color: #222;
+  margin-bottom: 5.5mm;
+}
+
+p:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Separator */
+.sep {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 8mm 0;
+}
+
+/* Signature */
+.signature {
+  margin-top: 8mm;
+}
+
+.sig-name {
+  font-size: 10.5pt;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 1.5mm;
+}
+
+.sig-links {
+  font-family: 'DM Mono', monospace;
+  font-size: 8pt;
+  color: #888;
+  letter-spacing: .3px;
+}
+
+.sig-links a {
+  color: #888;
+  text-decoration: none;
+}
+
+.sig-links a:hover {
+  color: #c0392b;
+}
+
+/* Footer */
+.doc-footer {
+  margin-top: auto;
+  padding-top: 8mm;
+  border-top: 1px solid #e8e8e8;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.footer-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 7pt;
+  color: #ccc;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media print {
+  body { background: #fff; }
+  .page { margin: 0; box-shadow: none; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="doc-meta">
+    <span class="doc-id">Open Letter · March 2026</span>
+    <span class="doc-site">stratoatlas.com</span>
+  </div>
+
+  <div class="title-block">
+    <h1>A Structural Gap in Multi-Agent Research Workflows</h1>
+    <div class="subtitle">An Open Letter to Anthropic</div>
+  </div>
+
+  <div class="body-text">
+
+    <p>Every methodology describes its limits from the inside. When you place them on a single map, something becomes visible that wasn't before: a class of questions the field currently has no language to ask.</p>
+
+    <p>One of those blind spots concerns contradictions. Existing methodologies do not distinguish between contradictions that should be resolved and contradictions that should be maintained. The field is systematically destroying productive tension while trying to fix problems.</p>
+
+    <p>This observation led to StratoAtlas and CDPA — not as frameworks invented to fill a gap, but as the natural next question once the gap becomes visible.</p>
+
+    <p>The investigation runs through a trialogue: Author + AI-1 (generative) + AI-2 (structural critic). Each session produces structured outputs. For this to work across sessions and across agents, those outputs need a place to live.</p>
+
+    <p>MCP made connections to external systems structurally safe — turning integration from a risk into an architectural primitive. The same logic naturally raises the next question: write-access to a bounded shared environment where multi-agent research can accumulate state across sessions.</p>
+
+    <p>This is not a feature request. It is an observation about where the trajectory leads.</p>
+
+    <p>The case is documented, and the work is ongoing:<br>
+    <a href="research/case-a-int-2026-001.html" style="font-family:'DM Mono',monospace;font-size:9pt;color:#888;text-decoration:none;border-bottom:1px solid #ddd;">stratoatlas.com/research/case-a-int-2026-001</a></p>
+
+  </div>
+
+  <hr class="sep">
+
+  <div class="signature">
+    <div class="sig-name">Roman Kir</div>
+    <div class="sig-links">
+      <a href="https://stratoatlas.com">stratoatlas.com</a>
+      <span style="color:#ccc;margin:0 5px;">·</span>
+      <a href="https://romankir.com">romankir.com</a>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span class="footer-label">StratoAtlas · Open Letter</span>
+    <span class="footer-label">2026</span>
+  </div>
+
+</div>
+
+</body>
+</html>

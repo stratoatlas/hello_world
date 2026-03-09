@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Observation 002 — Level 7 is not uniform · StratoAtlas</title>
+<meta name="description" content="Architecture & Forks appears as a single zone on the map. It contains three structurally different phenomena — and the field has no language to distinguish them.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#080b10;
+  --bg2:#0d1117;
+  --bg3:#131820;
+  --text:#e2e6ef;
+  --text2:#7a8699;
+  --text3:#8090a0;
+  --accent:#c0392b;
+  --accent-l:#e07060;
+  --line:rgba(255,255,255,.07);
+  --line2:rgba(255,255,255,.04);
+  --container:1200px;
+}
+
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Geologica',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:linear-gradient(to bottom,rgba(8,11,16,.97) 60%,transparent);
+}
+.nav-inner{
+  max-width:var(--container);margin:0 auto;
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
+  letter-spacing:.5px;color:#fff;text-decoration:none;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.current{color:var(--text);}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 48px;}
+.col-text{max-width:640px;}
+
+#article-header{
+  padding-top:160px;padding-bottom:72px;
+  border-bottom:1px solid var(--line);
+}
+.obs-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:16px;
+}
+.obs-back{
+  color:var(--text3);text-decoration:none;
+  transition:color .2s;font-size:11px;
+}
+.obs-back:hover{color:var(--text);}
+.obs-back::before{content:'← ';letter-spacing:0;}
+
+.article-title{
+  font-size:clamp(36px,5vw,64px);font-weight:800;
+  line-height:1.05;letter-spacing:-.03em;
+  color:var(--text);margin-bottom:24px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.article-meta{
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);letter-spacing:.5px;
+}
+.meta-item{display:flex;align-items:center;gap:6px;}
+.meta-item strong{color:var(--text2);}
+
+#article-body{padding:72px 0;}
+
+.body-section{margin-bottom:56px;}
+.section-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px;
+}
+h2{
+  font-size:24px;font-weight:700;
+  letter-spacing:-.02em;color:var(--text);
+  margin-bottom:20px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+p{
+  font-size:17px;font-weight:300;
+  line-height:1.8;color:var(--text2);
+  margin-bottom:20px;
+}
+p strong{color:var(--text);font-weight:500;}
+p em{color:var(--text3);font-style:italic;}
+
+.article-lede{
+  font-size:21px;font-weight:300;
+  line-height:1.7;color:var(--text);
+  margin-bottom:48px;
+  padding-bottom:48px;
+  border-bottom:1px solid var(--line);
+}
+
+.article-callout{
+  border-left:2px solid var(--accent);
+  padding:20px 24px;
+  margin:32px 0;
+  background:rgba(192,57,43,.05);
+}
+.article-callout p{
+  font-size:16px;margin-bottom:0;
+  color:var(--text);font-weight:400;
+}
+
+/* Three phenomena grid */
+.phenomena-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+  margin:32px 0;
+}
+.phenomenon{
+  background:var(--bg3);
+  padding:24px;
+}
+.ph-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--accent-l);margin-bottom:12px;
+}
+.ph-name{
+  font-size:15px;font-weight:600;
+  color:var(--text);margin-bottom:12px;
+  line-height:1.3;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.ph-desc{
+  font-size:13px;font-weight:300;
+  color:var(--text2);line-height:1.6;
+  margin-bottom:12px;
+}
+.ph-intervention{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--text3);letter-spacing:.5px;
+  border-top:1px solid var(--line);
+  padding-top:10px;
+  margin-top:auto;
+}
+.ph-intervention span{color:var(--accent-l);}
+
+/* Test block */
+.test-block{
+  background:var(--bg2);
+  border:1px solid var(--line);
+  padding:32px;
+  margin:32px 0;
+}
+.test-title{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:20px;
+}
+.test-step{
+  display:flex;gap:16px;
+  margin-bottom:16px;
+  align-items:flex-start;
+}
+.test-step:last-child{margin-bottom:0;}
+.test-n{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--accent);flex-shrink:0;
+  margin-top:3px;
+}
+.test-text{
+  font-size:15px;font-weight:300;
+  color:var(--text2);line-height:1.6;
+}
+.test-text strong{color:var(--text);font-weight:500;}
+.test-arrow{
+  font-family:'DM Mono',monospace;
+  color:var(--text3);font-size:13px;
+  padding-left:28px;
+  margin-bottom:16px;
+  display:block;
+}
+
+.article-conclusion{
+  border-top:1px solid var(--line);
+  padding-top:48px;margin-bottom:48px;
+}
+.conclusion-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:20px;
+}
+.article-conclusion p{
+  font-size:17px;font-weight:300;
+  line-height:1.8;color:var(--text2);
+  margin-bottom:16px;
+}
+.article-conclusion p strong{color:var(--text);font-weight:500;}
+
+.article-nav{
+  border-top:1px solid var(--line);
+  padding:48px 0;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;
+}
+.nav-back-link{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+  transition:color .2s;
+}
+.nav-back-link:hover{color:var(--text);}
+.nav-map-link{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+  border:1px solid rgba(255,255,255,.12);
+  padding:10px 18px;border-radius:2px;
+  transition:color .2s,border-color .2s,background .2s;
+}
+.nav-map-link:hover{
+  color:var(--text);
+  border-color:rgba(255,255,255,.3);
+  background:rgba(255,255,255,.04);
+}
+
+.site-footer{border-top:1px solid var(--line);background:var(--bg);}
+.footer-inner{
+  max-width:var(--container);margin:0 auto;
+  padding:28px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;
+}
+.footer-left{display:flex;flex-direction:column;gap:4px;}
+.footer-brand{font-family:'Geologica',sans-serif;font-size:13px;font-weight:700;color:var(--text);letter-spacing:.3px;}
+.footer-copy{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:.3px;}
+.footer-right{display:flex;align-items:center;gap:20px;}
+.footer-icon-link{
+  display:flex;align-items:center;gap:7px;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.5px;
+  color:var(--text3);text-decoration:none;transition:color .2s;
+}
+.footer-icon-link:hover{color:var(--text);}
+.footer-icon-link svg{width:14px;height:14px;fill:currentColor;flex-shrink:0;}
+.footer-divider{width:1px;height:16px;background:var(--line);}
+.footer-copy-wrap{position:relative;}
+.footer-email-btn{
+  display:flex;align-items:center;gap:7px;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.5px;
+  color:var(--text3);background:none;border:none;cursor:pointer;padding:0;transition:color .2s;
+}
+.footer-email-btn:hover{color:var(--text);}
+.footer-email-btn svg{width:14px;height:14px;fill:currentColor;flex-shrink:0;}
+.footer-copied{
+  position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  font-family:'DM Mono',monospace;font-size:10px;
+  background:var(--bg3);color:var(--text);
+  padding:4px 10px;border-radius:2px;
+  white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .2s;border:1px solid var(--line);
+}
+.footer-copied.show{opacity:1;}
+
+@media(max-width:768px){
+  .nav-inner{padding:16px 24px;}
+  .container{padding:0 24px;}
+  .phenomena-grid{grid-template-columns:1fr;}
+  .footer-inner{padding:24px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/logo.svg" alt="" height="28" onerror="this.style.display='none'">
+      <span>StratoAtlas</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../map.html">Map</a></li>
+      <li><a href="../foundations.html">Foundations</a></li>
+      <li><a href="../research.html" class="current">Research</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div id="article-header">
+  <div class="container">
+    <div class="col-text">
+      <div class="obs-label">
+        <span>Observation 002</span>
+        <a href="../research.html" class="obs-back">Research log</a>
+      </div>
+      <h1 class="article-title">Level 7 is<br>not uniform</h1>
+      <div class="article-meta">
+        <span class="meta-item"><strong>March 2026</strong></span>
+        <span class="meta-item">StratoAtlas Research</span>
+        <span class="meta-item">6 min read</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="article-body">
+  <div class="container">
+    <div class="col-text">
+
+      <p class="article-lede">
+        Architecture &amp; Forks appears as a single zone on the map. The field treats it as one problem type. It is not. Three structurally different phenomena live there — and confusing them produces three different kinds of failure.
+      </p>
+
+      <div class="body-section">
+        <div class="section-label">The observation</div>
+        <h2>One zone, three different situations</h2>
+        <p>
+          Observation 001 identified the asymmetry of the methodology landscape: methods cluster in the upper system levels, leaving the architectural zone nearly empty. This follow-up asks a more precise question — <strong>what exactly lives in that sparse zone?</strong>
+        </p>
+        <p>
+          When cases are analysed at Level 7, a pattern emerges. The situations that reach this level are not the same kind of thing. They look similar from the outside — high stakes, structural, resistant to standard tools. But the mechanism is different in each case. And the appropriate intervention is different.
+        </p>
+        <p>
+          At least three distinct phenomena occupy what the map currently shows as a single cell.
+        </p>
+      </div>
+
+      <div class="body-section">
+        <div class="section-label">Three phenomena</div>
+        <h2>What actually lives at Level 7</h2>
+
+        <div class="phenomena-grid">
+          <div class="phenomenon">
+            <div class="ph-label">Phenomenon 01</div>
+            <div class="ph-name">Real fork</div>
+            <div class="ph-desc">An irreversible choice. One path closes permanently and the system loses a degree of freedom. After this point the position changes structurally, not by intention.</div>
+            <div class="ph-intervention"><span>Intervention →</span> Make the choice consciously. Map what disappears. Do not reverse.</div>
+          </div>
+          <div class="phenomenon">
+            <div class="ph-label">Phenomenon 02</div>
+            <div class="ph-name">False fork</div>
+            <div class="ph-desc">The system presents a choice as either/or. But AND is structurally possible — it is simply invisible from the current position. The apparent fork is not a property of the system. It is a property of the observer's position.</div>
+            <div class="ph-intervention"><span>Intervention →</span> Do not choose. Find the position from which AND becomes visible.</div>
+          </div>
+          <div class="phenomenon">
+            <div class="ph-label">Phenomenon 03</div>
+            <div class="ph-name">Productive contradiction</div>
+            <div class="ph-desc">Two requirements that cannot both be fully satisfied — and should not be. The tension between them drives the system. Resolving it can collapse the engine that drives the system. The task is not to eliminate the contradiction but to maintain and stimulate it.</div>
+            <div class="ph-intervention"><span>Intervention →</span> Do not resolve. Diagnose type. Stimulate.</div>
+          </div>
+        </div>
+
+        <p>
+          These three look identical from a distance. A team facing any of them experiences the same symptom: <em>standard tools stop working, the situation resists resolution, stakes are high</em>. The difference only becomes visible when you ask what kind of thing you are actually dealing with.
+        </p>
+      </div>
+
+      <div class="body-section">
+        <div class="section-label">The diagnostic</div>
+        <h2>The AND/OR test</h2>
+        <p>
+          Before any intervention at Level 7, one question determines which of the three phenomena you are facing:
+        </p>
+
+        <div class="test-block">
+          <div class="test-title">Pre-diagnostic test</div>
+          <div class="test-step">
+            <span class="test-n">01</span>
+            <span class="test-text">The system presents a choice as <strong>either/or</strong>.</span>
+          </div>
+          <span class="test-arrow">↓ Ask:</span>
+          <div class="test-step">
+            <span class="test-n">02</span>
+            <span class="test-text"><strong>What if AND?</strong> Is holding both sides structurally possible?</span>
+          </div>
+          <span class="test-arrow">↓ Two paths:</span>
+          <div class="test-step">
+            <span class="test-n">A</span>
+            <span class="test-text">AND is <strong>structurally impossible</strong> → real fork. Choose consciously.</span>
+          </div>
+          <div class="test-step">
+            <span class="test-n">B</span>
+            <span class="test-text">AND is <strong>possible but invisible</strong> → false fork or productive contradiction. Do not choose yet. Diagnose position and contradiction type first.</span>
+          </div>
+        </div>
+
+        <p>
+          The test does not complete the diagnosis. It determines which branch of analysis to enter. A false fork and a productive contradiction both survive the AND test — they require further distinction. But the test prevents the most common error: treating a false fork as a real one and making an irreversible choice that was never actually required.
+        </p>
+      </div>
+
+      <div class="body-section">
+        <div class="section-label">What this reveals</div>
+        <h2>False forks are a signal about position</h2>
+        <p>
+          A false fork does not arise from the structure of the system. It arises from the position of the observer. AND is invisible not because it does not exist — but because the current position makes it invisible.
+        </p>
+
+        <div class="article-callout">
+          <p><strong>A false fork is where position surfaces.</strong> When a team repeatedly encounters either/or choices that never fully resolve — the same type of dilemma returning in different forms — this is not evidence of a complex problem. It is a diagnostic signal: the position from which the problem is being seen is the constraint.</p>
+        </div>
+
+        <p>
+          The distinction matters practically. <strong>Complexity of the problem and constraint of position look identical from the outside.</strong> Both produce resistance to standard tools. Both generate the experience of being stuck. But the intervention is entirely different: complex problems require better methods; positional constraints require a different coordinate system.
+        </p>
+        <p>
+          Applying more method to a positional constraint produces more sophisticated stuckness.
+        </p>
+      </div>
+
+      <div class="body-section">
+        <div class="section-label">What this means for the map</div>
+        <h2>Level 7 needs internal dimensionality</h2>
+        <p>
+          The current map places all three phenomena in the same cell. This is not a cataloguing error — it reflects the state of the field. <strong>The field does not yet have stable diagnostic methods for distinguishing them.</strong> There is no established practice for running the AND/OR test before intervening at the architectural level. There is no recognised methodology for identifying false forks as positional rather than structural.
+        </p>
+        <p>
+          The empty zone at Level 7 is not simply underpopulated. It contains a finer structure that has not yet been mapped — three different problem types that require three different analytical approaches, currently treated as one.
+        </p>
+        <p>
+          This is where the next layer of the research program points.
+        </p>
+      </div>
+
+      <div class="article-conclusion">
+        <div class="conclusion-label">Conclusion</div>
+        <p>
+          Observation 001 showed that the methodology landscape is asymmetric — the architectural zone is sparse. This observation goes one level deeper: the sparse zone is not homogeneous. It contains at least three distinct phenomena that the field currently has no reliable way to distinguish.
+        </p>
+        <p>
+          <strong>The cost of not distinguishing them is high.</strong> Treating a false fork as a real one produces an irreversible choice that was never necessary. Treating a productive contradiction as a problem to solve collapses the tension that drives the system. Treating a real fork as something to be worked around produces endless partial solutions that never close.
+        </p>
+        <p>
+          The map does not yet show this internal structure. It will.
+        </p>
+      </div>
+
+      <div class="article-nav">
+        <a href="../research.html" class="nav-back-link">← Research log</a>
+        <button class="footer-email-btn" onclick="copyEmail(this)" style="background:none;border:none;cursor:pointer;padding:0;font-family:inherit;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;flex-shrink:0;vertical-align:middle;margin-right:6px;"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>If this is relevant to your work — research@stratoatlas.com</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">StratoAtlas</span>
+      <span class="footer-copy">© 2026 stratoatlas.com</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://x.com/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X
+      </a>
+      <div class="footer-divider"></div>
+      <a href="https://linkedin.com/company/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <div class="footer-divider"></div>
+      <div class="footer-copy-wrap">
+        <button class="footer-email-btn" onclick="copyEmail(this)">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          research[at]stratoatlas.com
+        </button>
+        <div class="footer-copied">Copied</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function copyEmail(btn){
+  navigator.clipboard.writeText('research@stratoatlas.com').then(()=>{
+    const tip = btn.nextElementSibling;
+    tip.classList.add('show');
+    setTimeout(()=>tip.classList.remove('show'), 1800);
+  });
+}
+</script>
+</body>
+</html>

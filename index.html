@@ -17,6 +17,31 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
 
+/* LETTER BANNER */
+#letter-banner{
+  background:var(--bg2);
+  border-bottom:1px solid var(--line);
+  padding:10px 48px;
+}
+.letter-banner-link{
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;
+  font-family:'DM Mono',monospace;
+  font-size:11px;
+  color:var(--text2);
+  transition:color .15s;
+}
+.letter-banner-link:hover{color:var(--text);}
+.letter-banner-label{
+  color:var(--accent);
+  font-weight:500;
+  letter-spacing:.5px;
+}
+.letter-banner-sep{color:var(--text3);}
+.letter-banner-text{letter-spacing:.3px;}
+.letter-banner-arrow{color:var(--accent);transition:transform .15s;}
+.letter-banner-link:hover .letter-banner-arrow{transform:translateX(3px);}
+
 #hero{
   min-height:100vh;
   padding-top:160px;
@@ -538,6 +563,16 @@
     </ul>
   </div>
 </nav>
+
+<!-- LETTER BANNER -->
+<div id="letter-banner">
+  <a href="letter.html" class="letter-banner-link">
+    <span class="letter-banner-label">Open Letter to Anthropic</span>
+    <span class="letter-banner-sep">—</span>
+    <span class="letter-banner-text">A structural gap in multi-agent research workflows</span>
+    <span class="letter-banner-arrow">→</span>
+  </a>
+</div>
 
 <!-- S1: HERO -->
 <section id="hero">

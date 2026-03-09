@@ -11,5 +11,31 @@
       "cdpa": "illusion",
       "ctx": ""
     }
+  },
+  {
+    "type": "observation",
+    "num": "002",
+    "title": "Level 7 is not uniform — three phenomena the field treats as one",
+    "desc": "Architectural contradictions, real forks, and positional constraints look identical from the outside. Confusing them produces three structurally different kinds of failure.",
+    "date": "March 2026",
+    "url": "research/observation-002.html",
+    "tags": {
+      "map_zone": "architecture×resolution",
+      "cdpa": "productive contradiction / real fork / position",
+      "ctx": ""
+    }
+  },
+  {
+    "type": "case",
+    "num": "A-INT-2026-001",
+    "title": "Write-access as architectural constraint in multi-agent research workflows",
+    "desc": "A live case: the absence of shared writable storage as a productive architectural constraint. Analysed through CDPA. The constraint forced infrastructure into existence — and makes the next step visible.",
+    "date": "March 2026",
+    "url": "research/case-a-int-2026-001.html",
+    "tags": {
+      "map_zone": "architecture×resolution",
+      "cdpa": "productive contradiction",
+      "ctx": "live"
+    }
   }
 ]
