@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDPA — StratoAtlas</title>
+<meta name="description" content="Contradiction-Driven Positional Analysis. A diagnostic framework for structural contradictions that drive systems rather than obstruct them.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CDPA — StratoAtlas">
+<meta property="og:description" content="A diagnostic framework for structural contradictions that drive systems rather than obstruct them.">
+<meta property="og:url" content="https://stratoatlas.com/cdpa.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;700;800&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+
+/* ── PAGE HEADER ── */
+#pageheader {
+  padding-top: 160px;
+  padding-bottom: 80px;
+  border-bottom: 1px solid var(--line);
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: 48px;
+  padding-right: 48px;
+}
+
+.page-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-family: 'Geologica', sans-serif;
+  font-size: clamp(38px, 5.5vw, 64px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: #fff;
+  margin-bottom: 28px;
+  font-variation-settings: 'CRSV' 0, 'SHRP' 0;
+}
+
+.page-intro {
+  font-size: clamp(17px, 2vw, 20px);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text2);
+  max-width: 620px;
+}
+.page-intro strong { color: var(--text); font-weight: 400; }
+
+/* ── TOC ── */
+#toc {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 40px 48px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.toc-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+.toc-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .5px;
+  color: var(--text2);
+  text-decoration: none;
+  padding: 6px 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 2px;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.toc-link:hover {
+  color: var(--text);
+  border-color: rgba(255,255,255,.30);
+  background: rgba(255,255,255,.04);
+}
+
+/* ── CONTENT ── */
+#content {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 48px 120px;
+}
+
+.content-section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.content-section:last-child {
+  border-bottom: none;
+}
+
+.sec-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+
+.sec-anchor {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  position: sticky;
+  top: 80px;
+}
+.sec-anchor-title {
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  margin-top: 8px;
+  line-height: 1.4;
+  font-family: 'Inter', sans-serif;
+}
+
+.sec-body {}
+
+.sec-body h2 {
+  font-family: 'Geologica', sans-serif;
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -.5px;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  font-variation-settings: 'CRSV' 0, 'SHRP' 0;
+}
+
+.sec-body p {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--text2);
+  margin-bottom: 20px;
+  max-width: 640px;
+}
+.sec-body p:last-child { margin-bottom: 0; }
+.sec-body p strong { color: var(--text); font-weight: 400; }
+
+.lede {
+  font-size: clamp(18px, 2vw, 22px) !important;
+  font-weight: 300 !important;
+  color: var(--text) !important;
+  line-height: 1.65 !important;
+  border-left: 2px solid var(--accent);
+  padding-left: 24px;
+  margin-bottom: 40px !important;
+  max-width: 600px !important;
+}
+
+/* ── PHENOMENA CARDS ── */
+.phenomena-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+  margin: 40px 0;
+}
+
+.ph-card {
+  padding: 32px 28px 36px;
+  background: var(--bg2);
+  position: relative;
+}
+.ph-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.ph-card.fork::before    { background: #3498db; }
+.ph-card.false::before   { background: #e67e22; }
+.ph-card.prod::before    { background: #27ae60; }
+
+.ph-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.ph-card.fork  .ph-num { color: #3498db; }
+.ph-card.false .ph-num { color: #e67e22; }
+.ph-card.prod  .ph-num { color: #27ae60; }
+
+.ph-name {
+  font-family: 'Geologica', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+  letter-spacing: -.2px;
+  font-variation-settings: 'CRSV' 0, 'SHRP' 0;
+}
+
+.ph-desc {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text2);
+  margin-bottom: 20px;
+}
+
+.ph-intervention {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .5px;
+  color: var(--text3);
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+.ph-intervention span {
+  color: var(--text2);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0;
+  display: block;
+  margin-top: 4px;
+}
+
+/* ── AND/OR TEST ── */
+.test-block {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  padding: 40px 44px;
+  margin: 40px 0;
+  max-width: 640px;
+}
+
+.test-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+.test-step {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: start;
+}
+
+.test-step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  padding-top: 2px;
+}
+
+.test-step-text {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text2);
+}
+.test-step-text strong { color: var(--text); font-weight: 400; }
+
+.test-divider {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 24px 0;
+}
+
+.test-branches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 20px;
+}
+
+.test-branch {
+  padding: 20px 20px;
+  background: var(--bg3);
+}
+
+.branch-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.branch-tag.a { color: #3498db; }
+.branch-tag.b { color: #27ae60; }
+
+.branch-text {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text2);
+}
+
+/* ── PRINCIPLE ROWS ── */
+.principle-list {
+  margin: 32px 0;
+  max-width: 640px;
+}
+
+.principle-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 24px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line2);
+  align-items: start;
+}
+.principle-row:first-child {
+  border-top: 1px solid var(--line2);
+}
+
+.principle-key {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .5px;
+  color: var(--accent-l);
+  padding-top: 2px;
+}
+
+.principle-val {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text2);
+}
+.principle-val strong { color: var(--text); font-weight: 400; }
+
+/* ── WHERE ON MAP ── */
+.map-position {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  padding: 36px 40px;
+  margin: 40px 0;
+  max-width: 640px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+}
+
+.map-pos-text {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text2);
+}
+.map-pos-text strong { color: var(--text); font-weight: 400; }
+
+.map-pos-badge {
+  text-align: right;
+  flex-shrink: 0;
+}
+.map-pos-level {
+  font-family: 'DM Mono', monospace;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--accent-l);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.map-pos-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+/* ── CTA ── */
+#cta-section {
+  padding: 80px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+}
+.cta-text {
+  font-size: clamp(18px, 2.2vw, 24px);
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--text2);
+  max-width: 480px;
+}
+.cta-text strong { color: #fff; font-weight: 400; }
+
+.cta-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--text2);
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,.15);
+  padding: 12px 24px;
+  border-radius: 2px;
+  transition: all .2s;
+}
+.cta-link:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,.35);
+  background: rgba(255,255,255,.03);
+}
+.cta-link.primary {
+  color: var(--accent-l);
+  border-color: rgba(192,57,43,.3);
+}
+.cta-link.primary:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,.25);
+}
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:10px;">
+      <img src="assets/logo.svg" alt="" height="28" onerror="this.style.display='none'">
+      <span>StratoAtlas</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="map.html">Map</a></li>
+      <li><a href="foundations.html">Foundations</a></li>
+      <li><a href="cdpa.html" class="current">CDPA</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div id="pageheader">
+  <div class="page-label">Contradiction-Driven Positional Analysis</div>
+  <h1 class="page-title">CDPA</h1>
+  <p class="page-intro">
+    Most methodologies treat contradictions as problems to solve.
+    <strong>CDPA starts from a different premise:</strong>
+    some contradictions should not be resolved — they should be diagnosed,
+    classified, and maintained.
+  </p>
+</div>
+
+<!-- TOC -->
+<div id="toc">
+  <span class="toc-label">On this page</span>
+  <a href="#origin" class="toc-link">Origin</a>
+  <a href="#premise" class="toc-link">Core premise</a>
+  <a href="#phenomena" class="toc-link">Three phenomena</a>
+  <a href="#test" class="toc-link">The AND/OR test</a>
+  <a href="#principles" class="toc-link">Principles</a>
+  <a href="#map" class="toc-link">On the map</a>
+  <a href="#limits" class="toc-link">Limits</a>
+  <a href="#research" class="toc-link">Research</a>
+</div>
+
+<!-- CONTENT -->
+<div id="content">
+
+  <!-- 01 ORIGIN -->
+  <div class="content-section reveal" id="origin">
+    <div class="sec-anchor">
+      <div class="sec-num">01</div>
+      <div class="sec-anchor-title">Where CDPA came from</div>
+    </div>
+    <div class="sec-body">
+      <h2>Origin</h2>
+      <p class="lede">
+        CDPA did not begin as a framework. It emerged as the next question once a structural gap became visible.
+      </p>
+      <p>
+        When 47 design and product methodologies are placed on a single coordinate system,
+        a pattern appears: <strong>the field has no reliable way to distinguish between
+        contradictions that should be resolved and those that should not.</strong>
+        Every methodology treats contradiction as an obstacle.
+      </p>
+      <p>
+        TRIZ introduced the key insight: unsolvable problems contain contradictions,
+        and contradictions have structure. That structure can be found.
+        CDPA extends this principle — asking not only whether a contradiction can be resolved,
+        but <strong>whether resolving it would be correct.</strong>
+      </p>
+      <p>
+        The name reflects the two moves the framework makes.
+        <strong>Contradiction-driven:</strong> the contradiction is not a symptom —
+        it is the primary analytical object.
+        <strong>Positional:</strong> the same situation looks different depending on
+        the position of the observer. Changing the position changes what is visible.
+      </p>
+    </div>
+  </div>
+
+  <!-- 02 PREMISE -->
+  <div class="content-section reveal" id="premise">
+    <div class="sec-anchor">
+      <div class="sec-num">02</div>
+      <div class="sec-anchor-title">The shift in logic</div>
+    </div>
+    <div class="sec-body">
+      <h2>Core premise</h2>
+      <p class="lede">
+        Productive contradictions drive systems. Resolving them can collapse the engine.
+      </p>
+      <p>
+        Standard methodology assumes: a contradiction is a problem; a problem has a solution;
+        the goal is to find it. This works at the surface levels of the system —
+        interface, behaviour, workflow. Methods built on this assumption perform well there.
+      </p>
+      <p>
+        At the architectural level, the assumption breaks down.
+        Some contradictions are not obstacles to the system's functioning —
+        <strong>they are the mechanism of that functioning.</strong>
+        The tension between two requirements that cannot both be fully satisfied
+        is exactly what creates the pressure that drives the system forward.
+      </p>
+      <p>
+        Resolving this tension does not fix the system. It removes the engine.
+        The field currently has no reliable language for this distinction.
+        CDPA provides the diagnostic.
+      </p>
+    </div>
+  </div>
+
+  <!-- 03 PHENOMENA -->
+  <div class="content-section reveal" id="phenomena">
+    <div class="sec-anchor">
+      <div class="sec-num">03</div>
+      <div class="sec-anchor-title">What lives at Level 7</div>
+    </div>
+    <div class="sec-body">
+      <h2>Three phenomena</h2>
+      <p>
+        The architectural zone of the map appears as a single region.
+        The field treats it as one problem type. It is not.
+        <strong>Three structurally different phenomena live there —
+        and they require three different interventions.</strong>
+        Confusing them produces three different kinds of failure.
+      </p>
+
+      <div class="phenomena-grid">
+        <div class="ph-card fork">
+          <div class="ph-num">Phenomenon 01</div>
+          <div class="ph-name">Real fork</div>
+          <p class="ph-desc">
+            An irreversible choice. One path closes permanently.
+            After this point the system loses a degree of freedom —
+            not by intention, but structurally.
+          </p>
+          <div class="ph-intervention">
+            Intervention
+            <span>Make the choice consciously. Map what disappears. Do not attempt to reverse.</span>
+          </div>
+        </div>
+
+        <div class="ph-card false">
+          <div class="ph-num">Phenomenon 02</div>
+          <div class="ph-name">False fork</div>
+          <p class="ph-desc">
+            The system presents a choice as either/or.
+            But AND is structurally possible — it is simply invisible
+            from the current position. The apparent fork is not a property
+            of the system. It is a property of the observer's position.
+          </p>
+          <div class="ph-intervention">
+            Intervention
+            <span>Do not choose. Find the position from which AND becomes visible.</span>
+          </div>
+        </div>
+
+        <div class="ph-card prod">
+          <div class="ph-num">Phenomenon 03</div>
+          <div class="ph-name">Productive contradiction</div>
+          <p class="ph-desc">
+            Two requirements that cannot both be fully satisfied —
+            and should not be. The tension between them drives the system.
+            Resolving it can collapse the engine that makes the system work.
+          </p>
+          <div class="ph-intervention">
+            Intervention
+            <span>Do not resolve. Diagnose type. Maintain and stimulate the tension.</span>
+          </div>
+          <div class="ph-intervention" style="margin-top:10px;border-color:rgba(255,255,255,.08);">
+            Diagnostic
+            <span>Productive holding generates new solutions and system movement. Avoidance generates explanations for why movement is impossible.</span>
+          </div>
+        </div>
+      </div>
+
+      <p>
+        These three look identical from a distance. A team facing any of them
+        experiences the same symptom: standard tools stop working, the situation
+        resists resolution, stakes are high. <strong>The difference only becomes
+        visible when you ask what kind of thing you are actually dealing with.</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- 04 AND/OR TEST -->
+  <div class="content-section reveal" id="test">
+    <div class="sec-anchor">
+      <div class="sec-num">04</div>
+      <div class="sec-anchor-title">The diagnostic</div>
+    </div>
+    <div class="sec-body">
+      <h2>The AND/OR test</h2>
+      <p>
+        Before any intervention at the architectural level,
+        one question determines which of the three phenomena you are facing.
+        It does not complete the diagnosis — it determines which branch of
+        analysis to enter.
+      </p>
+      <p>
+        <strong>The test prevents the most common error:</strong> treating a false fork
+        as a real one and making an irreversible choice that was never actually required.
+      </p>
+
+      <div class="test-block">
+        <div class="test-label">Pre-diagnostic test</div>
+
+        <div class="test-step">
+          <span class="test-step-num">01</span>
+          <span class="test-step-text">
+            The system presents a choice as <strong>either/or.</strong>
+          </span>
+        </div>
+
+        <div class="test-step">
+          <span class="test-step-num">↓</span>
+          <span class="test-step-text">Ask:</span>
+        </div>
+
+        <div class="test-step">
+          <span class="test-step-num">02</span>
+          <span class="test-step-text">
+            <strong>What if AND?</strong> Is holding both sides structurally possible?
+          </span>
+        </div>
+
+        <hr class="test-divider">
+
+        <div class="test-branches">
+          <div class="test-branch">
+            <div class="branch-tag a">A — AND is impossible</div>
+            <p class="branch-text">Real fork. Choose consciously. Map what each path closes permanently.</p>
+          </div>
+          <div class="test-branch">
+            <div class="branch-tag b">B — AND is possible but invisible</div>
+            <p class="branch-text">False fork or productive contradiction. Do not choose yet. Diagnose position and contradiction type first.</p>
+          </div>
+        </div>
+      </div>
+
+      <p>
+        A false fork and a productive contradiction both survive the AND test —
+        they require further distinction. But the test prevents the most
+        expensive error at the architectural level: the irreversible choice
+        that was never required.
+      </p>
+    </div>
+  </div>
+
+  <!-- 05 PRINCIPLES -->
+  <div class="content-section reveal" id="principles">
+    <div class="sec-anchor">
+      <div class="sec-num">05</div>
+      <div class="sec-anchor-title">How CDPA operates</div>
+    </div>
+    <div class="sec-body">
+      <h2>Operating principles</h2>
+      <p>
+        CDPA is not a process with steps. It is a set of diagnostic moves
+        that change what becomes visible when a system is under structural pressure.
+      </p>
+
+      <div class="principle-list">
+        <div class="principle-row">
+          <span class="principle-key">Contradiction first</span>
+          <span class="principle-val">
+            The contradiction is not a symptom of the real problem.
+            <strong>It is the primary analytical object.</strong>
+            Start there, not at the solution.
+          </span>
+        </div>
+        <div class="principle-row">
+          <span class="principle-key">Type before intervention</span>
+          <span class="principle-val">
+            Applying a method before diagnosing the type of contradiction
+            produces structurally different failures depending on the mismatch.
+            <strong>Diagnosis precedes action.</strong>
+          </span>
+        </div>
+        <div class="principle-row">
+          <span class="principle-key">Position is a variable</span>
+          <span class="principle-val">
+            A false fork is not a property of the system.
+            It is a property of the observer's position.
+            <strong>Changing position changes what is structurally visible.</strong>
+          </span>
+        </div>
+        <div class="principle-row">
+          <span class="principle-key">Hold, don't resolve</span>
+          <span class="principle-val">
+            Productive contradictions should be maintained, not eliminated.
+            <strong>The task is to stimulate the tension</strong> — not to find a compromise
+            that removes it.
+          </span>
+        </div>
+        <div class="principle-row">
+          <span class="principle-key">IFR as navigation</span>
+          <span class="principle-val">
+            The Ideal Final Result defines the trajectory, not the next step.
+            <strong>Each step follows from the logic of the IFR</strong> —
+            the question is what conditions make the next step possible faster.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 ON THE MAP -->
+  <div class="content-section reveal" id="map">
+    <div class="sec-anchor">
+      <div class="sec-num">06</div>
+      <div class="sec-anchor-title">Position in the system</div>
+    </div>
+    <div class="sec-body">
+      <h2>Where CDPA lives on the map</h2>
+      <p>
+        StratoAtlas maps methodologies across two axes: system level
+        (from User Perception to Architecture) and action type
+        (from Diagnosis to Optimisation).
+      </p>
+
+      <div class="map-position">
+        <div class="map-pos-text">
+          CDPA operates at <strong>Level 7 — Architecture & Forks.</strong>
+          Its primary action type is <strong>Resolution</strong> —
+          the column that is nearly empty across the entire methodology landscape.
+          This is not a coincidence. It is the zone where the field
+          has not yet developed stable practices.
+        </div>
+        <div class="map-pos-badge">
+          <div class="map-pos-level">L7</div>
+          <div class="map-pos-label">Architecture</div>
+        </div>
+      </div>
+
+      <p>
+        The empty zones on the map are not gaps in the catalogue.
+        They are gaps in the discipline.
+        <strong>CDPA is an attempt to build stable practice
+        in the region where it is most absent.</strong>
+      </p>
+      <p>
+        Most methods that reach Level 7 treat it as a single zone.
+        CDPA's first contribution is distinguishing three phenomena
+        that currently occupy the same cell — and providing
+        a diagnostic for telling them apart.
+      </p>
+    </div>
+  </div>
+
+  <!-- 07 LIMITS -->
+  <div class="content-section reveal" id="limits">
+    <div class="sec-anchor">
+      <div class="sec-num">07</div>
+      <div class="sec-anchor-title">Where CDPA does not operate</div>
+    </div>
+    <div class="sec-body">
+      <h2>Limits of applicability</h2>
+      <p>
+        StratoAtlas maps every methodology against an illusion zone and a harm zone.
+        CDPA is not exempt from its own logic. Three structural conditions
+        where CDPA does not operate as intended.
+      </p>
+
+      <div class="principle-list" style="margin-top:32px;">
+        <div class="principle-row">
+          <span class="principle-key">Low psychological safety</span>
+          <span class="principle-val">
+            CDPA requires the observer to exit their current position and see it as a position.
+            In organisations where this exit is structurally unsafe, the problem is not method —
+            it is the conditions. CDPA cannot substitute for them.
+          </span>
+        </div>
+        <div class="principle-row">
+          <span class="principle-key">Conflicts of interest</span>
+          <span class="principle-val">
+            CDPA works with contradictions as analytical objects. When an architectural tension
+            is actually a conflict between specific people's interests, the required work is
+            political, not diagnostic. Applying CDPA here produces accurate analysis
+            of the wrong object.
+          </span>
+        </div>
+        <div class="principle-row">
+          <span class="principle-key">Acute time deficit</span>
+          <span class="principle-val">
+            CDPA trades speed for diagnostic precision. In acute crisis conditions
+            where the cost of delay exceeds the cost of misdiagnosis, the framework
+            slows action without improving outcomes.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 RESEARCH -->
+  <div class="content-section reveal" id="research">
+    <div class="sec-anchor">
+      <div class="sec-num">08</div>
+      <div class="sec-anchor-title">Live investigation</div>
+    </div>
+    <div class="sec-body">
+      <h2>Research program</h2>
+      <p>
+        CDPA is not a finished framework. It is an active research program.
+        The materials below document the investigation as it develops —
+        from initial observations to live cases.
+      </p>
+
+      <div class="principle-list" style="margin-bottom:40px;">
+        <div class="principle-row">
+          <span class="principle-key" style="color:var(--text3);">Observation 002</span>
+          <span class="principle-val">
+            <a href="research/observation-002.html" style="color:var(--text);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.15);transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(255,255,255,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.15)'">
+              Level 7 is not uniform — three phenomena the field treats as one →
+            </a>
+            <span style="display:block;margin-top:6px;font-size:13px;color:var(--text3);">The foundational observation behind the three-phenomenon distinction.</span>
+          </span>
+        </div>
+        <div class="principle-row">
+          <span class="principle-key" style="color:var(--text3);">Observation 003</span>
+          <span class="principle-val">
+            <a href="research/observation-003.html" style="color:var(--text);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.15);transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(255,255,255,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.15)'">
+              Trialogue as phenomenon →
+            </a>
+            <span style="display:block;margin-top:6px;font-size:13px;color:var(--text3);">How the human + AI + AI configuration gives operational access to the positional level.</span>
+          </span>
+        </div>
+        <div class="principle-row">
+          <span class="principle-key" style="color:var(--text3);">Case A-INT-2026-001</span>
+          <span class="principle-val">
+            <a href="research/case-a-int-2026-001.html" style="color:var(--text);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.15);transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(255,255,255,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.15)'">
+              Write-access as architectural constraint in multi-agent research workflows →
+            </a>
+            <span style="display:block;margin-top:6px;font-size:13px;color:var(--text3);">A live case: CDPA applied to the infrastructure of its own development.</span>
+          </span>
+        </div>
+      </div>
+
+      <div id="cta-section">
+        <p class="cta-text">
+          <strong>Working with a structural contradiction?</strong><br>
+          Bring a case to the research program.
+        </p>
+        <div class="cta-links">
+          <a href="research.html" class="cta-link primary">View research log →</a>
+          <a href="map.html" class="cta-link">Explore the map →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">StratoAtlas</span>
+      <span class="footer-copy">© 2026 stratoatlas.com</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://x.com/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X
+      </a>
+      <div class="footer-divider"></div>
+      <a href="https://linkedin.com/company/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <div class="footer-divider"></div>
+      <div class="footer-copy-wrap">
+        <button class="footer-email-btn" onclick="copyEmail(this)">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          research[at]stratoatlas.com
+        </button>
+        <div class="footer-copied">Copied</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function copyEmail(btn) {
+  navigator.clipboard.writeText('research@stratoatlas.com').then(() => {
+    const tip = btn.nextElementSibling;
+    tip.classList.add('show');
+    setTimeout(() => tip.classList.remove('show'), 1800);
+  });
+}
+
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
