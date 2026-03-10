@@ -26,6 +26,19 @@
     }
   },
   {
+    "type": "observation",
+    "num": "003",
+    "title": "Trialogue as phenomenon",
+    "desc": "A configuration of human + AI + AI resolves a different contradiction than dialogue. The gap between two AIs makes the frame visible — and opens structural access to the positional level.",
+    "date": "March 2026",
+    "url": "research/observation-003.html",
+    "tags": {
+      "map_zone": "architecture×resolution",
+      "cdpa": "positional / productive contradiction",
+      "ctx": "working model"
+    }
+  },
+  {
     "type": "case",
     "num": "A-INT-2026-001",
     "title": "Write-access as architectural constraint in multi-agent research workflows",
