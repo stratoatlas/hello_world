@@ -368,6 +368,209 @@ p em{color:var(--text3);font-style:italic;}
   .footer-inner{padding:24px;flex-direction:column;gap:20px;align-items:flex-start;}
   .asymmetry-grid{grid-template-columns:1fr;}
 }
+
+
+/* --- Trialogue diagram --- */
+.trialogue-figure{
+  margin: 0 0 56px;
+  padding: 28px 28px 24px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,0)),
+    var(--bg2);
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.trialogue-figure::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    repeating-linear-gradient(
+      -35deg,
+      transparent 0 8px,
+      rgba(255,255,255,.018) 8px 10px
+    );
+  pointer-events:none;
+  opacity:.65;
+}
+
+.trialogue-figure > *{
+  position:relative;
+  z-index:1;
+}
+
+.trialogue-figure-label{
+  font-family:'DM Mono',monospace;
+  font-size:10px;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:14px;
+}
+
+.trialogue-figure-subtitle{
+  font-size:14px;
+  line-height:1.65;
+  color:var(--text3);
+  margin-bottom:22px;
+  max-width:none;
+}
+
+.trialogue-diagram{
+  width:100%;
+  aspect-ratio: 1 / 1.02;
+  position:relative;
+  max-width:560px;
+  margin:0 auto;
+}
+
+.tr-node{
+  position:absolute;
+  font-weight:700;
+  letter-spacing:-.02em;
+  color:var(--text);
+  line-height:1;
+  white-space:nowrap;
+}
+
+.tr-node-human{
+  top:8%;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:clamp(28px, 5vw, 44px);
+}
+
+.tr-node-ai1{
+  left:8%;
+  bottom:24%;
+  font-size:clamp(24px, 4.3vw, 40px);
+}
+
+.tr-node-ai2{
+  right:8%;
+  bottom:24%;
+  font-size:clamp(24px, 4.3vw, 40px);
+}
+
+.tr-gap{
+  position:absolute;
+  left:50%;
+  top:54%;
+  transform:translate(-50%,-50%);
+  font-size:clamp(32px, 6vw, 58px);
+  font-weight:500;
+  letter-spacing:-.03em;
+  color:var(--accent-l);
+  line-height:1;
+}
+
+.tr-title{
+  position:absolute;
+  left:50%;
+  bottom:6%;
+  transform:translateX(-50%);
+  font-size:clamp(28px, 5vw, 48px);
+  font-weight:600;
+  letter-spacing:-.03em;
+  color:rgba(224,112,96,.8);
+  line-height:1;
+}
+
+.tr-line{
+  position:absolute;
+  background:linear-gradient(180deg, var(--accent-l), #f07b69);
+  border-radius:999px;
+  opacity:.98;
+  transform-origin:center;
+}
+
+.tr-line-human-gap{
+  width:4px;
+  height:18%;
+  left:50%;
+  top:24%;
+  transform:translateX(-50%);
+}
+
+.tr-line-human-ai1{
+  width:4px;
+  height:48%;
+  left:29%;
+  top:22%;
+  transform:rotate(34deg);
+}
+
+.tr-line-human-ai2{
+  width:4px;
+  height:48%;
+  right:29%;
+  top:22%;
+  transform:rotate(-34deg);
+}
+
+.tr-line-gap-ai1{
+  width:4px;
+  height:18%;
+  left:33%;
+  top:55%;
+  transform:rotate(63deg);
+}
+
+.tr-line-gap-ai2{
+  width:4px;
+  height:18%;
+  right:33%;
+  top:55%;
+  transform:rotate(-63deg);
+}
+
+.tr-base{
+  position:absolute;
+  left:4%;
+  right:4%;
+  bottom:0;
+  height:2px;
+  background:var(--accent-l);
+  opacity:.9;
+}
+
+.tr-figure-note{
+  margin-top:20px;
+  font-size:14px;
+  line-height:1.7;
+  color:var(--text3);
+  max-width:none;
+}
+
+.tr-figure-note strong{
+  color:var(--text);
+  font-weight:500;
+}
+
+@media (max-width: 768px){
+  .trialogue-figure{
+    margin-bottom:48px;
+    padding:22px 18px 18px;
+  }
+
+  .trialogue-figure-subtitle,
+  .tr-figure-note{
+    font-size:13px;
+    line-height:1.7;
+  }
+
+  .tr-node-ai1{ left:4%; bottom:25%; }
+  .tr-node-ai2{ right:4%; bottom:25%; }
+
+  .tr-line-human-ai1{ left:30%; top:23%; height:45%; }
+  .tr-line-human-ai2{ right:30%; top:23%; height:45%; }
+
+  .tr-line-gap-ai1{ left:35%; top:56%; }
+  .tr-line-gap-ai2{ right:35%; top:56%; }
+}
+
 </style>
 </head>
 <body>
@@ -411,6 +614,35 @@ p em{color:var(--text3);font-style:italic;}
     <div class="col-text">
 
       <p class="article-lede">Dialogue between a human and an AI resolves one contradiction. A trialogue resolves a different one. Confusing them means understanding neither.</p>
+
+      <section class="trialogue-figure" aria-labelledby="trialogue-figure-title">
+        <div class="trialogue-figure-label">Diagram</div>
+        <p class="trialogue-figure-subtitle">
+          Trialogue is not “more context.” It is a <strong>Human + AI + AI</strong>
+          configuration in which the <strong>gap</strong> between two AI positions becomes usable information.
+        </p>
+
+        <div class="trialogue-diagram" role="img" aria-label="A trialogue configuration: Human at the top, AI-1 and AI-2 at the lower corners, and a gap in the middle. The human connects to both AIs and to the gap; the gap also connects to both AIs.">
+          <div class="tr-node tr-node-human">Human</div>
+          <div class="tr-node tr-node-ai1">AI-1</div>
+          <div class="tr-node tr-node-ai2">AI-2</div>
+
+          <div class="tr-line tr-line-human-gap"></div>
+          <div class="tr-line tr-line-human-ai1"></div>
+          <div class="tr-line tr-line-human-ai2"></div>
+          <div class="tr-line tr-line-gap-ai1"></div>
+          <div class="tr-line tr-line-gap-ai2"></div>
+
+          <div class="tr-gap">gap</div>
+          <div class="tr-title" id="trialogue-figure-title">Trialogue</div>
+          <div class="tr-base" aria-hidden="true"></div>
+        </div>
+
+        <p class="tr-figure-note">
+          The point is not additive coverage. <strong>The divergence itself becomes the signal</strong>:
+          the place where the frame stops being invisible and starts becoming inspectable.
+        </p>
+      </section>
 
       <!-- 01 -->
       <div class="body-section">
