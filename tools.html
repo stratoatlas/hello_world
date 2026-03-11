@@ -435,6 +435,108 @@
   color: var(--text2);
 }
 
+
+/* ── WID / WTU / WYG ── */
+.tool-wid { margin-bottom: 28px; }
+.tool-wid-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+.tool-wid-text {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text);
+}
+.tool-wid-text strong { color: #fff; font-weight: 600; }
+
+/* ── SCENARIO BLOCK ── */
+#scenario {
+  padding: 80px 0 96px;
+  border-top: 1px solid var(--line);
+}
+.scenario-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+.scenario-title {
+  font-family: 'Geologica', sans-serif;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+  font-variation-settings: 'CRSV' 0, 'SHRP' 0;
+}
+.scenario-subtitle {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text2);
+  max-width: 560px;
+  margin-bottom: 48px;
+}
+.scenario-situation {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text2);
+  max-width: 680px;
+}
+.scenario-situation strong { color: var(--text); font-weight: 400; }
+.scenario-steps { max-width: 680px; margin-bottom: 32px; }
+.scenario-step {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--line2);
+  padding: 20px 0;
+}
+.scenario-step:first-child { border-top: 1px solid var(--line2); }
+.scenario-step-tool {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .5px;
+  color: var(--accent-l);
+  padding-right: 24px;
+  padding-top: 2px;
+}
+.scenario-step-body { }
+.scenario-step-action {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.scenario-step-detail {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text2);
+}
+.scenario-note {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .3px;
+  color: var(--text3);
+  max-width: 560px;
+  line-height: 1.7;
+  padding-top: 8px;
+}
+
 /* ── REVEAL ── */
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
 .reveal.visible { opacity: 1; transform: none; }
@@ -506,25 +608,22 @@
       <p class="tool-tagline">
         The method isn't wrong. The level is.
       </p>
-      <div class="tool-desc">
-        <p>
-          47 design and product methodologies mapped across two axes:
-          system level (from User Perception to Architecture) and action type
-          (from Diagnosis to Optimisation).
-        </p>
-        <p>
-          The map does not tell you which method to use.
-          <strong>It tells you where a method stops working</strong> —
-          and where it begins to cause harm.
-          Each method is observed from four perspectives:
-          entry point, maximum impact, illusion zone, and harm zone.
-        </p>
-        <p>
-          Empty zones are intentional. They mark regions where
-          the discipline has not yet developed stable methods —
-          not gaps in the catalogue, but gaps in the field itself.
-        </p>
+
+      <div class="tool-wid">
+        <div class="tool-wid-label">What it does</div>
+        <div class="tool-wid-text">Maps 47 design and product methodologies across system levels and action types. Shows not only where each method works — <strong>but where it stops working and where it causes harm.</strong> Empty zones on the map are intentional: they mark structural gaps in the discipline itself.</div>
       </div>
+
+      <div class="tool-wid">
+        <div class="tool-wid-label">When to use</div>
+        <div class="tool-wid-text">When a method is producing outputs but the system isn't moving. When you need to know which approach actually reaches the level where the problem lives. When you want to see the full landscape before choosing where to work.</div>
+      </div>
+
+      <div class="tool-wid">
+        <div class="tool-wid-label">What you get</div>
+        <div class="tool-wid-text">The system level and action type of the problem. The mismatch between where your current method operates and where the problem lives. The nearest available tool — or confirmation that you are in a structural gap.</div>
+      </div>
+
       <a href="map.html" class="tool-link">Open the map →</a>
 
       <div class="procedure">
@@ -615,7 +714,7 @@
   </div>
 
   <!-- ── TOOL 02: CDSA ── -->
-  <div class="tool-entry reveal" id="tool-cdsa">
+  <div class="tool-entry reveal" id="tool-cdpa">
     <div class="tool-left">
       <div class="tool-tag">
         <span class="tool-num">02</span>
@@ -626,29 +725,22 @@
         Not every contradiction should be resolved.
         Some should be maintained.
       </p>
-      <div class="tool-desc">
-        <p>
-          Contradiction-Driven Systems Architecture.
-          A diagnostic framework for the architectural level of the system —
-          where standard methods stop operating and the field has no stable practice.
-        </p>
-        <p>
-          CDSA distinguishes three structurally different phenomena
-          that the field currently treats as one:
-          <strong>real fork, false fork, and productive contradiction.</strong>
-          Confusing them produces three different kinds of failure.
-        </p>
-        <p>
-          The framework also maps three conditions where it does not operate —
-          low psychological safety, conflicts of interest, acute time deficit.
-          CDSA applies its own logic to itself.
-        </p>
-        <p>
-          The AND/OR test is built into CDSA as its pre-diagnostic step —
-          the single question that determines which branch of analysis to enter
-          before any architectural intervention.
-        </p>
+
+      <div class="tool-wid">
+        <div class="tool-wid-label">What it does</div>
+        <div class="tool-wid-text">Contradiction-Driven Systems Architecture. A diagnostic framework for the architectural level — where standard methods stop operating. <strong>CDSA distinguishes three phenomena the field currently treats as one:</strong> real fork, false fork, and productive contradiction. Confusing them produces three different kinds of failure. Includes the AND/OR test as its pre-diagnostic step.</div>
       </div>
+
+      <div class="tool-wid">
+        <div class="tool-wid-label">When to use</div>
+        <div class="tool-wid-text">When standard methods have been applied correctly and the system still doesn't move. When a contradiction keeps returning in different forms after each resolution attempt. When the team is facing a high-stakes either/or decision at the architectural level.</div>
+      </div>
+
+      <div class="tool-wid">
+        <div class="tool-wid-label">What you get</div>
+        <div class="tool-wid-text">A precise classification of the contradiction type — real fork, false fork, or productive contradiction. A typed intervention for each: what to do, and critically, what not to do. Clarity on whether the contradiction should be resolved, maintained, or reframed.</div>
+      </div>
+
       <a href="cdsa.html" class="tool-link">Explore CDSA →</a>
 
       <div class="procedure">
@@ -671,7 +763,7 @@
             <span class="procedure-step-num">02</span>
             <div class="procedure-step-body">
               <div class="procedure-step-name">Run the AND/OR test</div>
-              <div class="procedure-step-desc">Ask: is AND structurally possible? This determines the branch of analysis. See Tool 03 for the full procedure.</div>
+              <div class="procedure-step-desc">Ask: is AND structurally possible? This determines the branch of analysis. See the Trialogue tool if the position itself is the constraint.</div>
             </div>
           </div>
           <div class="procedure-step">
@@ -753,31 +845,22 @@
       <p class="tool-tagline">
         The gap between two AIs makes the frame visible.
       </p>
-      <div class="tool-desc">
-        <p>
-          A research and thinking configuration: human + AI + AI.
-          Not additive coverage — the divergence between two AI positions
-          is itself the instrument.
-        </p>
-        <p>
-          Where one AI gives an answer, you see the subject.
-          Where two AIs diverge, <strong>you see the contours of the subject</strong> —
-          where knowledge is solid, where it is uncertain,
-          where it is structurally contested.
-        </p>
-        <p>
-          The human's role is not to decide which AI is right.
-          It is to identify what the divergence marks:
-          a boundary of knowledge, a difference of frames, or a failure.
-          Without the human, the loop closes — and becomes uncorrectable.
-        </p>
-        <p>
-          Trialogue makes the frame of the subject visible as a frame —
-          and thereby makes a change of position possible.
-          Trialogue does not guarantee positional change.
-          It creates a non-zero chance of making the frame visible.
-        </p>
+
+      <div class="tool-wid">
+        <div class="tool-wid-label">What it does</div>
+        <div class="tool-wid-text">A thinking configuration: human + AI + AI. The divergence between two structurally different AI contexts is itself the instrument. <strong>Where one AI gives an answer, you see the subject. Where two AIs diverge, you see the contours of the subject</strong> — where knowledge is solid, where it is uncertain, where it is structurally contested. The human's role is not to judge which AI is right — it is to identify what the divergence marks.</div>
       </div>
+
+      <div class="tool-wid">
+        <div class="tool-wid-label">When to use</div>
+        <div class="tool-wid-text">When the problem cannot be solved inside the existing frame — the frame itself needs to change. When solo thinking keeps returning to the same position regardless of new information. When CDSA diagnosis shows that the position is the constraint, not just the contradiction.</div>
+      </div>
+
+      <div class="tool-wid">
+        <div class="tool-wid-label">What you get</div>
+        <div class="tool-wid-text">A visible frame — what was invisible context becomes inspectable. Access to the positional level. The gap as a map of where the question is structurally contested. Trialogue does not guarantee positional change. It creates a non-zero chance of making the frame visible.</div>
+      </div>
+
       <a href="research/observation-003.html" class="tool-link">Read the full observation →</a>
 
       <div class="procedure">
@@ -875,35 +958,58 @@
     </div>
   </div>
 
-  <!-- ── CHAIN ── -->
-  <div id="chain" class="reveal">
-    <h2 class="chain-title">How the tools relate</h2>
-    <p class="chain-intro">
-      The tools are not a linear process. But when the problem deepens
-      from navigation to position, a logical progression appears.
-      Trialogue is not the next step after CDSA in every case —
-      it becomes relevant when the diagnosis shows that
-      <strong>the position itself is the constraint.</strong>
+  <!-- ── SCENARIO ── -->
+  <div id="scenario" class="reveal">
+    <div class="scenario-label">One possible path</div>
+    <h2 class="scenario-title">How the tools can work together</h2>
+    <p class="scenario-subtitle">
+      The tools can be used independently. When the problem deepens,
+      they form a natural progression — each revealing what the previous one
+      cannot reach. Here is one scenario.
     </p>
-    <div class="chain-flow">
-      <div class="chain-step">
-        <div class="chain-step-num">01</div>
-        <div class="chain-step-name">The Map</div>
-        <div class="chain-step-role">Locate where the problem lives — confirm it is at the Architecture level</div>
+
+    <div class="scenario-situation">
+      <strong>Situation:</strong> A product team has been applying Design Thinking for three quarters.
+      Research is solid, insights are real, prototypes test well.
+      The system doesn't move. The core problem returns in every sprint.
+    </div>
+
+    <div class="scenario-steps">
+      <div class="scenario-step">
+        <div class="scenario-step-tool">The Map</div>
+        <div class="scenario-step-body">
+          <div class="scenario-step-action">Locate the level mismatch</div>
+          <div class="scenario-step-detail">Design Thinking operates at levels 1–3 (Perception, Behaviour, Interface). The symptom — a problem that returns despite correct execution — points to level 6–7 (Value Model, Architecture). The method is right. The level is wrong.</div>
+        </div>
       </div>
-      <div class="chain-arrow">→</div>
-      <div class="chain-step">
-        <div class="chain-step-num">02</div>
-        <div class="chain-step-name">CDSA</div>
-        <div class="chain-step-role">Run AND/OR test · classify the contradiction · apply typed intervention</div>
+      <div class="scenario-step">
+        <div class="scenario-step-tool">CDSA · AND/OR test</div>
+        <div class="scenario-step-body">
+          <div class="scenario-step-action">Test the fork</div>
+          <div class="scenario-step-detail">The team sees a binary: either rebuild the value model or keep optimising the product. Ask: is AND structurally possible? No — this is a real fork. Two directions cannot both be fully pursued.</div>
+        </div>
       </div>
-      <div class="chain-arrow">→</div>
-      <div class="chain-step" style="border-top: 2px solid var(--text3);">
-        <div class="chain-step-num" style="color:var(--text3);">if position<br>is constraint</div>
-        <div class="chain-step-name">Trialogue</div>
-        <div class="chain-step-role">Make the frame visible — access the positional level</div>
+      <div class="scenario-step">
+        <div class="scenario-step-tool">CDSA · Classification</div>
+        <div class="scenario-step-body">
+          <div class="scenario-step-action">Name what it is</div>
+          <div class="scenario-step-detail">This is not a productive contradiction — the tension is not driving the system, it is stalling it. It is a real fork being treated as a workflow problem. The intervention: make the fork visible to the whole team and decide consciously.</div>
+        </div>
+      </div>
+      <div class="scenario-step">
+        <div class="scenario-step-tool">Trialogue · if needed</div>
+        <div class="scenario-step-body">
+          <div class="scenario-step-action">Only if the position is the constraint</div>
+          <div class="scenario-step-detail">In this scenario, Trialogue is not required — the fork is clear, the decision belongs to the team. Trialogue would become relevant if the diagnosis showed that the team cannot see the fork because their frame prevents it.</div>
+        </div>
       </div>
     </div>
+
+    <p class="scenario-note">
+      This is one possible path through the tools — not a prescribed sequence.
+      The entry point always depends on where the problem lives.
+      Each tool can be used independently.
+    </p>
   </div>
 
 </div>
