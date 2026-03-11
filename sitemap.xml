@@ -16,8 +16,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://stratoatlas.com/cdpa.html</loc>
+    <loc>https://stratoatlas.com/cdsa.html</loc>
     <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stratoatlas.com/tools.html</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>

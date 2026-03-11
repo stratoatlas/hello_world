@@ -267,7 +267,7 @@
   <span class="filter-label" id="filter-label">Show:</span>
   <button class="filter-btn" data-filter="all" aria-pressed="true" aria-describedby="filter-label">All</button>
   <button class="filter-btn" data-filter="nopf" aria-pressed="false" aria-describedby="filter-label">Exclude frameworks</button>
-  <button class="filter-btn" data-filter="cdpa" aria-pressed="false" aria-describedby="filter-label">CDPA zone</button>
+  <button class="filter-btn" data-filter="cdpa" aria-pressed="false" aria-describedby="filter-label">CDSA zone</button>
   <button class="filter-btn" data-filter="gap" aria-pressed="false" aria-describedby="filter-label">Gaps</button>
   <div aria-hidden="true" style="width:1px;height:16px;background:var(--line);margin:0 4px;"></div>
   <div class="void-legend" role="group" aria-label="Empty cell types legend">
@@ -279,7 +279,7 @@
     <button class="void-item" type="button">
       <div class="void-dot h" aria-hidden="true"></div>
       <span>historical gap</span>
-      <div class="void-tip" role="tooltip"><b>Historical gap</b>Methodologies should exist, but the industry has not created them. This is the zone of lowest methodological density — and a real opportunity for new tools, including CDPA.</div>
+      <div class="void-tip" role="tooltip"><b>Historical gap</b>Methodologies should exist, but the industry has not created them. This is the zone of lowest methodological density — and a real opportunity for new tools, including CDSA.</div>
     </button>
     <button class="void-item" type="button">
       <div class="void-dot o" aria-hidden="true"></div>
@@ -304,9 +304,9 @@
           <div class="x-axis-cell" role="columnheader">Optimisation<span>improve the system</span></div>
         </div>
         <div class="grid" id="map-grid" role="grid" aria-label="Methodology map: system levels vs action axes" tabindex="0"></div>
-        <div class="callout" role="note" aria-label="CDPA zone note">
+        <div class="callout" role="note" aria-label="CDSA zone note">
           <div class="callout-bar" aria-hidden="true"></div>
-          <p><strong>CDPA zone</strong> — lowest methodological density. Contradiction resolution at the Architecture / Interface / Workflow levels is covered only by TRIZ (not adapted for digital products) and partially by CDPA. <strong>Confirmed gap.</strong></p>
+          <p><strong>CDSA zone</strong> — lowest methodological density. Contradiction resolution at the Architecture / Interface / Workflow levels is covered only by TRIZ (not adapted for digital products) and partially by CDSA. <strong>Confirmed gap.</strong></p>
         </div>
         <div class="pf-note" aria-label="Process framework indicator explanation">
           <span class="pf-swatch" aria-hidden="true"></span>
@@ -354,7 +354,7 @@ const GROUPS = [
   {id:3, label:"Behaviour", color:"#7a4fa8",
    tip:"Explain and design user behaviour change. Object — motivation, triggers, barriers, habits. Operate at User Perception and Behaviour levels — not architecture."},
   {id:4, label:"Synthesis / Resolution", color:"#c0392b",
-   tip:"Create a solution and resolve systemic conflict. A rare zone — most methods here are either engineering (TRIZ) or not adapted for the product. This is exactly where CDPA is located."},
+   tip:"Create a solution and resolve systemic conflict. A rare zone — most methods here are either engineering (TRIZ) or not adapted for the product. This is exactly where CDSA is located."},
   {id:5, label:"Delivery / Improvement", color:"#c97b1a",
    tip:"Ensure stable production of results and continuous improvement. Object — flow, process, waste elimination. Kaizen, Lean. Not about 'what to do' — about 'how to do it sustainably'."},
   {id:6, label:"Quality / Errors", color:"#1a7a6e",
@@ -653,15 +653,15 @@ const METHODS = [
    limits:"High entry threshold — TRIZ expertise required. Language incompatible with product teams without translation. Weak for tasks without engineering structure.",
    tags:["contradiction","inventive","altshuller","USSR"]},
 
-  {name:"CDPA",                  g:4,col:2,row:6,cdpa:true,star:true,
-   desc:"Contradiction-Driven Product Architecture. Practical adaptation of systems and TRIZ thinking for product systems. Resolves requirement conflicts without compromising functionality — where standard UX methods are exhausted.",
+  {name:"CDSA",                  g:4,col:2,row:6,cdpa:true,star:true,
+   desc:"Contradiction-Driven Systems Architecture. Practical adaptation of systems and TRIZ thinking for product systems. Resolves requirement conflicts without compromising functionality — where standard UX methods are exhausted.",
    mechanism:"Identify requirement conflict → find independent variable → redesign architecture → measure effect",
    when:"B2B SaaS with accumulated systemic problems. When iterative UX fixes don't produce results. Architectural dead ends: adding features worsens the problem.",
    whenNot:"Not suitable when the conflict is in product priorities or resources, not architecture. Simple tactical UI tasks. Startups without an established system.",
    uncertainty:"Requirement conflict / architectural complexity",
    output:"Architectural solution + measurable reduction in complexity, cost, or time at the system level",
    limits:"Requires understanding the whole system — does not work with fragmented access to architecture. Expert-dependent. Currently limited reproducibility without the author.",
-   tags:["product","contradiction","architecture","CDPA"]},
+   tags:["product","contradiction","architecture","CDSA"]},
 
   {name:"Theory of Constraints", g:4,col:3,row:3,
    desc:"Find the main systemic flow constraint, concentrate resources there, eliminate, repeat. Systemic optimisation — not resolving a contradiction, but sequentially removing bottlenecks.",
@@ -879,8 +879,8 @@ const VOID_MAP = {
 
 function getVoidType(col, row){ return VOID_MAP[col+'-'+row] || null; }
 
-const CDPA_ZONES=[[2,2],[2,3],[2,4],[2,6],[3,2],[3,4]];
-function isCdpa(col,row){return CDPA_ZONES.some(([c,r])=>c===col&&r===row);}
+const CDSA_ZONES=[[2,2],[2,3],[2,4],[2,6],[3,2],[3,4]];
+function isCdpa(col,row){return CDSA_ZONES.some(([c,r])=>c===col&&r===row);}
 
 // ── BUILD LEGEND ─────────────────────────────────────────────────────────────
 const legendEl=document.getElementById('legend');

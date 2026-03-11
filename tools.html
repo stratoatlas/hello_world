@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools — StratoAtlas</title>
+<meta name="description" content="Three instruments for working with structural complexity. Each operates at a different level and serves a different purpose.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tools — StratoAtlas">
+<meta property="og:description" content="Three instruments for working with structural complexity.">
+<meta property="og:url" content="https://stratoatlas.com/tools.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;700;800&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+
+/* ── PAGE HEADER ── */
+#pageheader {
+  padding: 160px 48px 80px;
+  max-width: var(--container);
+  margin: 0 auto;
+  border-bottom: 1px solid var(--line);
+}
+
+.page-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-family: 'Geologica', sans-serif;
+  font-size: clamp(38px, 5.5vw, 64px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: #fff;
+  margin-bottom: 28px;
+  font-variation-settings: 'CRSV' 0, 'SHRP' 0;
+}
+
+.page-intro {
+  font-size: clamp(16px, 1.8vw, 19px);
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text2);
+  max-width: 580px;
+}
+.page-intro strong { color: var(--text); font-weight: 400; }
+
+/* ── TOOLS GRID ── */
+#tools {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 48px 120px;
+}
+
+.tools-intro {
+  padding: 64px 0 48px;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 2px;
+}
+
+.tool-nav-item {
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tool-nav-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.tool-nav-name {
+  font-family: 'Geologica', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text2);
+  font-variation-settings: 'CRSV' 0, 'SHRP' 0;
+}
+
+.tool-nav-scope {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text3);
+}
+
+/* ── TOOL ENTRIES ── */
+.tool-entry {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.tool-left {}
+
+.tool-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tool-num {
+  color: var(--text3);
+}
+
+.tool-name {
+  font-family: 'Geologica', sans-serif;
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -1.5px;
+  line-height: 1.05;
+  margin-bottom: 20px;
+  font-variation-settings: 'CRSV' 0, 'SHRP' 0;
+}
+
+.tool-tagline {
+  font-size: clamp(16px, 1.8vw, 19px);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 32px;
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+  max-width: 480px;
+}
+
+.tool-desc {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--text2);
+  max-width: 480px;
+  margin-bottom: 36px;
+}
+.tool-desc strong { color: var(--text); font-weight: 400; }
+.tool-desc p { margin-bottom: 16px; }
+.tool-desc p:last-child { margin-bottom: 0; }
+
+.tool-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--accent-l);
+  text-decoration: none;
+  border: 1px solid rgba(192,57,43,.3);
+  padding: 12px 22px;
+  border-radius: 2px;
+  transition: all .2s;
+}
+.tool-link:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,.25);
+  background: rgba(255,255,255,.03);
+}
+
+/* ── TOOL RIGHT: SPECS ── */
+.tool-right {}
+
+.tool-spec-block {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  padding: 36px 36px 40px;
+  margin-bottom: 2px;
+}
+
+.spec-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 20px;
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line2);
+  align-items: start;
+}
+.spec-row:first-of-type { border-top: 1px solid var(--line2); }
+
+.spec-key {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .3px;
+  color: var(--text3);
+  padding-top: 1px;
+}
+
+.spec-val {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text2);
+}
+.spec-val strong { color: var(--text); font-weight: 400; }
+
+/* use-when block */
+.use-when {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--accent);
+  padding: 28px 32px 32px;
+}
+
+.use-when-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.use-when-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.use-when-item {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text2);
+  display: flex;
+  gap: 10px;
+}
+.use-when-item::before {
+  content: '→';
+  color: var(--accent-l);
+  flex-shrink: 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+}
+
+/* ── CHAIN SECTION ── */
+#chain {
+  padding: 80px 0 96px;
+}
+
+.chain-title {
+  font-family: 'Geologica', sans-serif;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+  font-variation-settings: 'CRSV' 0, 'SHRP' 0;
+}
+
+.chain-intro {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text2);
+  max-width: 520px;
+  margin-bottom: 48px;
+}
+
+.chain-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 0;
+  align-items: center;
+}
+
+.chain-step {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  padding: 24px 20px 28px;
+}
+
+.chain-step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+
+.chain-step-name {
+  font-family: 'Geologica', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+  font-variation-settings: 'CRSV' 0, 'SHRP' 0;
+}
+
+.chain-step-role {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text2);
+}
+
+.chain-arrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+  color: var(--text3);
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+
+/* ── PROCEDURE BLOCK ── */
+.procedure {
+  margin-top: 32px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.procedure-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.procedure-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.procedure-io {
+  display: flex;
+  gap: 16px;
+}
+
+.procedure-io-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .5px;
+  color: var(--text3);
+}
+
+.procedure-io-item span {
+  color: var(--accent-l);
+}
+
+.procedure-steps {
+  padding: 4px 0;
+}
+
+.procedure-step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  border-bottom: 1px solid var(--line2);
+}
+.procedure-step:last-child { border-bottom: none; }
+
+.procedure-step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  padding: 16px 0 16px 20px;
+  border-right: 1px solid var(--line2);
+}
+
+.procedure-step-body {
+  padding: 14px 20px;
+}
+
+.procedure-step-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .3px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.procedure-step-desc {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text3);
+}
+
+.procedure-output {
+  padding: 14px 20px;
+  background: var(--bg2);
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.procedure-output-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.procedure-output-val {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text2);
+}
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay { transition-delay: .12s; }
+.reveal-delay-2 { transition-delay: .24s; }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:10px;">
+      <img src="assets/logo.svg" alt="" height="28" onerror="this.style.display='none'">
+      <span>StratoAtlas</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="map.html">Map</a></li>
+      <li><a href="foundations.html">Foundations</a></li>
+      <li><a href="cdsa.html">CDSA</a></li>
+      <li><a href="tools.html" class="current">Tools</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div id="pageheader">
+  <div class="page-label">Instruments</div>
+  <h1 class="page-title">Tools</h1>
+  <p class="page-intro">
+    Three instruments for working with structural complexity.
+    <strong>Each operates at a different level and serves a different purpose.</strong>
+    They are not interchangeable. They are not always used in sequence.
+    But when the problem deepens from navigation to position, a logical progression appears.
+  </p>
+</div>
+
+<div id="tools">
+
+  <!-- NAV STRIP -->
+  <div class="tools-intro reveal" style="grid-template-columns:1fr 1fr 1fr;">
+    <div class="tool-nav-item">
+      <span class="tool-nav-num">01</span>
+      <span class="tool-nav-name">The Map</span>
+      <span class="tool-nav-scope">Navigation</span>
+    </div>
+    <div class="tool-nav-item">
+      <span class="tool-nav-num">02</span>
+      <span class="tool-nav-name">CDSA</span>
+      <span class="tool-nav-scope">Diagnostic method · includes AND/OR test</span>
+    </div>
+    <div class="tool-nav-item">
+      <span class="tool-nav-num">03</span>
+      <span class="tool-nav-name">Trialogue</span>
+      <span class="tool-nav-scope">Configuration</span>
+    </div>
+  </div>
+
+  <!-- ── TOOL 01: MAP ── -->
+  <div class="tool-entry reveal" id="tool-map">
+    <div class="tool-left">
+      <div class="tool-tag">
+        <span class="tool-num">01</span>
+        <span>Navigation</span>
+      </div>
+      <h2 class="tool-name">The Map</h2>
+      <p class="tool-tagline">
+        The method isn't wrong. The level is.
+      </p>
+      <div class="tool-desc">
+        <p>
+          47 design and product methodologies mapped across two axes:
+          system level (from User Perception to Architecture) and action type
+          (from Diagnosis to Optimisation).
+        </p>
+        <p>
+          The map does not tell you which method to use.
+          <strong>It tells you where a method stops working</strong> —
+          and where it begins to cause harm.
+          Each method is observed from four perspectives:
+          entry point, maximum impact, illusion zone, and harm zone.
+        </p>
+        <p>
+          Empty zones are intentional. They mark regions where
+          the discipline has not yet developed stable methods —
+          not gaps in the catalogue, but gaps in the field itself.
+        </p>
+      </div>
+      <a href="map.html" class="tool-link">Open the map →</a>
+
+      <div class="procedure">
+        <div class="procedure-header">
+          <span class="procedure-label">Procedure</span>
+          <div class="procedure-io">
+            <span class="procedure-io-item">Input: <span>a problem or stuck method</span></span>
+            <span class="procedure-io-item">Output: <span>level + action type + zone</span></span>
+          </div>
+        </div>
+        <div class="procedure-steps">
+          <div class="procedure-step">
+            <span class="procedure-step-num">01</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Describe the symptom</div>
+              <div class="procedure-step-desc">State what is happening: what method is being applied, what output it produces, why the system isn't moving.</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">02</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Locate on the vertical axis</div>
+              <div class="procedure-step-desc">Ask: at what system level does the problem actually live? Perception · Behaviour · Interface · Workflow · Organisation · Value Model · Architecture.</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">03</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Locate on the horizontal axis</div>
+              <div class="procedure-step-desc">Ask: what type of action is needed? Diagnosis · Generation · Prioritisation · Resolution · Optimisation.</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">04</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Find the cell — check for methods</div>
+              <div class="procedure-step-desc">Open the map. Find the intersection. If the cell is empty — you are in a structural gap. If it has methods — check their illusion and harm zones against your situation.</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">05</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Check the level mismatch</div>
+              <div class="procedure-step-desc">Compare where the method being applied operates vs. where the problem lives. Most failures are level mismatches — not method failures.</div>
+            </div>
+          </div>
+        </div>
+        <div class="procedure-output">
+          <span class="procedure-output-label">Output</span>
+          <span class="procedure-output-val">System level and action type of the problem · Method mismatch if present · Nearest available tool — or confirmation of a structural gap</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="tool-right">
+      <div class="tool-spec-block">
+        <div class="spec-label">Specifications</div>
+        <div class="spec-row">
+          <span class="spec-key">Type</span>
+          <span class="spec-val">Spatial map · Interactive</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Coverage</span>
+          <span class="spec-val">47 methodologies · 7 system levels · 5 action types</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Axes</span>
+          <span class="spec-val"><strong>Y</strong> — System level (Perception → Architecture)<br><strong>X</strong> — Action type (Diagnosis → Optimisation)</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Per method</span>
+          <span class="spec-val">4 perspectives: entry point, maximum impact, illusion zone, harm zone</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Empty zones</span>
+          <span class="spec-val">Intentional — mark structural gaps in the discipline</span>
+        </div>
+      </div>
+      <div class="use-when">
+        <div class="use-when-label">Use when</div>
+        <div class="use-when-items">
+          <div class="use-when-item">You need to choose between methods and want to know which one reaches the problem level</div>
+          <div class="use-when-item">A method is producing outputs but the system isn't moving</div>
+          <div class="use-when-item">You want to see the full methodology landscape before choosing where to work</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOOL 02: CDSA ── -->
+  <div class="tool-entry reveal" id="tool-cdsa">
+    <div class="tool-left">
+      <div class="tool-tag">
+        <span class="tool-num">02</span>
+        <span>Diagnostic method</span>
+      </div>
+      <h2 class="tool-name">CDSA</h2>
+      <p class="tool-tagline">
+        Not every contradiction should be resolved.
+        Some should be maintained.
+      </p>
+      <div class="tool-desc">
+        <p>
+          Contradiction-Driven Systems Architecture.
+          A diagnostic framework for the architectural level of the system —
+          where standard methods stop operating and the field has no stable practice.
+        </p>
+        <p>
+          CDSA distinguishes three structurally different phenomena
+          that the field currently treats as one:
+          <strong>real fork, false fork, and productive contradiction.</strong>
+          Confusing them produces three different kinds of failure.
+        </p>
+        <p>
+          The framework also maps three conditions where it does not operate —
+          low psychological safety, conflicts of interest, acute time deficit.
+          CDSA applies its own logic to itself.
+        </p>
+        <p>
+          The AND/OR test is built into CDSA as its pre-diagnostic step —
+          the single question that determines which branch of analysis to enter
+          before any architectural intervention.
+        </p>
+      </div>
+      <a href="cdsa.html" class="tool-link">Explore CDSA →</a>
+
+      <div class="procedure">
+        <div class="procedure-header">
+          <span class="procedure-label">Procedure</span>
+          <div class="procedure-io">
+            <span class="procedure-io-item">Input: <span>architectural contradiction</span></span>
+            <span class="procedure-io-item">Output: <span>phenomenon type + intervention</span></span>
+          </div>
+        </div>
+        <div class="procedure-steps">
+          <div class="procedure-step">
+            <span class="procedure-step-num">01</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Confirm you are at the Architecture level</div>
+              <div class="procedure-step-desc">The situation resists standard methods. High stakes. The contradiction keeps returning after each resolution attempt. Use the Map to verify: the problem lives at the Architecture level (Level 7).</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">02</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Run the AND/OR test</div>
+              <div class="procedure-step-desc">Ask: is AND structurally possible? This determines the branch of analysis. See Tool 03 for the full procedure.</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">03</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Classify the phenomenon</div>
+              <div class="procedure-step-desc">AND impossible → Real fork. AND possible but invisible → False fork or productive contradiction. Distinguish by asking: does the tension drive the system, or obstruct it?</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">04</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Apply the typed intervention</div>
+              <div class="procedure-step-desc">Real fork: choose consciously, map what closes. False fork: find the position from which AND is visible. Productive contradiction: do not resolve — diagnose and stimulate.</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">05</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Check applicability conditions</div>
+              <div class="procedure-step-desc">Verify: is there sufficient psychological safety? Are you dealing with a conflict of interest rather than a structural contradiction? Is there time for diagnostic precision?</div>
+            </div>
+          </div>
+        </div>
+        <div class="procedure-output">
+          <span class="procedure-output-label">Output</span>
+          <span class="procedure-output-val">Phenomenon type (real fork · false fork · productive contradiction) · Typed intervention · Clarity on whether CDSA is the right tool for this situation</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="tool-right">
+      <div class="tool-spec-block">
+        <div class="spec-label">Specifications</div>
+        <div class="spec-row">
+          <span class="spec-key">Type</span>
+          <span class="spec-val">Diagnostic framework</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Operates at</span>
+          <span class="spec-val">Level 7 — Architecture & Forks</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Action type</span>
+          <span class="spec-val">Operates between Diagnosis and Resolution at the Architecture level</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Distinguishes</span>
+          <span class="spec-val">Real fork · False fork · Productive contradiction</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Does not work</span>
+          <span class="spec-val">Low psych. safety · Conflicts of interest · Acute time deficit</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Lineage</span>
+          <span class="spec-val">Extends TRIZ contradiction logic to digital product systems</span>
+        </div>
+      </div>
+      <div class="use-when">
+        <div class="use-when-label">Use when</div>
+        <div class="use-when-items">
+          <div class="use-when-item">Standard methods have been applied correctly and the system still doesn't move</div>
+          <div class="use-when-item">The team is facing a high-stakes either/or situation at the architectural level</div>
+          <div class="use-when-item">A contradiction keeps returning in different forms after each resolution attempt</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOOL 03: TRIALOGUE ── -->
+  <div class="tool-entry reveal" id="tool-trialogue">
+    <div class="tool-left">
+      <div class="tool-tag">
+        <span class="tool-num">03</span>
+        <span>Configuration</span>
+      </div>
+      <h2 class="tool-name">Trialogue</h2>
+      <p class="tool-tagline">
+        The gap between two AIs makes the frame visible.
+      </p>
+      <div class="tool-desc">
+        <p>
+          A research and thinking configuration: human + AI + AI.
+          Not additive coverage — the divergence between two AI positions
+          is itself the instrument.
+        </p>
+        <p>
+          Where one AI gives an answer, you see the subject.
+          Where two AIs diverge, <strong>you see the contours of the subject</strong> —
+          where knowledge is solid, where it is uncertain,
+          where it is structurally contested.
+        </p>
+        <p>
+          The human's role is not to decide which AI is right.
+          It is to identify what the divergence marks:
+          a boundary of knowledge, a difference of frames, or a failure.
+          Without the human, the loop closes — and becomes uncorrectable.
+        </p>
+        <p>
+          Trialogue makes the frame of the subject visible as a frame —
+          and thereby makes a change of position possible.
+          Trialogue does not guarantee positional change.
+          It creates a non-zero chance of making the frame visible.
+        </p>
+      </div>
+      <a href="research/observation-003.html" class="tool-link">Read the full observation →</a>
+
+      <div class="procedure">
+        <div class="procedure-header">
+          <span class="procedure-label">Procedure</span>
+          <div class="procedure-io">
+            <span class="procedure-io-item">Input: <span>question where frame is the constraint</span></span>
+            <span class="procedure-io-item">Output: <span>visible gap + positional access</span></span>
+          </div>
+        </div>
+        <div class="procedure-steps">
+          <div class="procedure-step">
+            <span class="procedure-step-num">01</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Identify the question</div>
+              <div class="procedure-step-desc">Choose a question where solo thinking keeps returning to the same position. The problem is not complexity — it is that the frame itself is the constraint.</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">02</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Assign two structurally different contexts</div>
+              <div class="procedure-step-desc">Give each AI a genuinely different context of inference — different role, different constraints, different starting assumptions. This is not a difference of tone or opinion. It is a structural difference of frames.</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">03</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Run the question through both positions</div>
+              <div class="procedure-step-desc">Ask the same question to each AI independently. Do not show one AI the other's response yet.</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">04</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Locate the gap</div>
+              <div class="procedure-step-desc">Where do the two responses diverge? The gap is not a problem to resolve — it is the instrument. It marks the live boundary of confident knowledge for this specific question.</div>
+            </div>
+          </div>
+          <div class="procedure-step">
+            <span class="procedure-step-num">05</span>
+            <div class="procedure-step-body">
+              <div class="procedure-step-name">Read the gap — do not collapse it</div>
+              <div class="procedure-step-desc">Ask: does this divergence mark a boundary of knowledge, a difference of frames, or a failure? The human's task is to hold both contexts simultaneously — not to choose between them.</div>
+            </div>
+          </div>
+        </div>
+        <div class="procedure-output">
+          <span class="procedure-output-label">Output</span>
+          <span class="procedure-output-val">A visible frame — what was previously invisible context becomes inspectable · Access to the positional level · The gap as a diagnostic map of where the question is structurally contested</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="tool-right">
+      <div class="tool-spec-block">
+        <div class="spec-label">Specifications</div>
+        <div class="spec-row">
+          <span class="spec-key">Type</span>
+          <span class="spec-val">Research configuration</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Participants</span>
+          <span class="spec-val">Human researcher · AI position A · AI position B</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Primary instrument</span>
+          <span class="spec-val">The gap between two structurally different AI contexts</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Human function</span>
+          <span class="spec-val">Structural break in the loop — not moderator, not judge</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Gives access to</span>
+          <span class="spec-val">Positional level — where the frame itself becomes visible</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Does not guarantee</span>
+          <span class="spec-val">Positional change — that step remains with the human</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Status</span>
+          <span class="spec-val">Working model · Under active investigation</span>
+        </div>
+      </div>
+      <div class="use-when">
+        <div class="use-when-label">Use when</div>
+        <div class="use-when-items">
+          <div class="use-when-item">The problem cannot be solved inside the existing frame — the frame itself needs to change</div>
+          <div class="use-when-item">Solo thinking keeps returning to the same position regardless of new information</div>
+          <div class="use-when-item">You need to see the limits of your own context from outside</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CHAIN ── -->
+  <div id="chain" class="reveal">
+    <h2 class="chain-title">How the tools relate</h2>
+    <p class="chain-intro">
+      The tools are not a linear process. But when the problem deepens
+      from navigation to position, a logical progression appears.
+      Trialogue is not the next step after CDSA in every case —
+      it becomes relevant when the diagnosis shows that
+      <strong>the position itself is the constraint.</strong>
+    </p>
+    <div class="chain-flow">
+      <div class="chain-step">
+        <div class="chain-step-num">01</div>
+        <div class="chain-step-name">The Map</div>
+        <div class="chain-step-role">Locate where the problem lives — confirm it is at the Architecture level</div>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-step">
+        <div class="chain-step-num">02</div>
+        <div class="chain-step-name">CDSA</div>
+        <div class="chain-step-role">Run AND/OR test · classify the contradiction · apply typed intervention</div>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-step" style="border-top: 2px solid var(--text3);">
+        <div class="chain-step-num" style="color:var(--text3);">if position<br>is constraint</div>
+        <div class="chain-step-name">Trialogue</div>
+        <div class="chain-step-role">Make the frame visible — access the positional level</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">StratoAtlas</span>
+      <span class="footer-copy">© 2026 stratoatlas.com</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://x.com/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X
+      </a>
+      <div class="footer-divider"></div>
+      <a href="https://linkedin.com/company/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <div class="footer-divider"></div>
+      <div class="footer-copy-wrap">
+        <button class="footer-email-btn" onclick="copyEmail(this)">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          research[at]stratoatlas.com
+        </button>
+        <div class="footer-copied">Copied</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function copyEmail(btn) {
+  navigator.clipboard.writeText('research@stratoatlas.com').then(() => {
+    const tip = btn.nextElementSibling;
+    tip.classList.add('show');
+    setTimeout(() => tip.classList.remove('show'), 1800);
+  });
+}
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.06 });
+reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
