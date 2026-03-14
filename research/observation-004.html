@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Observation 004 — The engine · StratoAtlas</title>
+<meta name="description" content="On the day StratoAtlas acquired a case extraction engine, the nature of the project changed. Not in degree — in kind. A research programme acquired the first mechanism capable of reproducing its own evidence base — partially, and under human control.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#080b10;
+  --bg2:#0d1117;
+  --bg3:#131820;
+  --text:#e2e6ef;
+  --text2:#7a8699;
+  --text3:#8090a0;
+  --accent:#c0392b;
+  --accent-l:#e07060;
+  --line:rgba(255,255,255,.07);
+  --line2:rgba(255,255,255,.04);
+  --container:1200px;
+}
+
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Geologica',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:linear-gradient(to bottom,rgba(8,11,16,.97) 60%,transparent);
+}
+.nav-inner{
+  max-width:var(--container);margin:0 auto;
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
+  letter-spacing:.5px;color:#fff;text-decoration:none;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.current{color:var(--text);}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 48px;}
+.col-text{max-width:640px;}
+
+#article-header{
+  padding-top:160px;padding-bottom:72px;
+  border-bottom:1px solid var(--line);
+}
+.obs-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:16px;
+}
+.obs-back{
+  color:var(--text3);text-decoration:none;
+  transition:color .2s;font-size:11px;
+}
+.obs-back:hover{color:var(--text);}
+.obs-back::before{content:'← ';letter-spacing:0;}
+
+.article-title{
+  font-size:clamp(36px,5vw,64px);font-weight:800;
+  line-height:1.05;letter-spacing:-.03em;
+  color:var(--text);margin-bottom:16px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.article-subtitle{
+  font-size:17px;font-weight:300;
+  color:var(--text3);line-height:1.55;
+  margin-bottom:28px;
+  max-width:580px;
+}
+.article-meta{
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);letter-spacing:.5px;
+}
+.meta-item{display:flex;align-items:center;gap:6px;}
+.meta-item strong{color:var(--text2);}
+
+#article-body{padding:72px 0;}
+
+.body-section{margin-bottom:56px;}
+.body-section+.body-section{
+  border-top:1px solid var(--line2);
+  padding-top:56px;
+}
+.section-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px;
+}
+h2{
+  font-size:24px;font-weight:700;
+  letter-spacing:-.02em;color:var(--text);
+  margin-bottom:20px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+p{
+  font-size:17px;font-weight:300;
+  line-height:1.8;color:var(--text2);
+  margin-bottom:20px;
+}
+p:last-child{margin-bottom:0;}
+p strong{color:var(--text);font-weight:500;}
+p em{color:var(--text3);font-style:italic;}
+
+.article-lede{
+  font-size:21px;font-weight:300;
+  line-height:1.7;color:var(--text);
+  margin-bottom:48px;
+  padding-bottom:48px;
+  border-bottom:1px solid var(--line);
+}
+
+.article-callout{
+  border-left:2px solid var(--accent);
+  padding:20px 24px;
+  margin:32px 0;
+  background:rgba(192,57,43,.05);
+}
+.article-callout p{
+  font-size:16px;margin-bottom:0;
+  color:var(--text);font-weight:400;
+}
+.article-callout p+p{margin-top:12px;}
+
+.distinction-block{
+  background:var(--bg3);
+  border:1px solid var(--line2);
+  padding:24px 28px;
+  margin:24px 0;
+  border-radius:2px;
+}
+.distinction-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--accent-l);margin-bottom:10px;
+}
+.distinction-block p{
+  font-size:15px;font-weight:300;
+  color:var(--text2);line-height:1.7;
+  margin-bottom:0;
+}
+.distinction-block p+p{margin-top:10px;}
+.distinction-block p.subdued{
+  font-size:13px;color:var(--text3);margin-top:10px;
+}
+
+.key-claim{
+  border:1px solid rgba(192,57,43,.3);
+  background:rgba(192,57,43,.06);
+  padding:28px 32px;
+  margin:32px 0;
+}
+.key-claim-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--accent-l);margin-bottom:12px;
+}
+.key-claim p{
+  color:var(--text);font-size:18px;font-weight:400;
+  line-height:1.6;margin-bottom:0;
+}
+
+/* Pipeline diagram */
+.pipeline-figure{
+  margin:0 0 48px;
+  padding:28px 28px 24px;
+  background:linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,0)), var(--bg2);
+  border:1px solid var(--line);
+  position:relative;
+  overflow:hidden;
+}
+.pipeline-figure::before{
+  content:"";
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    -35deg,
+    transparent 0 8px,
+    rgba(255,255,255,.018) 8px 10px
+  );
+  pointer-events:none;opacity:.65;
+}
+.pipeline-figure > *{position:relative;z-index:1;}
+.pipeline-figure-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:20px;
+}
+
+.pipeline-chain{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+.pipeline-node{
+  display:flex;
+  align-items:stretch;
+  gap:0;
+}
+.pipeline-node-left{
+  width:180px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  padding-right:20px;
+}
+.pipeline-node-label{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--text3);text-align:right;
+  line-height:1.4;
+}
+.pipeline-node-label.accent{color:var(--accent-l);}
+
+.pipeline-node-center{
+  width:2px;
+  background:var(--line);
+  flex-shrink:0;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pipeline-node-center::before{
+  content:'';
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--bg3);
+  border:2px solid var(--text3);
+  position:relative;z-index:1;
+}
+.pipeline-node-center.accent::before{
+  border-color:var(--accent-l);
+  background:rgba(192,57,43,.15);
+}
+.pipeline-node-center.out::before{
+  border-color:rgba(255,255,255,.3);
+  background:var(--bg2);
+}
+
+.pipeline-node-right{
+  flex:1;
+  padding:14px 0 14px 20px;
+  display:flex;
+  align-items:center;
+}
+.pipeline-node-text{
+  font-size:15px;font-weight:400;color:var(--text);line-height:1.5;
+}
+.pipeline-node-text span{
+  font-size:13px;font-weight:300;color:var(--text3);
+  display:block;margin-top:3px;
+}
+
+.pipeline-connector{
+  display:flex;align-items:stretch;gap:0;
+  height:24px;
+}
+.pipeline-connector-left{width:180px;flex-shrink:0;}
+.pipeline-connector-center{
+  width:2px;background:var(--line);flex-shrink:0;
+}
+.pipeline-connector-center.accent{background:rgba(192,57,43,.3);}
+.pipeline-connector-right{flex:1;}
+
+.pipeline-figure-note{
+  margin-top:20px;
+  font-size:14px;line-height:1.7;color:var(--text3);
+}
+.pipeline-figure-note strong{color:var(--text);font-weight:500;}
+
+/* Recursion diagram */
+.recursion-figure{
+  margin:32px 0;
+  padding:28px;
+  background:var(--bg3);
+  border:1px solid var(--line2);
+  border-radius:2px;
+}
+.recursion-figure-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--accent-l);margin-bottom:16px;
+}
+.recursion-loop{
+  display:flex;
+  align-items:center;
+  gap:0;
+  flex-wrap:wrap;
+}
+.recursion-item{
+  font-family:'DM Mono',monospace;
+  font-size:11px;letter-spacing:.5px;
+  color:var(--text2);
+  padding:8px 14px;
+  border:1px solid var(--line);
+  background:var(--bg2);
+  white-space:nowrap;
+}
+.recursion-item.self{
+  color:var(--accent-l);
+  border-color:rgba(192,57,43,.3);
+  background:rgba(192,57,43,.06);
+}
+.recursion-arrow{
+  font-family:'DM Mono',monospace;
+  font-size:13px;color:var(--text3);
+  padding:0 8px;
+}
+.recursion-note{
+  margin-top:14px;
+  font-size:13px;font-weight:300;color:var(--text3);line-height:1.6;
+}
+
+/* Model grid */
+.model-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2px;
+  margin:28px 0;
+}
+.model-cell{
+  background:var(--bg3);
+  padding:20px 24px;
+}
+.model-cell-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:10px;
+}
+.model-cell p{
+  font-size:14px;font-weight:300;
+  color:var(--text2);line-height:1.6;
+  margin-bottom:0;
+}
+.model-cell.highlight{border-top:2px solid var(--accent);}
+
+.emergence-marker{
+  display:inline-block;
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text3);
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--line);
+  padding:2px 8px;border-radius:2px;
+  margin-right:8px;vertical-align:middle;
+}
+
+.epistemic-note{
+  background:var(--bg2);
+  border:1px solid var(--line);
+  padding:24px 28px;
+  margin:40px 0;
+}
+.epistemic-note-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:12px;
+}
+.epistemic-note p{
+  font-size:15px;font-weight:300;
+  color:var(--text2);line-height:1.7;
+  margin-bottom:0;
+}
+.epistemic-note p+p{margin-top:10px;}
+.epistemic-note p.subdued{
+  font-size:13px;color:var(--text3);margin-top:10px;
+}
+
+.article-conclusion{
+  border-top:1px solid var(--line);
+  padding-top:48px;margin-bottom:48px;
+}
+.conclusion-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:20px;
+}
+.article-conclusion p{
+  font-size:17px;font-weight:300;
+  line-height:1.8;color:var(--text2);
+  margin-bottom:16px;
+}
+.article-conclusion p strong{color:var(--text);font-weight:500;}
+
+.open-questions{margin-top:40px; padding:32px; background:var(--bg2); border:1px solid var(--line);}
+.open-questions-label{ font-size:11px;
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:20px;
+}
+.question-item{
+  padding:14px 0;
+  border-bottom:1px solid var(--line2);
+  color:var(--text2);font-size:15px;
+  font-weight:300;line-height:1.6;
+  display:flex;gap:16px;
+}
+.question-item::before{
+  content:'?';
+  font-family:'DM Mono',monospace;font-size:12px;
+  color:var(--accent-l);flex-shrink:0;margin-top:2px;
+}
+
+.article-nav{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  padding-top:40px;
+  border-top:1px solid var(--line2);
+}
+.nav-back-link{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;
+  transition:color .2s;
+}
+.nav-back-link:hover{color:var(--text);}
+.nav-prev-next{display:flex;gap:24px;}
+
+.version-note{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);letter-spacing:.04em;
+  padding-top:16px;
+}
+
+.site-footer{border-top:1px solid var(--line);background:var(--bg);}
+.footer-inner{
+  max-width:var(--container);margin:0 auto;
+  padding:32px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.footer-left{display:flex;align-items:center;gap:24px;}
+.footer-brand{
+  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
+  color:var(--text3);letter-spacing:.5px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.footer-copy{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);letter-spacing:.5px;
+}
+.footer-right{display:flex;align-items:center;gap:20px;}
+.footer-icon-link{
+  display:flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;letter-spacing:.5px;
+  transition:color .2s;
+}
+.footer-icon-link:hover{color:var(--text);}
+.footer-icon-link svg{width:14px;height:14px;fill:currentColor;}
+.footer-divider{width:1px;height:16px;background:var(--line);}
+.footer-email-btn{
+  display:flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);background:none;border:none;
+  cursor:pointer;letter-spacing:.5px;transition:color .2s;padding:0;
+}
+.footer-email-btn:hover{color:var(--text);}
+.footer-email-btn svg{width:14px;height:14px;fill:currentColor;}
+.footer-copy-wrap{position:relative;}
+.footer-copied{
+  position:absolute;bottom:calc(100% + 6px);left:50%;
+  transform:translateX(-50%);
+  font-family:'DM Mono',monospace;font-size:10px;
+  background:var(--bg3);border:1px solid var(--line);
+  padding:4px 10px;color:var(--accent-l);
+  opacity:0;transition:opacity .2s;pointer-events:none;
+  white-space:nowrap;
+}
+.footer-copied.show{opacity:1;}
+
+@media(max-width:768px){
+  .nav-inner{padding:16px 24px;}
+  .container{padding:0 24px;}
+  .footer-inner{padding:24px;flex-direction:column;gap:20px;align-items:flex-start;}
+  .model-grid{grid-template-columns:1fr;}
+  .pipeline-node-left{width:120px;}
+  .recursion-loop{gap:4px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yMjguNzc2IDI2OC4xNjVDMjE5LjU1NyAyNjYuMTQzIDIwOS44ODkgMjY1LjE3MyAyMDAuMDAxIDI2NS4xNzNDMTkwLjExMyAyNjUuMTczIDE4MC40NDUgMjY2LjE0MyAxNzEuMjI2IDI2OC4xNjVMMjAwLjAwMSAyMDkuNzM4TDIyOC43NzYgMjY4LjE2NVoiIHN0cm9rZT0iI0U2RTZFNiIgc3Ryb2tlLXdpZHRoPSIxMC40ODY5Ii8+CjxwYXRoIGQ9Ik0zNjguNTQgMzY4LjUzNUwyMDguMzM1IDMzMy45MzRDMjA2LjM3OCAzMzMuNTExIDIwMy42MjcgMzMzLjE2IDIwMC4wMDMgMzMzLjE2QzE5Ni4zNzcgMzMzLjE2IDE5My42MjcgMzMzLjUxMiAxOTEuNjcyIDMzMy45MzRMMzEuNDYwOSAzNjguNTM5TDIwMC4wMDcgMzEuNDYwN0wzNjguNTQgMzY4LjUzNVoiIHN0cm9rZT0iI0U2RTZFNiIgc3Ryb2tlLXdpZHRoPSIxMC40ODY5Ii8+CjxwYXRoIGQ9Ik0yOTcuODM1IDMxNi4xMDRMMjE4LjExMSAyOTguOTY0QzIxMi42NjMgMjk3Ljc5MyAyMDYuNjAyIDI5Ny4xNTggMjAwLjAwMSAyOTcuMTU4QzE5My4zOTkgMjk3LjE1OCAxODcuMzM5IDI5Ny43OTQgMTgxLjg5MyAyOTguOTY0TDEwMi4xNjUgMzE2LjEwNUwyMDAuMDAzIDEyMS4zNDhMMjk3LjgzNSAzMTYuMTA0WiIgc3Ryb2tlPSIjRTZFNkU2IiBzdHJva2Utd2lkdGg9IjEwLjQ4NjkiLz4KPC9zdmc+Cg==" alt="" height="28" onerror="this.style.display='none'">
+      <span>StratoAtlas</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../map.html">Map</a></li>
+      <li><a href="../foundations.html">Foundations</a></li>
+      <li><a href="../cdsa.html">CDSA</a></li>
+      <li><a href="../tools.html">Tools</a></li>
+      <li><a href="../research.html" class="current">Research</a></li>
+          <li><a href="/cases/">Cases</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div id="article-header">
+  <div class="container">
+    <div class="col-text">
+      <div class="obs-label">
+        <span>Observation 004</span>
+        <a href="../research.html" class="obs-back">Research log</a>
+      </div>
+      <h1 class="article-title">The engine</h1>
+      <p class="article-subtitle">On the day a case extraction pipeline appeared, the nature of the project changed. Not in degree — in kind. A research programme acquired the first mechanism capable of reproducing its own evidence base. The loop is not yet closed. But its structure is now visible.</p>
+      <div class="article-meta">
+        <div class="meta-item"><strong>Roman Kir</strong></div>
+        <div class="meta-item">StratoAtlas Research</div>
+        <div class="meta-item">March 2026</div>
+        <div class="meta-item">Working model</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="article-body">
+  <div class="container">
+    <div class="col-text">
+
+      <p class="article-lede">A methodology can describe contradictions. A framework can classify them. But neither can feed itself. The rarest part of any research programme is not the theory — it is the machine that produces evidence. This observation records the day that machine came online, and what it has not yet done.</p>
+
+      <!-- 01 -->
+      <div class="body-section">
+        <div class="section-label">01 — What appeared</div>
+        <h2>A pipeline, not a tool</h2>
+
+        <p>Until now, StratoAtlas operated as a research programme in the classical sense: observation, distinction, formulation, publication. Each case required manual attention at every step. The theory was developing faster than the evidence base.</p>
+
+        <p>On March 12, 2026, that changed. A case extraction pipeline came online. Its structure:</p>
+
+        <div class="pipeline-figure" aria-label="Case extraction pipeline diagram">
+          <div class="pipeline-figure-label">Pipeline — case extraction</div>
+
+          <div class="pipeline-chain">
+
+            <div class="pipeline-node">
+              <div class="pipeline-node-left"><div class="pipeline-node-label">Source</div></div>
+              <div class="pipeline-node-center"></div>
+              <div class="pipeline-node-right">
+                <div class="pipeline-node-text">Forum thread
+                  <span>SAP Community · Odoo · Stack Overflow · Reddit</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-connector">
+              <div class="pipeline-connector-left"></div>
+              <div class="pipeline-connector-center"></div>
+              <div class="pipeline-connector-right"></div>
+            </div>
+
+            <div class="pipeline-node">
+              <div class="pipeline-node-left"><div class="pipeline-node-label">Search</div></div>
+              <div class="pipeline-node-center"></div>
+              <div class="pipeline-node-right">
+                <div class="pipeline-node-text">Collector
+                  <span>Finds threads with structural contradiction signals</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-connector">
+              <div class="pipeline-connector-left"></div>
+              <div class="pipeline-connector-center"></div>
+              <div class="pipeline-connector-right"></div>
+            </div>
+
+            <div class="pipeline-node">
+              <div class="pipeline-node-left"><div class="pipeline-node-label">Storage</div></div>
+              <div class="pipeline-node-center"></div>
+              <div class="pipeline-node-right">
+                <div class="pipeline-node-text">sources_raw
+                  <span>Queue with status: raw → cleaned → processed</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-connector">
+              <div class="pipeline-connector-left"></div>
+              <div class="pipeline-connector-center"></div>
+              <div class="pipeline-connector-right"></div>
+            </div>
+
+            <div class="pipeline-node">
+              <div class="pipeline-node-left"><div class="pipeline-node-label">Clean</div></div>
+              <div class="pipeline-node-center"></div>
+              <div class="pipeline-node-right">
+                <div class="pipeline-node-text">Cleaner
+                  <span>Extracts signal from noise, normalises thread text</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-connector">
+              <div class="pipeline-connector-left"></div>
+              <div class="pipeline-connector-center accent"></div>
+              <div class="pipeline-connector-right"></div>
+            </div>
+
+            <div class="pipeline-node">
+              <div class="pipeline-node-left"><div class="pipeline-node-label accent">Analyse</div></div>
+              <div class="pipeline-node-center accent"></div>
+              <div class="pipeline-node-right">
+                <div class="pipeline-node-text">Processor
+                  <span>CDSA extraction — classifies contradiction type, extracts structure</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-connector">
+              <div class="pipeline-connector-left"></div>
+              <div class="pipeline-connector-center accent"></div>
+              <div class="pipeline-connector-right"></div>
+            </div>
+
+            <div class="pipeline-node">
+              <div class="pipeline-node-left"><div class="pipeline-node-label accent">Output</div></div>
+              <div class="pipeline-node-center out"></div>
+              <div class="pipeline-node-right">
+                <div class="pipeline-node-text">cases
+                  <span>Not texts — structured problem models</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <p class="pipeline-figure-note" style="margin-top:24px;">
+            The key distinction: <strong>cases does not store texts</strong>. It stores the model of the problem —
+            raw_symptom, system_forces, contradiction_a, contradiction_b, cdsa_type, hidden_assumption,
+            position_shift, draft_solution. The pipeline converts forum chaos into structured knowledge.
+          </p>
+        </div>
+
+
+      <!-- What exists / What's next -->
+      <div class="distinction-block" style="margin-top:0;">
+        <div class="distinction-label">What exists now</div>
+        <p>Collector (search + forum signal detection) · sources_raw with status pipeline (raw → cleaned → processed) · Cleaner · CDSA Processor with LLM extraction · cases database with structured problem models.</p>
+      </div>
+      <div class="distinction-block">
+        <div class="distinction-label">What is next</div>
+        <p>HTML case pages (Case Library) · Forum response drafts · Processor prompt versioning and documentation · Multi-model disagreement tracking · Feedback ingestion from community responses.</p>
+      </div>
+
+        <p>This is not a search tool. It is not a classifier. It is a pipeline — a sequence of transformations with a defined input, defined output, and controllable throughput. The distinction matters.</p>
+
+        <div class="article-callout">
+          <p>A tool processes what you give it. A pipeline produces what you could not get otherwise — at a rate that does not depend on your attention.</p>
+        </div>
+      </div>
+
+      <!-- 02 -->
+      <div class="body-section">
+        <div class="section-label">02 — The structural shift</div>
+        <h2>From programme to system</h2>
+
+        <p>Observation 003 ended with an open question: <em>what is the minimally necessary infrastructure for a trialogue?</em> The implicit assumption behind that question was that trialogue infrastructure would look like dialogue infrastructure — only larger, or differently configured.</p>
+
+        <p>The pipeline answers differently. The minimally necessary infrastructure for a trialogue at research scale is not a better conversation interface. It is a <strong>mechanism that converts raw contradictions in the world into structured cases</strong> — at a rate that makes empirical testing of the framework possible.</p>
+
+        <p>Before the pipeline, CDSA was a theory with illustrative cases. After the pipeline, CDSA becomes a theory under continuous empirical pressure. Every case that passes through the processor is either consistent with the classification or it isn't. Inconsistency is immediately visible — in the <code>confidence</code> field, in the <code>duplicate_score</code>, in the Unclear category that should remain small.</p>
+
+        <div class="distinction-block">
+          <div class="distinction-label">Before — research programme</div>
+          <p>Observation, distinction, formulation, publication. Human attention at every step. Rate of evidence limited by rate of reading.</p>
+        </div>
+
+        <div class="distinction-block">
+          <div class="distinction-label">After — partially self-sustaining system (in progress)</div>
+          <p>Forum → case → knowledge base → public artifact → forum response → new cases. The structure of this loop exists. The first three steps are operational. The return stroke — artifact generation, forum response, feedback ingestion — is the next phase.</p>
+        </div>
+
+        <p>The rarest part of any research programme is not the theory — it is the machine that produces evidence. Most research programmes never acquire one. They end when the researcher's attention ends.</p>
+      </div>
+
+      <!-- 03 -->
+      <div class="body-section">
+        <div class="section-label">03 — Recursion</div>
+        <h2>The method applied to its own subject matter</h2>
+
+        <p>Observation 003 described a specific form of self-reference: the document was produced by a trialogue about trialogue. Specific emergent distinctions were recorded. The claim was that recursive validation is a meaningful epistemic signal — if a method clarifies itself under its own application, it probably describes something real.</p>
+
+        <p>The pipeline produces a deeper recursion. Not a document about itself — a system that uses CDSA to extract CDSA cases from the world.</p>
+
+        <div class="recursion-figure">
+          <div class="recursion-figure-label">Recursive structure</div>
+          <div class="recursion-loop">
+            <div class="recursion-item">Forum thread</div>
+            <div class="recursion-arrow">→</div>
+            <div class="recursion-item self">CDSA processor</div>
+            <div class="recursion-arrow">→</div>
+            <div class="recursion-item">CDSA case</div>
+            <div class="recursion-arrow">→</div>
+            <div class="recursion-item">Case Library</div>
+            <div class="recursion-arrow">→</div>
+            <div class="recursion-item">Forum response</div>
+            <div class="recursion-arrow">→</div>
+            <div class="recursion-item">New threads</div>
+          </div>
+          <div class="recursion-note">
+            The highlighted node applies the framework to identify instances of the framework's subject matter.
+            CDSA is simultaneously the instrument of analysis and the description of what is being found.
+          </div>
+        </div>
+
+        <p>This is not circular reasoning. It is the standard structure of a mature empirical framework: the theory generates predictions about what should be findable in the world, the pipeline finds it, the cases either confirm or challenge the predictions. The loop is not closed — it is generative.</p>
+
+        <div class="article-callout">
+          <p>The processor prompt is not a technical parameter. It is the operational definition of the framework — the precise specification of what counts as a Real fork versus a False fork on actual forum text. It should be versioned, documented, and treated as a research artifact alongside the cases it produces.</p>
+        </div>
+
+        <p>When the prompt changes, the classification changes. Cases processed under different prompt versions are not directly comparable. The prompt is the instrument, and instrument drift is the oldest problem in empirical research.</p>
+      </div>
+
+      <!-- 04 -->
+      <div class="body-section">
+        <div class="section-label">04 — The multi-model question</div>
+        <h2>Different models as different positions</h2>
+
+        <p>The pipeline currently uses one AI model for CDSA extraction. The trialogue configuration described in Observation 003 uses another. This was not a deliberate architectural decision — it emerged from the sequence of tool availability.</p>
+
+        <p>Looking at it structurally, the accidental architecture may be more honest than a deliberate one would have been. Real users already live in a multi-model world — using different models for different tasks simultaneously. This is not a transition state. It is the mature condition.</p>
+
+        <div class="article-callout">
+          <p>Where two models diverge on the same case — that divergence is not noise to filter. It is the same structural signal as the gap between two AIs in a trialogue: an indicator of where the classification is genuinely uncertain, where the definition needs precision.</p>
+          <p>Running the same case through two models and recording disagreement is a calibration instrument, not a redundancy check. The disagreement itself is data.</p>
+        </div>
+
+        <p>This deserves its own observation. It is noted here because it emerged directly from the pipeline architecture — not as a problem to solve, but as an instrument that became available by accident.</p>
+      </div>
+
+      <!-- 05 -->
+      <div class="body-section">
+        <div class="section-label">05 — The loop closes outward</div>
+        <h2>Public artifacts as the return stroke</h2>
+
+        <p>A pipeline that only accumulates cases is a database. What makes it a system is the return stroke: the cases go back out into the world as public artifacts, and the world responds.</p>
+
+        <p>Two artifacts are planned from each processed case. First, an HTML page in the Case Library — a structured problem model that someone searching for exactly this kind of conflict can find. Second, a response posted to the original forum thread — structured analysis returned to the community that produced the raw material.</p>
+
+        <p>The return stroke matters for three distinct reasons:</p>
+
+        <div class="distinction-block">
+          <div class="distinction-label">Reason 1 — Verification</div>
+          <p>The person who originally described the problem is the only one who can say whether the CDSA classification captures what was actually happening. Their response — or non-response — is evidence. A framework that produces analyses no one recognises is a different kind of failure than one that produces analyses no one can find.</p>
+        </div>
+
+        <div class="distinction-block">
+          <div class="distinction-label">Reason 2 — New cases</div>
+          <p>A good forum response generates replies. Some of those replies will contain new contradictions. The pipeline feeds itself — not metaphorically, but literally. The loop closes outward rather than inward.</p>
+        </div>
+
+        <div class="distinction-block">
+          <div class="distinction-label">Reason 3 — The framework earns its position</div>
+          <p>CDSA is currently a self-described framework. Its credibility comes from the coherence of its distinctions and the quality of its published observations. A Case Library of 50 structured analyses — with verifiable forum links, with community responses visible — is a different epistemic object. Not more polished. More exposed.</p>
+        </div>
+
+        <div class="article-callout">
+          <p>The system becomes epistemically accountable only when its outputs return to the source community. A pipeline that only accumulates is unfalsifiable by design. The return stroke is not a feature — it is the condition under which the framework can be wrong.</p>
+        </div>
+      </div>
+
+      <!-- 06 -->
+      <div class="body-section">
+        <div class="section-label">06 — What this changes about the programme</div>
+        <h2>The rarest part</h2>
+
+        <p>Until March 12, 2026, StratoAtlas was:</p>
+
+        <div class="distinction-block">
+          <div class="distinction-label">Status before</div>
+          <p>A methodology. A map. A framework with compelling internal logic. Several observations of high quality. An open letter to Anthropic that named a real gap. A theory ahead of its evidence base.</p>
+        </div>
+
+        <p>After March 12, StratoAtlas is all of that — plus a machine that converts raw forum contradictions into structured knowledge at a controllable rate.</p>
+
+        <p>The significance of this is not speed. It is the change in what kinds of questions become answerable.</p>
+
+        <p>Before the pipeline: <em>Does CDSA correctly describe the three types of contradiction?</em> — answerable only by argument and illustrative cases.</p>
+
+        <p>After the pipeline: <em>What is the empirical distribution of contradiction types across ERP forums?</em> <em>Which categories produce the most disagreement between models?</em> <em>What system levels generate the highest rate of Real forks?</em> — these become answerable. Not immediately, not without care in interpretation, but answerable in principle.</p>
+
+        <div class="key-claim" style="border-width:2px; padding:32px 36px;">
+          <div class="key-claim-label">Central observation</div>
+          <p>The engine is the rarest part of any research programme — not because it is hard to build technically, but because most programmes never reach the point where they know precisely what they need to extract and why. StratoAtlas reached that point first. The pipeline followed naturally.</p>
+        </div>
+      </div>
+
+      <!-- Epistemic note -->
+      <div class="epistemic-note">
+        <div class="epistemic-note-label">Working model, not a finished theory</div>
+        <p>This observation was written on the day the pipeline came online. Some of what is described here is aspiration stated as structure. The pipeline exists. Whether it produces what this document claims it will produce — that is what the next months will show.</p>
+        <p class="subdued">The open questions below are not rhetorical. They are the actual uncertainties that determine whether this observation turns out to be accurate or premature.</p>
+      </div>
+
+      <!-- Conclusion -->
+      <div class="article-conclusion">
+        <div class="conclusion-label">Conclusion</div>
+        <p>A research programme that acquires an extraction engine changes in nature, not only in scale. The theory stops being ahead of the evidence. The framework starts being tested by the world it describes.</p>
+        <p>The loop that opened today — forums → cases → knowledge base → public artifacts → forums — is not a product feature. It is the structure that makes the research programme self-sustaining.</p>
+        <p><strong>The rarest part is not the theory. It is the machine that makes the theory responsible to evidence.</strong> That machine now exists.</p>
+      </div>
+
+      <!-- Open questions -->
+      <div class="open-questions">
+        <div class="open-questions-label">Open questions</div>
+        <div class="question-item">What is the minimally acceptable confidence threshold for a case to enter the public Case Library — and who decides when a classification is good enough to publish?</div>
+        <div class="question-item">When two models disagree on CDSA type for the same case, what is the correct response — average, escalate to human, or treat the disagreement itself as the finding?</div>
+        <div class="question-item">The processor prompt is the operational definition of the framework. How should prompt versioning interact with the integrity of the case database — can cases from different prompt versions be compared?</div>
+        <div class="question-item">If the forum community begins to recognise StratoAtlas analysis in responses, does that change what they write in new threads — and if so, is the dataset still representative?</div>
+      </div>
+
+      <!-- Article nav -->
+      <div class="article-nav">
+        <a href="../research.html" class="nav-back-link">← Research log</a>
+        <div class="nav-prev-next">
+          <a href="observation-003.html" class="nav-back-link">← Obs 003</a>
+          <a href="observation-005.html" class="nav-back-link">Obs 005 →</a>
+        </div>
+      </div>
+
+      <div class="version-note">v1.1 · March 2026 · StratoAtlas Research</div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">StratoAtlas</span>
+      <span class="footer-copy">© 2026 stratoatlas.com</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://x.com/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X
+      </a>
+      <div class="footer-divider"></div>
+      <a href="https://linkedin.com/company/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <div class="footer-divider"></div>
+      <div class="footer-copy-wrap">
+        <button class="footer-email-btn" onclick="copyEmail(this)">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          research[at]stratoatlas.com
+        </button>
+        <div class="footer-copied">Copied</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function copyEmail(btn){
+  navigator.clipboard.writeText('research@stratoatlas.com').then(()=>{
+    const tip = btn.nextElementSibling;
+    tip.classList.add('show');
+    setTimeout(()=>tip.classList.remove('show'), 1800);
+  });
+}
+</script>
+</body>
+</html>

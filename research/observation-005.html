@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Observation 005 — The gap between models · StratoAtlas</title>
+<meta name="description" content="Today’s AI infrastructure is built primarily around individual models, not between them. This creates a structural gap — no stable infrastructure exists between models yet. The gap is visible. The position is empty.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Geologica:wght@300;400;500;600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#080b10;
+  --bg2:#0d1117;
+  --bg3:#131820;
+  --text:#e2e6ef;
+  --text2:#7a8699;
+  --text3:#8090a0;
+  --accent:#c0392b;
+  --accent-l:#e07060;
+  --line:rgba(255,255,255,.07);
+  --line2:rgba(255,255,255,.04);
+  --container:1200px;
+}
+
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Geologica',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:linear-gradient(to bottom,rgba(8,11,16,.97) 60%,transparent);
+}
+.nav-inner{
+  max-width:var(--container);margin:0 auto;
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
+  letter-spacing:.5px;color:#fff;text-decoration:none;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.current{color:var(--text);}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 48px;}
+.col-text{max-width:640px;}
+
+#article-header{
+  padding-top:160px;padding-bottom:72px;
+  border-bottom:1px solid var(--line);
+}
+.obs-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:12px;
+  display:flex;align-items:center;gap:16px;
+}
+.obs-back{
+  color:var(--text3);text-decoration:none;
+  transition:color .2s;font-size:11px;
+}
+.obs-back:hover{color:var(--text);}
+.obs-back::before{content:'← ';letter-spacing:0;}
+
+.article-title{
+  font-size:clamp(36px,5vw,64px);font-weight:800;
+  line-height:1.05;letter-spacing:-.03em;
+  color:var(--text);margin-bottom:16px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.article-subtitle{
+  font-size:17px;font-weight:300;
+  color:var(--text3);line-height:1.55;
+  margin-bottom:28px;max-width:580px;
+}
+.article-meta{
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);letter-spacing:.5px;
+}
+.meta-item{display:flex;align-items:center;gap:6px;}
+.meta-item strong{color:var(--text2);}
+
+#article-body{padding:72px 0;}
+
+.body-section{margin-bottom:56px;}
+.body-section+.body-section{
+  border-top:1px solid var(--line2);
+  padding-top:56px;
+}
+.section-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px;
+}
+h2{
+  font-size:24px;font-weight:700;
+  letter-spacing:-.02em;color:var(--text);
+  margin-bottom:20px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+p{
+  font-size:17px;font-weight:300;
+  line-height:1.8;color:var(--text2);
+  margin-bottom:20px;
+}
+p:last-child{margin-bottom:0;}
+p strong{color:var(--text);font-weight:500;}
+p em{color:var(--text3);font-style:italic;}
+
+.article-lede{
+  font-size:21px;font-weight:300;
+  line-height:1.7;color:var(--text);
+  margin-bottom:48px;padding-bottom:48px;
+  border-bottom:1px solid var(--line);
+}
+
+.article-callout{
+  border-left:2px solid var(--accent);
+  padding:20px 24px;margin:32px 0;
+  background:rgba(192,57,43,.05);
+}
+.article-callout p{
+  font-size:16px;margin-bottom:0;
+  color:var(--text);font-weight:400;
+}
+.article-callout p+p{margin-top:12px;}
+
+.distinction-block{
+  background:var(--bg3);
+  border:1px solid var(--line2);
+  padding:24px 28px;margin:24px 0;border-radius:2px;
+}
+.distinction-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--accent-l);margin-bottom:10px;
+}
+.distinction-block p{
+  font-size:15px;font-weight:300;
+  color:var(--text2);line-height:1.7;margin-bottom:0;
+}
+.distinction-block p+p{margin-top:10px;}
+.distinction-block p.subdued{
+  font-size:13px;color:var(--text3);margin-top:10px;
+}
+
+.key-claim{
+  border:2px solid rgba(192,57,43,.3);
+  background:rgba(192,57,43,.06);
+  padding:32px 36px;margin:32px 0;
+}
+.key-claim-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--accent-l);margin-bottom:12px;
+}
+.key-claim p{
+  color:var(--text);font-size:18px;font-weight:400;
+  line-height:1.6;margin-bottom:0;
+}
+.key-claim p+p{margin-top:14px;}
+
+/* landscape diagram — labs vs users */
+.landscape-figure{
+  margin:0 0 48px;
+  padding:28px 28px 24px;
+  background:linear-gradient(180deg,rgba(255,255,255,.015),rgba(255,255,255,0)),var(--bg2);
+  border:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.landscape-figure::before{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    -35deg,transparent 0 8px,rgba(255,255,255,.018) 8px 10px
+  );
+  pointer-events:none;opacity:.65;
+}
+.landscape-figure>*{position:relative;z-index:1;}
+.landscape-figure-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:20px;
+}
+
+.landscape-grid{
+  display:grid;
+  grid-template-columns:1fr 40px 1fr 40px 1fr;
+  gap:2px;
+  align-items:stretch;
+  margin-bottom:20px;
+}
+.landscape-col{
+  background:var(--bg3);
+  padding:18px 20px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.landscape-col.empty-zone{
+  background:transparent;
+  border:1px dashed rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+}
+.landscape-col-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:4px;
+}
+.landscape-col-label.accent{color:var(--accent-l);}
+.landscape-model{
+  font-size:13px;font-weight:500;color:var(--text2);
+  padding:6px 10px;
+  border:1px solid var(--line);
+  background:var(--bg2);
+  font-family:'DM Mono',monospace;
+}
+.landscape-arrow{
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text3);font-size:18px;
+  font-family:'DM Mono',monospace;
+}
+.landscape-empty-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:rgba(192,57,43,.5);text-align:center;
+  line-height:1.6;
+}
+.landscape-figure-note{
+  font-size:14px;line-height:1.7;color:var(--text3);
+}
+.landscape-figure-note strong{color:var(--text);font-weight:500;}
+
+/* calibration diagram */
+.calibration-figure{
+  margin:32px 0;padding:24px 28px;
+  background:var(--bg3);border:1px solid var(--line2);border-radius:2px;
+}
+.calibration-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--accent-l);margin-bottom:18px;
+}
+.calibration-row{
+  display:flex;align-items:center;gap:0;
+  margin-bottom:10px;
+}
+.calibration-row:last-child{margin-bottom:0;}
+.cal-case{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);width:80px;flex-shrink:0;
+}
+.cal-model-a{
+  flex:1;padding:8px 14px;
+  background:var(--bg2);border:1px solid var(--line);
+  font-size:13px;font-weight:400;color:var(--text2);
+  text-align:center;
+}
+.cal-gap{
+  width:48px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--text3);letter-spacing:.5px;
+}
+.cal-gap.signal{color:var(--accent-l);}
+.cal-model-b{
+  flex:1;padding:8px 14px;
+  background:var(--bg2);border:1px solid var(--line);
+  font-size:13px;font-weight:400;color:var(--text2);
+  text-align:center;
+}
+.cal-model-a.agree,.cal-model-b.agree{
+  border-color:rgba(39,103,74,.5);
+  color:rgba(74,158,114,.9);
+}
+.cal-model-a.disagree,.cal-model-b.disagree{
+  border-color:rgba(192,57,43,.3);
+}
+.cal-note{
+  margin-top:14px;font-size:13px;font-weight:300;
+  color:var(--text3);line-height:1.6;
+}
+.cal-header{
+  display:flex;align-items:center;gap:0;
+  margin-bottom:14px;
+}
+.cal-header-case{width:80px;flex-shrink:0;}
+.cal-header-label{
+  flex:1;font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--text3);text-align:center;
+}
+.cal-header-gap{width:48px;flex-shrink:0;}
+
+.epistemic-note{
+  background:var(--bg2);border:1px solid var(--line);
+  padding:24px 28px;margin:40px 0;
+}
+.epistemic-note-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:12px;
+}
+.epistemic-note p{
+  font-size:15px;font-weight:300;
+  color:var(--text2);line-height:1.7;margin-bottom:0;
+}
+.epistemic-note p+p{margin-top:10px;}
+.epistemic-note p.subdued{font-size:13px;color:var(--text3);margin-top:10px;}
+
+.article-conclusion{
+  border-top:1px solid var(--line);
+  padding-top:48px;margin-bottom:48px;
+}
+.conclusion-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:20px;
+}
+.article-conclusion p{
+  font-size:17px;font-weight:300;
+  line-height:1.8;color:var(--text2);margin-bottom:16px;
+}
+.article-conclusion p strong{color:var(--text);font-weight:500;}
+
+.open-questions{
+  margin-top:40px;padding:32px;
+  background:var(--bg2);border:1px solid var(--line);
+}
+.open-questions-label{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:20px;
+}
+.question-item{
+  padding:14px 0;border-bottom:1px solid var(--line2);
+  color:var(--text2);font-size:15px;
+  font-weight:300;line-height:1.6;
+  display:flex;gap:16px;
+}
+.question-item:last-child{border-bottom:none;padding-bottom:0;}
+.question-item::before{
+  content:'?';
+  font-family:'DM Mono',monospace;font-size:12px;
+  color:var(--accent-l);flex-shrink:0;margin-top:2px;
+}
+
+.article-nav{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  padding-top:40px;border-top:1px solid var(--line2);
+}
+.nav-back-link{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);text-decoration:none;transition:color .2s;
+}
+.nav-back-link:hover{color:var(--text);}
+.nav-prev-next{display:flex;gap:24px;}
+
+.version-note{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);letter-spacing:.04em;padding-top:16px;
+}
+
+.site-footer{border-top:1px solid var(--line);background:var(--bg);}
+.footer-inner{
+  max-width:var(--container);margin:0 auto;padding:32px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.footer-left{display:flex;align-items:center;gap:24px;}
+.footer-brand{
+  font-family:'Geologica',sans-serif;font-size:13px;font-weight:800;
+  color:var(--text3);letter-spacing:.5px;
+  font-variation-settings:'CRSV' 0,'SHRP' 0;
+}
+.footer-copy{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);letter-spacing:.5px;
+}
+.footer-right{display:flex;align-items:center;gap:20px;}
+.footer-icon-link{
+  display:flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;letter-spacing:.5px;transition:color .2s;
+}
+.footer-icon-link:hover{color:var(--text);}
+.footer-icon-link svg{width:14px;height:14px;fill:currentColor;}
+.footer-divider{width:1px;height:16px;background:var(--line);}
+.footer-email-btn{
+  display:flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--text3);background:none;border:none;
+  cursor:pointer;letter-spacing:.5px;transition:color .2s;padding:0;
+}
+.footer-email-btn:hover{color:var(--text);}
+.footer-email-btn svg{width:14px;height:14px;fill:currentColor;}
+.footer-copy-wrap{position:relative;}
+.footer-copied{
+  position:absolute;bottom:calc(100% + 6px);left:50%;
+  transform:translateX(-50%);
+  font-family:'DM Mono',monospace;font-size:10px;
+  background:var(--bg3);border:1px solid var(--line);
+  padding:4px 10px;color:var(--accent-l);
+  opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;
+}
+.footer-copied.show{opacity:1;}
+
+@media(max-width:768px){
+  .nav-inner{padding:16px 24px;}
+  .container{padding:0 24px;}
+  .footer-inner{padding:24px;flex-direction:column;gap:20px;align-items:flex-start;}
+  .landscape-grid{grid-template-columns:1fr;}
+  .landscape-arrow{display:none;}
+  .cal-header,.calibration-row{flex-wrap:wrap;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yMjguNzc2IDI2OC4xNjVDMjE5LjU1NyAyNjYuMTQzIDIwOS44ODkgMjY1LjE3MyAyMDAuMDAxIDI2NS4xNzNDMTkwLjExMyAyNjUuMTczIDE4MC40NDUgMjY2LjE0MyAxNzEuMjI2IDI2OC4xNjVMMjAwLjAwMSAyMDkuNzM4TDIyOC43NzYgMjY4LjE2NVoiIHN0cm9rZT0iI0U2RTZFNiIgc3Ryb2tlLXdpZHRoPSIxMC40ODY5Ii8+CjxwYXRoIGQ9Ik0zNjguNTQgMzY4LjUzNUwyMDguMzM1IDMzMy45MzRDMjA2LjM3OCAzMzMuNTExIDIwMy42MjcgMzMzLjE2IDIwMC4wMDMgMzMzLjE2QzE5Ni4zNzcgMzMzLjE2IDE5My42MjcgMzMzLjUxMiAxOTEuNjcyIDMzMy45MzRMMzEuNDYwOSAzNjguNTM5TDIwMC4wMDcgMzEuNDYwN0wzNjguNTQgMzY4LjUzNVoiIHN0cm9rZT0iI0U2RTZFNiIgc3Ryb2tlLXdpZHRoPSIxMC40ODY5Ii8+CjxwYXRoIGQ9Ik0yOTcuODM1IDMxNi4xMDRMMjE4LjExMSAyOTguOTY0QzIxMi42NjMgMjk3Ljc5MyAyMDYuNjAyIDI5Ny4xNTggMjAwLjAwMSAyOTcuMTU4QzE5My4zOTkgMjk3LjE1OCAxODcuMzM5IDI5Ny43OTQgMTgxLjg5MyAyOTguOTY0TDEwMi4xNjUgMzE2LjEwNUwyMDAuMDAzIDEyMS4zNDhMMjk3LjgzNSAzMTYuMTA0WiIgc3Ryb2tlPSIjRTZFNkU2IiBzdHJva2Utd2lkdGg9IjEwLjQ4NjkiLz4KPC9zdmc+Cg==" alt="" height="28" onerror="this.style.display='none'">
+      <span>StratoAtlas</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../map.html">Map</a></li>
+      <li><a href="../foundations.html">Foundations</a></li>
+      <li><a href="../cdsa.html">CDSA</a></li>
+      <li><a href="../tools.html">Tools</a></li>
+      <li><a href="../research.html" class="current">Research</a></li>
+          <li><a href="/cases/">Cases</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div id="article-header">
+  <div class="container">
+    <div class="col-text">
+      <div class="obs-label">
+        <span>Observation 005</span>
+        <a href="../research.html" class="obs-back">Research log</a>
+      </div>
+      <h1 class="article-title">The gap<br>between models</h1>
+      <p class="article-subtitle">Today’s AI infrastructure is built primarily around individual models, not between them. This creates a structural gap — no stable infrastructure exists between models yet. The gap is visible. The position is empty.</p>
+      <div class="article-meta">
+        <div class="meta-item"><strong>Roman Kir</strong></div>
+        <div class="meta-item">StratoAtlas Research</div>
+        <div class="meta-item">March 2026</div>
+        <div class="meta-item">Working hypothesis</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="article-body">
+  <div class="container">
+    <div class="col-text">
+
+      <p class="article-lede">When the StratoAtlas pipeline began using one model for extraction and another for dialogue, this looked like an inconsistency. It is not. It is the first deliberate step into a space that the industry is treating as a problem to be solved — rather than a position to be occupied.</p>
+
+      <!-- 01 -->
+      <div class="body-section">
+        <div class="section-label">01 — The structural situation</div>
+        <h2>Everyone is building inside. Nobody is building between.</h2>
+
+        <p>The current landscape of AI infrastructure has a clear geometry. Each laboratory — Anthropic, OpenAI, Google, Mistral — primarily builds tooling, APIs, agent frameworks, and evaluation infrastructure optimised around its own models and their internal logic. This is rational. Vertical integration produces coherence, speed, and competitive differentiation.</p>
+
+        <p>It also produces a blind spot.</p>
+
+        <div class="landscape-figure" aria-label="Infrastructure landscape diagram">
+          <div class="landscape-figure-label">Landscape — where infrastructure is being built</div>
+
+          <div class="landscape-grid">
+            <div class="landscape-col">
+              <div class="landscape-col-label">Anthropic</div>
+              <div class="landscape-model">Claude</div>
+              <div class="landscape-model">Claude Code</div>
+              <div class="landscape-model">MCP</div>
+            </div>
+            <div class="landscape-arrow">→</div>
+            <div class="landscape-col empty-zone">
+              <div class="landscape-empty-label">inter-model<br>infrastructure<br>· · ·<br>position empty</div>
+            </div>
+            <div class="landscape-arrow">←</div>
+            <div class="landscape-col">
+              <div class="landscape-col-label">OpenAI</div>
+              <div class="landscape-model">GPT-4o</div>
+              <div class="landscape-model">Assistants API</div>
+              <div class="landscape-model">o1 / o3</div>
+            </div>
+          </div>
+
+          <p class="landscape-figure-note">
+            Each laboratory primarily optimises inward. <strong>The space between models has no established infrastructure, no vocabulary, and no recognised research position.</strong> Users already live there. Tooling does not yet exist.
+          </p>
+        </div>
+
+        <p>The blind spot is not technical. It is conceptual. The inter-model space is treated as a compatibility problem — something to be bridged, translated, or standardised away. The assumption is that the right outcome is a world where models are interchangeable, and the seams between them are invisible.</p>
+
+        <p>That assumption may be wrong. And if it is wrong, it is wrong in an interesting direction.</p>
+      </div>
+
+      <!-- 02 -->
+      <div class="body-section">
+        <div class="section-label">02 — The user's reality</div>
+        <h2>Users are already multi-model. Tools are not.</h2>
+
+        <p>The standard framing: a user chooses a model. They evaluate options, pick the best one for their use case, and commit. The model is a tool. The goal is to find the right tool.</p>
+
+        <p>A pattern increasingly visible in practice in 2024–2025: users switch between models constantly — not because they are undecided, but because different models are genuinely better at different things. A user might draft with Claude, code with GPT-4o, research with Gemini, and run structured extraction with a fine-tuned smaller model. This is not confusion. It is a rational response to a heterogeneous landscape.</p>
+
+        <div class="article-callout">
+          <p>The gap between how AI laboratories think about model choice (pick one, commit) and how users actually behave (use several, switch fluidly) is itself a structural tension. In CDSA terms: a productive contradiction, not a problem to resolve.</p>
+        </div>
+
+        <p>The infrastructure that exists assumes the first pattern. The behaviour that is emerging follows the second. No stable tooling has been built for the second pattern yet — not because it is technically hard, but because it requires accepting that models are not interchangeable, and that the differences between them are a feature rather than a defect.</p>
+      </div>
+
+      <!-- 03 -->
+      <div class="body-section">
+        <div class="section-label">03 — The conceptual move</div>
+        <h2>Models as positions, not tools</h2>
+
+        <p>A tool is interchangeable with another tool of equal quality. If two hammers drive nails equally well, it does not matter which you use. The goal is to find the best hammer.</p>
+
+        <p>A position is not interchangeable. Two people can observe the same event from different positions and produce genuinely different, both valid, descriptions. The difference between their descriptions is not error — it is information about the structure of the event itself.</p>
+
+        <p>Different AI models are trained on different data distributions, with different alignment procedures, different architectural decisions, and different implicit assumptions about what constitutes a good response. When two models give different answers to the same question, that difference is not noise to be filtered. It is signal about the question.</p>
+
+        <div class="key-claim">
+          <div class="key-claim-label">Central thesis</div>
+          <p>Models are not interchangeable tools for producing outputs. They are positions — each with a characteristic way of structuring problems, weighting evidence, and resolving ambiguity.</p>
+          <p>The gap between two models on the same input is not a compatibility problem. It is the same structural signal as the gap between two AIs in a trialogue: an indicator of where the subject is genuinely uncertain, where the framing is contested, where the knowledge is model-specific rather than universal.</p>
+        </div>
+
+        <p>This is the conceptual move that changes what inter-model divergence means. Not: <em>which model is right?</em> But: <em>what does their disagreement reveal about the subject?</em></p>
+      </div>
+
+      <!-- 04 -->
+      <div class="body-section">
+        <div class="section-label">04 — The calibration instrument</div>
+        <h2>Disagreement as data</h2>
+
+        <p>In the StratoAtlas pipeline, CDSA extraction currently runs through one model. The trialogue configuration uses another. This was not planned — it emerged from the sequence of decisions made as the system was built.</p>
+
+        <p>Looking at it now, the accidental architecture reveals something useful. When the same forum thread is classified by two different models, there are three possible outcomes:</p>
+
+        <div class="calibration-figure">
+          <div class="calibration-label">Inter-model classification — what disagreement reveals</div>
+          <div class="cal-header">
+            <div class="cal-header-case"></div>
+            <div class="cal-header-label">Model A</div>
+            <div class="cal-header-gap"></div>
+            <div class="cal-header-label">Model B</div>
+          </div>
+          <div class="calibration-row">
+            <div class="cal-case">Case 1</div>
+            <div class="cal-model-a agree">Real fork</div>
+            <div class="cal-gap">≡</div>
+            <div class="cal-model-b agree">Real fork</div>
+          </div>
+          <div class="calibration-row">
+            <div class="cal-case">Case 2</div>
+            <div class="cal-model-a disagree">False fork</div>
+            <div class="cal-gap signal">≠</div>
+            <div class="cal-model-b disagree">Real fork</div>
+          </div>
+          <div class="calibration-row">
+            <div class="cal-case">Case 3</div>
+            <div class="cal-model-a disagree">Unclear</div>
+            <div class="cal-gap signal">≠</div>
+            <div class="cal-model-b disagree">Prod. contradiction</div>
+          </div>
+          <div class="cal-note">
+            Agreement (≡) signals robust classification — the case is clearly within a category.<br>
+            Disagreement (≠) signals one of three things: the case is genuinely borderline, the category definition is underspecified, or the prompt is coupling to model-specific behaviour rather than the framework's own concepts.
+          </div>
+        </div>
+
+        <p>High agreement rate across a category may indicate robust classification — the framework capturing something real, not something model-specific. Or it may indicate shared model artifacts: both models trained on similar data, producing similar blind spots. High disagreement rate is the clearer signal: it makes definitional weakness visible fastest.</p>
+
+        <div class="distinction-block">
+          <div class="distinction-label">The prompt as the instrument</div>
+          <p>The processor prompt is the executable operationalization of the CDSA framework. If it is written in the framework's own concepts — not in terms of what a specific model responds well to — it should produce consistent classification across models. Inconsistency is a signal that the prompt is doing model-specific work it should not be doing.</p>
+          <p>Prompt-model coupling is a form of definitional imprecision. Inter-model disagreement makes it visible.</p>
+          <p class="subdued">This is why the processor prompt must be versioned and documented as a research artifact. When it changes, the classifications change. When it is model-specific, the classifications are not about the framework — they are about the model.</p>
+        </div>
+
+        <p>This is what makes inter-model calibration more than a quality check. When CDSA uses divergence between models to stress-test its own classification categories, the framework is no longer just a tool for diagnosing external contradictions. It becomes a framework capable of stress-testing its own definitional precision. The same method applied outward — to forum cases — and inward — to its own category boundaries — simultaneously.</p>
+
+      </div>
+
+      <!-- 05 -->
+      <div class="body-section">
+        <div class="section-label">05 — The connection to trialogue</div>
+        <h2>The same structure at two scales</h2>
+
+        <p>Observation 003 described the gap between two AIs in a trialogue as the primary instrument — not an expansion of context, but a mechanism that makes the frame visible. Where two AIs diverge, that divergence marks the live boundary of confident knowledge.</p>
+
+        <p>Inter-model divergence in a research pipeline is the same structure at a different scale. The trialogue produces gaps in real time, in a single session, for a specific question. The pipeline produces gaps systematically, across many cases, for a framework's classification categories.</p>
+
+        <div class="article-callout">
+          <p>One AI gives an answer — you see the subject.<br>
+          Two AIs give different answers — you see the contours of the subject.<br>
+          Two <em>different</em> AI models give different answers — you see where the subject resists model-independent description.</p>
+        </div>
+
+        <p>The trialogue uses the gap as an instrument for positional work — helping the human see which frame they are operating from. The pipeline uses the gap as a calibration instrument — helping the researcher see where the framework's definitions are doing insufficient work.</p>
+
+        <p>The same principle appears to operate at two scales. Different application, different granularity — but the same structural logic. Whether this homology is deep or coincidental is itself an open question worth tracking.</p>
+      </div>
+
+      <!-- 06 -->
+      <div class="body-section">
+        <div class="section-label">06 — The position</div>
+        <h2>What StratoAtlas is doing, stated plainly</h2>
+
+        <p>StratoAtlas is not trying to be model-agnostic in the standard sense — that is, indifferent to which model is used, aiming for interchangeability. It is doing something different: using multiple models deliberately, treating their differences as information, and building a research practice around the gaps between them.</p>
+
+        <p>This is a position, not a workaround. It does not require any model to be better than another. It requires accepting that models are different in ways that matter — and that those differences can be made to do research work.</p>
+
+        <div class="distinction-block">
+          <div class="distinction-label">What this is not</div>
+          <p>It is not a comparison of models to find the best one. It is not a benchmark. It is not a hedge against dependency on a single provider. Those are reasonable goals with different methods.</p>
+        </div>
+
+        <div class="distinction-block">
+          <div class="distinction-label">What this is</div>
+          <p>A research practice that uses inter-model divergence as a signal — about the subject being studied, about the quality of the framework's definitions, and about where knowledge is model-specific rather than universal. The gaps are the instrument.</p>
+        </div>
+
+        <p>The infrastructure for this does not exist yet. No standard tooling for tracking inter-model disagreement on structured classification tasks. No vocabulary for distinguishing productive divergence from simultaneous error. No established practice for using model differences as calibration rather than noise.</p>
+
+        <p>That gap — in the infrastructure, in the vocabulary, in the practice — is the position StratoAtlas is moving into. Not because it was planned, but because the work led here.</p>
+      </div>
+
+      <!-- Epistemic note -->
+      <div class="epistemic-note">
+        <div class="epistemic-note-label">Working hypothesis, not a demonstrated practice</div>
+        <p>This observation describes a position that StratoAtlas is beginning to occupy, not one it has fully developed. Inter-model disagreement tracking does not yet exist in the pipeline. The calibration instrument described in section 04 is a design, not an implemented system.</p>
+        <p>What exists: the observation that the accidental multi-model architecture reveals something useful. What does not yet exist: the tooling to exploit it systematically.</p>
+        <p class="subdued">The open questions below are the actual unknowns. Some of them may turn out to make this observation premature.</p>
+      </div>
+
+      <!-- Conclusion -->
+      <div class="article-conclusion">
+        <div class="conclusion-label">Conclusion</div>
+        <p>The standard framing treats inter-model differences as a compatibility problem — something to be standardised away so that models become interchangeable. This framing produces a certain kind of infrastructure: translation layers, benchmark comparisons, provider-agnostic APIs.</p>
+        <p>An alternative framing: models are positions, and their differences are information. This produces a different kind of infrastructure — one that tracks divergence, uses disagreement as calibration, and treats the gaps between models as the primary instrument.</p>
+        <p><strong>The second kind has no established infrastructure, vocabulary, or recognised practice yet. The position is structurally visible — and empty. The work that led StratoAtlas here was not planned — it emerged from building a pipeline that happened to use two different models for two different tasks.</strong></p>
+        <p>The accidental architecture may turn out to be the right architecture. Not because it was chosen, but because it corresponds more closely to how users already live — in a multi-model world that the infrastructure has not yet caught up with.</p>
+      </div>
+
+      <!-- Open questions -->
+      <div class="open-questions">
+        <div class="open-questions-label">Open questions</div>
+        <div class="question-item">How do you distinguish productive inter-model divergence — divergence that reveals something about the subject — from simultaneous error in both models? Is an external criterion needed, and if so, what would it be?</div>
+        <div class="question-item">If the processor prompt is written to be model-agnostic, will agreement rates actually increase — or will they reveal that the CDSA categories themselves are model-sensitive at the boundary cases?</div>
+        <div class="question-item">Is there a minimum number of models needed to make inter-model divergence statistically meaningful as a calibration instrument — or is two sufficient for the purpose?</div>
+        <div class="question-item">When models agree on a classification, is that evidence of robust classification — or evidence that both models share the same training artifacts, making agreement uninformative?</div>
+        <div class="question-item">At what point does inter-model divergence become a research instrument rather than a signal? That is: what conditions must be met for a divergence to do methodological work — rather than simply indicate that something is uncertain?</div>
+      </div>
+
+      <!-- Article nav -->
+      <div class="article-nav">
+        <a href="../research.html" class="nav-back-link">← Research log</a>
+        <div class="nav-prev-next">
+          <a href="observation-004.html" class="nav-back-link">← Obs 004</a>
+        </div>
+      </div>
+
+      <div class="version-note">v1.2 · March 2026 · StratoAtlas Research</div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">StratoAtlas</span>
+      <span class="footer-copy">© 2026 stratoatlas.com</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://x.com/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X
+      </a>
+      <div class="footer-divider"></div>
+      <a href="https://linkedin.com/company/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <div class="footer-divider"></div>
+      <div class="footer-copy-wrap">
+        <button class="footer-email-btn" onclick="copyEmail(this)">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          research[at]stratoatlas.com
+        </button>
+        <div class="footer-copied">Copied</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function copyEmail(btn){
+  navigator.clipboard.writeText('research@stratoatlas.com').then(()=>{
+    const tip = btn.nextElementSibling;
+    tip.classList.add('show');
+    setTimeout(()=>tip.classList.remove('show'), 1800);
+  });
+}
+</script>
+</body>
+</html>
