@@ -1,54 +1,72 @@
 [
   {
-    "type": "observation",
-    "num": "001",
+    "type": "Observation",
+    "code": "001",
     "title": "The asymmetry of the methodology landscape",
-    "desc": "Most design and product methodologies cluster in the upper layers of the system. Once placed on a single map, the structural asymmetry becomes impossible to ignore.",
+    "description": "Hundreds of product methods exist. None of them shows what works where the others stop. Once placed on a single map, the structural asymmetry becomes impossible to ignore.",
     "date": "March 2026",
+    "status": "Working model",
     "url": "research/observation-001.html",
     "tags": {
       "map_zone": "architecture×resolution",
-      "cdpa": "illusion",
+      "cdsa": "illusion",
       "ctx": ""
     }
   },
   {
-    "type": "observation",
-    "num": "002",
-    "title": "Level 7 is not uniform — three phenomena the field treats as one",
-    "desc": "Architectural contradictions, real forks, and positional constraints look identical from the outside. Confusing them produces three structurally different kinds of failure.",
+    "type": "Observation",
+    "code": "002",
+    "title": "The productivity hypothesis",
+    "description": "Not all contradictions should be resolved. Some contradictions are the engine. Dissolving them destroys the system they drive.",
     "date": "March 2026",
+    "status": "Working model",
     "url": "research/observation-002.html",
     "tags": {
       "map_zone": "architecture×resolution",
-      "cdpa": "productive contradiction / real fork / position",
+      "cdsa": "productive",
       "ctx": ""
     }
   },
   {
-    "type": "observation",
-    "num": "003",
-    "title": "Trialogue as phenomenon",
-    "desc": "A configuration of human + AI + AI resolves a different contradiction than dialogue. The gap between two AIs makes the frame visible — and opens structural access to the positional level.",
+    "type": "Observation",
+    "code": "003",
+    "title": "The trialogue mechanism",
+    "description": "A document produced by a trialogue about trialogue has a structural blind spot if it does not acknowledge being produced that way. Recursive validation is a meaningful epistemic signal.",
     "date": "March 2026",
+    "status": "Working model",
     "url": "research/observation-003.html",
     "tags": {
-      "map_zone": "architecture×resolution",
-      "cdpa": "positional / productive contradiction",
-      "ctx": "working model"
+      "map_zone": "architecture×diagnosis",
+      "cdsa": "productive",
+      "ctx": "trialogue"
     }
   },
   {
-    "type": "case",
-    "num": "A-INT-2026-001",
-    "title": "Write-access as architectural constraint in multi-agent research workflows",
-    "desc": "A live case: the absence of shared writable storage as a productive architectural constraint. Analysed through CDSA. The constraint forced infrastructure into existence — and makes the next step visible.",
+    "type": "Observation",
+    "code": "004",
+    "title": "The engine",
+    "description": "On the day a case extraction pipeline appeared, the nature of the project changed. Not in degree — in kind. A research programme acquired the first mechanism capable of reproducing its own evidence base.",
     "date": "March 2026",
-    "url": "research/case-a-int-2026-001.html",
+    "status": "Working model",
+    "url": "research/observation-004.html",
     "tags": {
       "map_zone": "architecture×resolution",
-      "cdpa": "productive contradiction",
-      "ctx": "live"
+      "cdsa": "productive",
+      "ctx": "pipeline"
+    }
+  },
+  {
+    "type": "Observation",
+    "code": "005",
+    "title": "The gap between models",
+    "description": "Today's AI infrastructure is built primarily around individual models, not between them. This creates a structural gap — no stable infrastructure exists between models yet. The gap is visible. The position is empty.",
+    "date": "March 2026",
+    "status": "Working hypothesis",
+    "url": "research/observation-005.html",
+    "tags": {
+      "map_zone": "architecture×diagnosis",
+      "cdsa": "productive",
+      "ctx": "inter-model"
     }
   }
 ]
