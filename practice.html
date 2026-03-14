@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice — StratoAtlas</title>
+<meta name="description" content="Cases, observations and patterns from the StratoAtlas investigation. Structural contradictions found in real systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Geologica:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:10px;"><img src="assets/logo.svg" alt="" height="28" onerror="this.style.display='none'"><span>StratoAtlas</span></a>
+    <ul class="nav-links">
+          <li><a href="theory.html">Theory</a></li>
+          <li><a href="tools.html">Instruments</a></li>
+          <li><a href="practice.html" class="current">Practice</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+  </div>
+</nav>
+
+<section style="padding-top:160px;padding-bottom:80px;border-bottom:1px solid var(--line);">
+  <div class="container">
+    <div style="max-width:var(--prose);">
+      <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;">Practice</div>
+      <h1 style="font-family:'Geologica',sans-serif;font-size:clamp(36px,6vw,64px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:24px;font-variation-settings:'CRSV' 0,'SHRP' 0;">Where the theory<br>meets reality.</h1>
+      <p style="font-size:18px;font-weight:300;color:var(--text2);line-height:1.7;max-width:560px;">
+        Structural contradictions extracted from real systems. Each case is a test of the framework —
+        either consistent with the classification or a signal that the classification needs refinement.
+      </p>
+      <div id="practice-stats" style="display:flex;gap:32px;margin-top:40px;flex-wrap:wrap;">
+        <div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;">Cases</div><div id="ps-cases" style="font-size:32px;font-weight:700;font-family:'Geologica',sans-serif;">—</div></div>
+        <div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;">Observations</div><div id="ps-obs" style="font-size:32px;font-weight:700;font-family:'Geologica',sans-serif;">—</div></div>
+        <div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;">Patterns</div><div id="ps-patterns" style="font-size:32px;font-weight:700;font-family:'Geologica',sans-serif;">—</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section style="padding:80px 0 0;">
+  <div class="container">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Cases</div>
+        <p style="font-size:14px;font-weight:300;color:var(--text2);max-width:480px;">Specific situations analysed through the CDSA diagnostic. Extracted from real-world software and ERP forums.</p>
+      </div>
+      <a href="/cases/" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);border:1px solid var(--line);padding:8px 16px;display:inline-block;transition:all .2s;white-space:nowrap;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--line)';this.style.color='var(--text3)'">All cases →</a>
+    </div>
+    <div id="latest-cases" style="border-top:1px solid var(--line);"></div>
+  </div>
+</section>
+
+<!-- OBSERVATIONS -->
+<section style="padding:80px 0 0;">
+  <div class="container">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Observations</div>
+        <p style="font-size:14px;font-weight:300;color:var(--text2);max-width:480px;">Structural distinctions that emerged from the investigation. Each observation records what was seen, why it matters, and what follows from it.</p>
+      </div>
+      <a href="research.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);border:1px solid var(--line);padding:8px 16px;display:inline-block;transition:all .2s;white-space:nowrap;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--line)';this.style.color='var(--text3)'">All observations →</a>
+    </div>
+    <div id="latest-obs" style="border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px;"></div>
+  </div>
+</section>
+
+<!-- PATTERNS -->
+<section style="padding:80px 0;">
+  <div class="container">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Patterns</div>
+        <p style="font-size:14px;font-weight:300;color:var(--text2);max-width:480px;">Generalisations that emerge when multiple cases point to the same structure. A pattern is a falsifiable claim — not a conclusion.</p>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--line);padding:32px 0;">
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text3);">Patterns will appear as cases and observations accumulate.</span>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">StratoAtlas</span>
+      <span class="footer-copy">© 2026 stratoatlas.com</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://x.com/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X
+      </a>
+      <div class="footer-divider"></div>
+      <a href="https://linkedin.com/company/stratoatlas" class="footer-icon-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <div class="footer-divider"></div>
+      <div class="footer-copy-wrap">
+        <button class="footer-email-btn" onclick="copyEmail(this)">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          research[at]stratoatlas.com
+        </button>
+        <div class="footer-copied">Copied</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function copyEmail(btn) {
+  navigator.clipboard.writeText('research@stratoatlas.com').then(() => {
+    const tip = btn.nextElementSibling;
+    tip.classList.add('show');
+    setTimeout(() => tip.classList.remove('show'), 1800);
+  });
+}
+
+// Load stats and latest content
+Promise.all([
+  fetch('research/index.json').then(r => r.json()),
+  fetch('/cases/stats').then(r => r.json()).catch(() => null)
+]).then(([items, caseStats]) => {
+  const obs = items.filter(i => i.type === 'Observation');
+  const patterns = items.filter(i => i.type === 'Pattern');
+
+  // Stats
+  if (caseStats) document.getElementById('ps-cases').textContent = caseStats.published ?? '—';
+  document.getElementById('ps-obs').textContent = obs.length;
+  document.getElementById('ps-patterns').textContent = patterns.length;
+
+  // Latest 3 observations
+  const obsEl = document.getElementById('latest-obs');
+  if (obsEl) {
+    obsEl.innerHTML = obs.slice(-3).reverse().map(o => `
+      <a href="${o.url}" style="display:block;text-decoration:none;padding:32px;background:var(--bg2);transition:background .2s;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='var(--bg2)'">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Observation ${o.code} · ${o.date}</div>
+        <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;font-family:'Geologica',sans-serif;font-variation-settings:'CRSV' 0,'SHRP' 0;">${o.title}</div>
+        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.65;">${o.description}</p>
+      </a>
+    `).join('');
+  }
+}).catch(() => {});
+
+// Latest published cases from renderer
+fetch('/cases/?format=json').catch(() => null);
+// Show link to cases instead
+document.getElementById('latest-cases').innerHTML = `
+  <div style="padding:32px 0;">
+    <p style="font-size:14px;font-weight:300;color:var(--text2);margin-bottom:20px;">Structural contradictions extracted from real-world ERP and software forums using the CDSA two-level diagnostic.</p>
+    <a href="/cases/" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);border:1px solid var(--line);padding:10px 20px;display:inline-block;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--line)';this.style.color='var(--text3)'">Browse cases →</a>
+  </div>
+`;
+</script>
+</body>
+</html>
